@@ -1,0 +1,5 @@
+<!ENTITY config.title        "Configuration of View Source in Tab">
+
+<!ENTITY config.tabs.general "General">
+
+<!ENTITY config.enabled "Show &quot;View Page Source%quot; in tab">

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/"?>
+<!DOCTYPE prefwindow [
+<!ENTITY % mainDTD SYSTEM "chrome://viewsourceintab/locale/viewsourceintab.dtd">
+%mainDTD;
+]>
+<prefwindow id="viewsourceintab-config"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	title="&config.title;"
+	onload="sizeToContent();">
+
+<prefpane id="prefpane-general" label="&config.tabs.general;">
+	<preferences>
+		<preference id="extensions.viewsourceintab.enabled"
+			name="extensions.viewsourceintab.enabled"
+			type="bool"/>
+	</preferences>
+
+	<checkbox id="extensions.viewsourceintab.enabled-check"
+		preference="extensions.viewsourceintab.enabled"
+		label="&config.enabled;"/>
+</prefpane>
+
+</prefwindow>
+
