@@ -9,7 +9,7 @@
                    em:creator="SHIMODA Hiroshi"
                    em:description="Shows web page sources in tab."
                    em:homepageURL="http://piro.sakura.ne.jp/xul/viewsourcetab/"
-                   em:optionsURL="chrome://viewsourcetab/content/config.xul">
+                   em:optionsURL="chrome://viewsourceintab/content/config.xul">
 <!--
                    em:iconURL="chrome://viewsourcetab/content/"
 -->

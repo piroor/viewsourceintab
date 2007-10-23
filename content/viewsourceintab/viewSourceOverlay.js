@@ -146,3 +146,8 @@ if ('drawSelection' in window) {
 		)
 	);
 }
+
+var gFindBar = { 
+	initFindBar : function() {},
+	uninitFindBar : function() {}
+};
