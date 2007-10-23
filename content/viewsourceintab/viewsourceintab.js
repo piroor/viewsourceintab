@@ -206,6 +206,13 @@ var ViewSourceInTab = {
 				]]></>
 			)
 		);
+
+		eval('gViewSourceUtils.getExternalViewSourceEditor = '+
+			gViewSourceUtils.getExternalViewSourceEditor.toSource().replace(
+				'var prefPath = prefs.getCharPref("view_source.editor.path");',
+				'var prefPath = decodeURIComponent(escape(prefs.getCharPref("view_source.editor.path")));'
+			)
+		);
 	},
  
 	destroy : function() 
