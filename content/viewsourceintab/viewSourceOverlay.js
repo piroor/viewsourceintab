@@ -93,12 +93,14 @@ if (gViewSourceInTab && !window.arguments) {
 				''
 			)
 		);
-		eval('window.onUnloadViewSource = '+
-			window.onUnloadViewSource.toSource().replace(
-				'gFindBar.uninitFindBar();',
-				''
-			)
-		);
+		if ('onUnloadViewSource' in window) {
+			eval('window.onUnloadViewSource = '+
+				window.onUnloadViewSource.toSource().replace(
+					'gFindBar.uninitFindBar();',
+					''
+				)
+			);
+		}
 	}
 
 	if ('onLoadViewPartialSource' in window) {
@@ -122,12 +124,14 @@ if (gViewSourceInTab && !window.arguments) {
 				''
 			)
 		);
-		eval('window.onUnloadViewPartialSource = '+
-			window.onUnloadViewPartialSource.toSource().replace(
-				'gFindBar.uninitFindBar();',
-				''
-			)
-		);
+		if ('onUnloadViewPartialSource' in window) {
+			eval('window.onUnloadViewPartialSource = '+
+				window.onUnloadViewPartialSource.toSource().replace(
+					'gFindBar.uninitFindBar();',
+					''
+				)
+			);
+		}
 	}
 
 	if ('viewPartialSourceForSelection' in window) {

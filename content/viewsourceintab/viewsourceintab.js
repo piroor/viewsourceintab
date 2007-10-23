@@ -138,7 +138,7 @@ var ViewSourceInTab = {
 								ViewSourceInTab.targetInfo.uri       = docUrl;
 								ViewSourceInTab.targetInfo.charset   = docCharset;
 								ViewSourceInTab.targetInfo.reference = reference;
-								ViewSourceInTab.targetInfo.context   = context;
+								ViewSourceInTab.targetInfo.context   = arguments[0];
 								if ('TreeStyleTabService' in window)
 									TreeStyleTabService.readyToOpenChildTab(focusedWindow);
 								var b = ViewSourceInTab.getTabBrowserFromFrame(focusedWindow);
