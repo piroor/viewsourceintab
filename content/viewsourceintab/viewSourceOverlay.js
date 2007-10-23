@@ -61,6 +61,7 @@ if (gViewSourceInTab && !window.arguments) {
 		gViewSourceInfo ? gViewSourceInfo.reference : null ,
 		gViewSourceInTab.getTabValue(getParentBrowserTab(), gViewSourceInTab.kVIEWSOURCE_CONTEXT)
 	];
+	delete gFindBar;
 }
 
 var gViewSourceDone = false;
@@ -68,10 +69,26 @@ if ('onLoadViewSource' in window) {
 	eval('window.onLoadViewSource = '+
 		window.onLoadViewSource.toSource().replace( // prevent infinity reloading
 			'{',
-			'{ if (gViewSourceDone) return; gViewSourceDone = true;'
+			<><![CDATA[
+				{
+					if (gViewSourceDone) return;
+					gViewSourceDone = true;
+					var bar = document.getElementById('FindToolbar');
+					if (bar)
+						bar.parentNode.removeChild(bar);
+			]]></>
 		).replace(
 			'}',
 			'; if (gViewSourceInfo) gViewSourceInfo.clear(); }'
+		).replace(
+			'gFindBar.initFindBar();',
+			''
+		)
+	);
+	eval('window.onUnloadViewSource = '+
+		window.onUnloadViewSource.toSource().replace(
+			'gFindBar.uninitFindBar();',
+			''
 		)
 	);
 }
@@ -80,10 +97,26 @@ if ('onLoadViewPartialSource' in window) {
 	eval('window.onLoadViewPartialSource = '+
 		window.onLoadViewPartialSource.toSource().replace( // prevent infinity reloading
 			'{',
-			'{ if (gViewSourceDone) return; gViewSourceDone = true;'
+			<><![CDATA[
+				{
+					if (gViewSourceDone) return;
+					gViewSourceDone = true;
+					var bar = document.getElementById('FindToolbar');
+					if (bar)
+						bar.parentNode.removeChild(bar);
+			]]></>
 		).replace(
 			'window._content.focus();',
 			'if (gViewSourceInfo) { gViewSourceInfo.clear(); }; window._content.focus();'
+		).replace(
+			'gFindBar.initFindBar();',
+			''
+		)
+	);
+	eval('window.onUnloadViewPartialSource = '+
+		window.onUnloadViewPartialSource.toSource().replace(
+			'gFindBar.uninitFindBar();',
+			''
 		)
 	);
 }
@@ -146,8 +179,3 @@ if ('drawSelection' in window) {
 		)
 	);
 }
-
-var gFindBar = { 
-	initFindBar : function() {},
-	uninitFindBar : function() {}
-};
