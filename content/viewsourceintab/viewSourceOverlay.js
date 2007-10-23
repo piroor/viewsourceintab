@@ -62,6 +62,11 @@ if (gViewSourceInTab && !window.arguments) {
 		gViewSourceInTab.getTabValue(getParentBrowserTab(), gViewSourceInTab.kVIEWSOURCE_CONTEXT)
 	];
 	delete gFindBar;
+
+	var status = document.getElementById('status-bar');
+	if (status) {
+		document.getAnonymousElementByAttribute(status, 'class', 'statusbar-resizerpanel').setAttribute('hidden', true);
+	}
 }
 
 var gViewSourceDone = false;
