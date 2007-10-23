@@ -2,4 +2,9 @@
 
 <!ENTITY config.tabs.general "General">
 
-<!ENTITY config.enabled "Show &quot;View Page Source%quot; in tab">
+<!ENTITY config.viewSourceIn.caption  "Show &quot;View Page Source&quot; in">
+<!ENTITY config.viewSourceIn.window   "Window (Firefox default)">
+<!ENTITY config.viewSourceIn.tab      "Tab">
+<!ENTITY config.viewSourceIn.external "External application">
+<!ENTITY config.viewSourceIn.choose   "Choose...">
+<!ENTITY config.viewSourceIn.picker   "Choose the external viewer for page sources.">

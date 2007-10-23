@@ -9,17 +9,43 @@
 	title="&config.title;"
 	onload="sizeToContent();">
 
-<prefpane id="prefpane-general" label="&config.tabs.general;">
+<prefpane id="prefpane-general" label="&config.tabs.general;"
+	onpaneload="initViewSourceInRadio();">
 	<preferences>
 		<preference id="extensions.viewsourceintab.enabled"
 			name="extensions.viewsourceintab.enabled"
 			type="bool"/>
+		<preference id="view_source.editor.external"
+			name="view_source.editor.external"
+			type="bool"/>
+		<preference id="view_source.editor.path"
+			name="view_source.editor.path"
+			type="string"/>
 	</preferences>
 
-	<checkbox id="extensions.viewsourceintab.enabled-check"
-		preference="extensions.viewsourceintab.enabled"
-		label="&config.enabled;"/>
+	<groupbox>
+		<caption label="&config.viewSourceIn.caption;"/>
+		<radiogroup id="viewSourceIn-radiogroup"
+			orient="vertical"
+			oncommand="onChangeViewSourceInRadio();">
+			<radio value="window"   label="&config.viewSourceIn.window;"/>
+			<radio value="tab"      label="&config.viewSourceIn.tab;"/>
+			<radio value="external" label="&config.viewSourceIn.external;"/>
+			<hbox align="center">
+				<spacer style="width:3em;"/>
+				<textbox id="view_source.editor.path-textbox"
+					preference="view_source.editor.path"
+					size="50"/>
+				<button id="view_source.editor.path-choose"
+					label="&config.viewSourceIn.choose;"
+					picker-title="&config.viewSourceIn.picker;"
+					oncommand="showFilePicker('view_source.editor.path-textbox', this.getAttribute('picker-title'));"/>
+			</hbox>
+		</radiogroup>
+	</groupbox>
 </prefpane>
+
+<script src="config.js" type="application/x-javascript"/>
 
 </prefwindow>
 

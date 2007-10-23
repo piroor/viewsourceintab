@@ -67,120 +67,138 @@ if (gViewSourceInTab && !window.arguments) {
 	if (status) {
 		document.getAnonymousElementByAttribute(status, 'class', 'statusbar-resizerpanel').setAttribute('hidden', true);
 	}
-}
 
-var gViewSourceDone = false;
-if ('onLoadViewSource' in window) {
-	eval('window.onLoadViewSource = '+
-		window.onLoadViewSource.toSource().replace( // prevent infinity reloading
-			'{',
-			<><![CDATA[
-				{
-					if (gViewSourceDone) return;
-					gViewSourceDone = true;
-					var bar = document.getElementById('FindToolbar');
-					if (bar)
-						bar.parentNode.removeChild(bar);
-			]]></>
-		).replace(
-			'}',
-			'; if (gViewSourceInfo) gViewSourceInfo.clear(); }'
-		).replace(
-			'gFindBar.initFindBar();',
-			''
-		)
-	);
-	eval('window.onUnloadViewSource = '+
-		window.onUnloadViewSource.toSource().replace(
-			'gFindBar.uninitFindBar();',
-			''
-		)
-	);
-}
+	var gViewSourceDone = false;
+	if ('onLoadViewSource' in window) {
+		eval('window.onLoadViewSource = '+
+			window.onLoadViewSource.toSource().replace( // prevent infinity reloading
+				'{',
+				<><![CDATA[
+					{
+						if (gViewSourceDone) return;
+						gViewSourceDone = true;
+						var bar = document.getElementById('FindToolbar');
+						if (bar)
+							bar.parentNode.removeChild(bar);
+						document.getElementById('helpMenu').setAttribute('hidden', true);
+				]]></>
+			).replace(
+				'}',
+				<><![CDATA[;
+					if (gViewSourceInfo) gViewSourceInfo.clear();
+					document.title =document.documentElement.getAttribute('titlepreface') + getBrowser().contentDocument.title;
+				}]]></>
+			).replace(
+				'gFindBar.initFindBar();',
+				''
+			)
+		);
+		eval('window.onUnloadViewSource = '+
+			window.onUnloadViewSource.toSource().replace(
+				'gFindBar.uninitFindBar();',
+				''
+			)
+		);
+	}
 
-if ('onLoadViewPartialSource' in window) {
-	eval('window.onLoadViewPartialSource = '+
-		window.onLoadViewPartialSource.toSource().replace( // prevent infinity reloading
-			'{',
-			<><![CDATA[
-				{
-					if (gViewSourceDone) return;
-					gViewSourceDone = true;
-					var bar = document.getElementById('FindToolbar');
-					if (bar)
-						bar.parentNode.removeChild(bar);
-			]]></>
-		).replace(
-			'window._content.focus();',
-			'if (gViewSourceInfo) { gViewSourceInfo.clear(); }; window._content.focus();'
-		).replace(
-			'gFindBar.initFindBar();',
-			''
-		)
-	);
-	eval('window.onUnloadViewPartialSource = '+
-		window.onUnloadViewPartialSource.toSource().replace(
-			'gFindBar.uninitFindBar();',
-			''
-		)
-	);
-}
+	if ('onLoadViewPartialSource' in window) {
+		eval('window.onLoadViewPartialSource = '+
+			window.onLoadViewPartialSource.toSource().replace( // prevent infinity reloading
+				'{',
+				<><![CDATA[
+					{
+						if (gViewSourceDone) return;
+						gViewSourceDone = true;
+						var bar = document.getElementById('FindToolbar');
+						if (bar)
+							bar.parentNode.removeChild(bar);
+						document.getElementById('helpMenu').setAttribute('hidden', true);
+				]]></>
+			).replace(
+				'window._content.focus();',
+				'if (gViewSourceInfo) { gViewSourceInfo.clear(); }; window._content.focus();'
+			).replace(
+				'gFindBar.initFindBar();',
+				''
+			)
+		);
+		eval('window.onUnloadViewPartialSource = '+
+			window.onUnloadViewPartialSource.toSource().replace(
+				'gFindBar.uninitFindBar();',
+				''
+			)
+		);
+	}
 
-if ('viewPartialSourceForSelection' in window) {
-	eval('window.viewPartialSourceForSelection = '+
-		window.viewPartialSourceForSelection.toSource().replace(
-			'{',
-			<><![CDATA[
-				{
-					var selectionSource = gViewSourceInTab ? gViewSourceInTab.getTabValue(getParentBrowserTab(), gViewSourceInTab.kVIEWSOURCE_SOURCE) : null ;
-					if (!selectionSource) {
-			]]></>
-		).replace(
-			/(getBrowser\(\)\.webNavigation\.[^\}]+)/,
-			<><![CDATA[
-				if (gViewSourceInTab && !gViewSourceInTab.getTabValue(getParentBrowserTab(), gViewSourceInTab.kVIEWSOURCE_SOURCE)) {
-					gViewSourceInTab.setTabValue(getParentBrowserTab(), gViewSourceInTab.kVIEWSOURCE_SOURCE, encodeURIComponent(tmpNode.innerHTML));
-				}
-				$1;
-			}
-			else {
-				getBrowser().webNavigation.loadURI(
-					'view-source:data:text/html;charset=utf-8,' + selectionSource,
-					loadFlags, null, null, null);
-			}]]></>
-		)
-	);
-}
-
-if ('viewPartialSourceForFragment' in window) {
-	eval('window.viewPartialSourceForFragment = '+
-		window.viewPartialSourceForFragment.toSource().replace(
-			'{',
-			<><![CDATA[
-				{
-					var fragmentSource = gViewSourceInTab ? gViewSourceInTab.getTabValue(getParentBrowserTab(), gViewSourceInTab.kVIEWSOURCE_SOURCE) : null ;
-					if (!fragmentSource) {
-			]]></>
-		).replace(
-			'var doc = ',
-			<><![CDATA[
+	if ('viewPartialSourceForSelection' in window) {
+		eval('window.viewPartialSourceForSelection = '+
+			window.viewPartialSourceForSelection.toSource().replace(
+				'{',
+				<><![CDATA[
+					{
+						var selectionSource = gViewSourceInTab ? gViewSourceInTab.getTabValue(getParentBrowserTab(), gViewSourceInTab.kVIEWSOURCE_SOURCE) : null ;
+						if (!selectionSource) {
+				]]></>
+			).replace(
+				/(getBrowser\(\)\.webNavigation\.[^\}]+)/,
+				<><![CDATA[
 					if (gViewSourceInTab && !gViewSourceInTab.getTabValue(getParentBrowserTab(), gViewSourceInTab.kVIEWSOURCE_SOURCE)) {
-						gViewSourceInTab.setTabValue(getParentBrowserTab(), gViewSourceInTab.kVIEWSOURCE_SOURCE, encodeURIComponent(source));
+						gViewSourceInTab.setTabValue(getParentBrowserTab(), gViewSourceInTab.kVIEWSOURCE_SOURCE, encodeURIComponent(tmpNode.innerHTML));
 					}
+					$1;
 				}
 				else {
-					var source = fragmentSource;
-				}
-				var doc = ]]></>
-		)
-	);
-}
+					if (decodeURIComponent(selectionSource).indexOf(MARK_SELECTION_START) > -1) {
+						window.document.getElementById('appcontent').addEventListener('load', drawSelection, true);
+					}
+					getBrowser().webNavigation.loadURI(
+						'view-source:data:text/html;charset=utf-8,' + selectionSource,
+						loadFlags, null, null, null);
+				}]]></>
+			)
+		);
+	}
 
-if ('drawSelection' in window) {
-	eval('window.drawSelection = '+
-		window.drawSelection.toSource().replace(
-			'{',
-			'{ try { window.document.getElementById("appcontent").removeEventListener("load", drawSelection, true); } catch(e) {};'
-		)
-	);
+	if ('viewPartialSourceForFragment' in window) {
+		eval('window.viewPartialSourceForFragment = '+
+			window.viewPartialSourceForFragment.toSource().replace(
+				'{',
+				<><![CDATA[
+					{
+						var fragmentSource = gViewSourceInTab ? gViewSourceInTab.getTabValue(getParentBrowserTab(), gViewSourceInTab.kVIEWSOURCE_SOURCE) : null ;
+						if (!fragmentSource) {
+				]]></>
+			).replace(
+				'var doc = ',
+				<><![CDATA[
+						if (gViewSourceInTab && !gViewSourceInTab.getTabValue(getParentBrowserTab(), gViewSourceInTab.kVIEWSOURCE_SOURCE)) {
+							gViewSourceInTab.setTabValue(getParentBrowserTab(), gViewSourceInTab.kVIEWSOURCE_SOURCE, encodeURIComponent(source));
+						}
+					}
+					else {
+						var source = fragmentSource;
+					}
+					var doc = ]]></>
+			)
+		);
+	}
+
+	if ('drawSelection' in window) {
+		eval('window.drawSelection = '+
+			window.drawSelection.toSource().replace(
+				'{',
+				<><![CDATA[
+					{
+						try {
+							window.document.getElementById('appcontent').removeEventListener('load', drawSelection, true);
+						}
+						catch(e) {
+						}
+				]]></>
+			).replace(
+				'getBrowser().contentDocument.title',
+				'document.title'
+			)
+		);
+	}
 }
