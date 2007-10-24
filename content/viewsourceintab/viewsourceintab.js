@@ -217,8 +217,6 @@ var ViewSourceInTab = {
  
 	destroy : function() 
 	{
-		this.destroyTabBrowser(gBrowser);
-
 		window.removeEventListener('unload', this, false);
 	},
  
@@ -333,5 +331,5 @@ var ViewSourceInTab = {
 }; 
 
 window.addEventListener('load', ViewSourceInTab, false);
-window.addEventListener('unload', ViewSourceInTab, false);
+//window.addEventListener('unload', ViewSourceInTab, false);
  

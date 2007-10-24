@@ -4,11 +4,11 @@
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:id="viewsourceintab@piro.sakura.ne.jp"
-                   em:name="View Source in Tab"
+                   em:name="Source Viewer Tab"
                    em:version="0.1.2007102402"
                    em:creator="SHIMODA Hiroshi"
                    em:description="Shows web page sources in tab."
-                   em:homepageURL="http://piro.sakura.ne.jp/xul/viewsourcetab/"
+                   em:homepageURL="http://piro.sakura.ne.jp/xul/viewsourceintab/"
                    em:optionsURL="chrome://viewsourceintab/content/config.xul">
 <!--
                    em:iconURL="chrome://viewsourcetab/content/"
@@ -20,12 +20,12 @@
 
     <em:localized>
       <RDF:Description em:locale="en-US"
-                       em:name="View Source in Tab"
+                       em:name="Source Viewer Tab"
                        em:description="Shows web page sources in tab."/>
     </em:localized>
     <em:localized>
       <RDF:Description em:locale="ja"
-                       em:name="タブでソース表示"
+                       em:name="ソース表示タブ"
                        em:description="ページのソースをタブの中で表示します。"/>
     </em:localized>
 
