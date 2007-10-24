@@ -45,6 +45,15 @@ function getParentBrowserTab()
 }
 var gOwnerTab;
 
+function hideWindowOnlyElements()
+{
+	var bar = document.getElementById('FindToolbar');
+	if (bar)
+		bar.parentNode.removeChild(bar);
+	document.getElementById('menu_edit').setAttribute('hidden', true);
+	document.getElementById('helpMenu').setAttribute('hidden', true);
+}
+
 
 
 var gViewSourceInTab = getParentViewSourceInTab();
@@ -77,10 +86,7 @@ if (gViewSourceInTab && !window.arguments) {
 					{
 						if (gViewSourceDone) return;
 						gViewSourceDone = true;
-						var bar = document.getElementById('FindToolbar');
-						if (bar)
-							bar.parentNode.removeChild(bar);
-						document.getElementById('helpMenu').setAttribute('hidden', true);
+						hideWindowOnlyElements();
 				]]></>
 			).replace(
 				'}',
@@ -111,10 +117,7 @@ if (gViewSourceInTab && !window.arguments) {
 					{
 						if (gViewSourceDone) return;
 						gViewSourceDone = true;
-						var bar = document.getElementById('FindToolbar');
-						if (bar)
-							bar.parentNode.removeChild(bar);
-						document.getElementById('helpMenu').setAttribute('hidden', true);
+						hideWindowOnlyElements();
 				]]></>
 			).replace(
 				'window._content.focus();',
