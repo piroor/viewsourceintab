@@ -6,5 +6,5 @@
 <!ENTITY config.viewSourceIn.window   "Window (Firefox default)">
 <!ENTITY config.viewSourceIn.tab      "Tab">
 <!ENTITY config.viewSourceIn.external "External application">
-<!ENTITY config.viewSourceIn.choose   "Choose...">
+<!ENTITY config.viewSourceIn.choose   "Browser...">
 <!ENTITY config.viewSourceIn.picker   "Choose the external viewer for page sources.">
