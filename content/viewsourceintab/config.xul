@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://global/skin/"?>
+<?xml-stylesheet href="chrome://mozapps/content/preferences/preferences.css"?>
+<?xml-stylesheet href="chrome://browser/skin/preferences/preferences.css"?>
 <!DOCTYPE prefwindow [
 <!ENTITY % mainDTD SYSTEM "chrome://viewsourceintab/locale/viewsourceintab.dtd">
 %mainDTD;
@@ -10,7 +12,7 @@
 	onload="sizeToContent();">
 
 <prefpane id="prefpane-general" label="&config.tabs.general;"
-	onpaneload="initViewSourceInRadio();">
+	onpaneload="initGeneralPane();">
 	<preferences>
 		<preference id="extensions.viewsourceintab.enabled"
 			name="extensions.viewsourceintab.enabled"
@@ -20,7 +22,7 @@
 			type="bool"/>
 		<preference id="view_source.editor.path"
 			name="view_source.editor.path"
-			type="string"/>
+			type="file"/>
 	</preferences>
 
 	<groupbox>
@@ -33,13 +35,13 @@
 			<radio value="external" label="&config.viewSourceIn.external;"/>
 			<hbox align="center">
 				<spacer style="width:3em;"/>
-				<textbox id="view_source.editor.path-textbox"
+				<filefield id="view_source.editor.path-filefield"
 					preference="view_source.editor.path"
-					size="50"/>
+					flex="1"/>
 				<button id="view_source.editor.path-choose"
 					label="&config.viewSourceIn.choose;"
 					picker-title="&config.viewSourceIn.picker;"
-					oncommand="showFilePicker('view_source.editor.path-textbox', this.getAttribute('picker-title'));"/>
+					oncommand="showFilePicker('view_source.editor.path-filefield', this.getAttribute('picker-title'));"/>
 			</hbox>
 		</radiogroup>
 	</groupbox>
