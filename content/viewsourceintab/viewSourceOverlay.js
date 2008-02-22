@@ -45,13 +45,25 @@ function getParentBrowserTab()
 }
 var gOwnerTab;
 
-function hideWindowOnlyElements()
+function initUI()
 {
 	var bar = document.getElementById('FindToolbar');
 	if (bar)
 		bar.parentNode.removeChild(bar);
+
 	document.getElementById('menu_edit').setAttribute('hidden', true);
 	document.getElementById('helpMenu').setAttribute('hidden', true);
+
+	var toolbox = document.getElementsByTagName('toolbox')[0];
+	toolbox.setAttribute('orient', 'horizontal');
+	var toolbar = toolbox.appendChild(document.createElement('toolbar'));
+	toolbar.setAttribute('flex', 1);
+	toolbar.setAttribute('orient', 'horizontal');
+	toolbar.setAttribute('align', 'center');
+	var textbox = toolbar.appendChild(document.createElement('textbox'));
+	textbox.setAttribute('flex', 1);
+	textbox.setAttribute('readonly', true);
+	textbox.value = window.arguments[0];
 }
 
 
@@ -86,13 +98,13 @@ if (gViewSourceInTab && !window.arguments) {
 					{
 						if (gViewSourceDone) return;
 						gViewSourceDone = true;
-						hideWindowOnlyElements();
+						initUI();
 				]]></>
 			).replace(
 				'}',
 				<><![CDATA[;
 					if (gViewSourceInfo) gViewSourceInfo.clear();
-					document.title =document.documentElement.getAttribute('titlepreface') + getBrowser().contentDocument.title;
+					document.title = document.documentElement.getAttribute('titlepreface') + (getBrowser().contentDocument.title || window.arguments[0]);
 				}]]></>
 			).replace(
 				'gFindBar.initFindBar();',
@@ -117,7 +129,7 @@ if (gViewSourceInTab && !window.arguments) {
 					{
 						if (gViewSourceDone) return;
 						gViewSourceDone = true;
-						hideWindowOnlyElements();
+						initUI();
 				]]></>
 			).replace(
 				'window._content.focus();',
