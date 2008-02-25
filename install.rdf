@@ -21,12 +21,14 @@
     <em:localized>
       <RDF:Description em:locale="en-US"
                        em:name="Source Viewer Tab"
-                       em:description="Shows web page sources in tab."/>
+                       em:description="Shows web page sources in tab."
+                       em:homepageURL="http://piro.sakura.ne.jp/xul/_viewsourceintab.html.en"/>
     </em:localized>
     <em:localized>
       <RDF:Description em:locale="ja"
                        em:name="ソース表示タブ"
-                       em:description="ページのソースをタブの中で表示します。"/>
+                       em:description="ページのソースをタブの中で表示します。"
+                       em:homepageURL="http://piro.sakura.ne.jp/xul/_viewsourceintab.html"/>
     </em:localized>
 
 
