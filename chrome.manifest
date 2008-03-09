@@ -6,3 +6,4 @@ overlay	chrome://global/content/viewPartialSource.xul	chrome://viewsourceintab/c
 
 locale	viewsourceintab	en-US	jar:chrome/viewsourceintab.jar!/locale/en-US/viewsourceintab/
 locale	viewsourceintab	ja	jar:chrome/viewsourceintab.jar!/locale/ja/viewsourceintab/
+locale	viewsourceintab	it-IT	jar:chrome/viewsourceintab.jar!/locale/it-IT/viewsourceintab/

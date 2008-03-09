@@ -5,7 +5,7 @@
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:id="viewsourceintab@piro.sakura.ne.jp"
                    em:name="Source Viewer Tab"
-                   em:version="0.1.2008030901"
+                   em:version="0.1.2008030902"
                    em:creator="SHIMODA Hiroshi"
                    em:description="Shows web page sources in tab."
                    em:homepageURL="http://piro.sakura.ne.jp/xul/viewsourceintab/"
@@ -29,6 +29,12 @@
                        em:name="ソース表示タブ"
                        em:description="ページのソースをタブの中で表示します。"
                        em:homepageURL="http://piro.sakura.ne.jp/xul/_viewsourceintab.html"/>
+    </em:localized>
+    <em:localized>
+      <RDF:Description em:locale="it-IT"
+                       em:name="Source Viewer Tab"
+                       em:description="Permette di visualizzare il codice sorgente della pagina in una scheda"
+                       em:homepageURL="http://piro.sakura.ne.jp/xul/_viewsourceintab.html.en"/>
     </em:localized>
 
 
