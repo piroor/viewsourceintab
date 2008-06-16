@@ -38,6 +38,19 @@ var ViewSourceInTab = {
 		return 'SplitBrowser' in window ? SplitBrowser.activeBrowser : gBrowser ;
 	},
  
+	get statusBarPanel() {
+		return document.getElementById("statusbar-display");
+	},
+ 
+	get statusText() {
+		return this.statusBarPanel.label;
+	},
+	set statusText(aValue) {
+		this.statusBarPanel.label = aValue;
+		return aValue;
+	},
+	statusTextModified : false,
+ 
 	getTabFromEvent : function(aEvent) 
 	{
 		var target = aEvent.originalTarget || aEvent.target;
@@ -122,6 +135,8 @@ var ViewSourceInTab = {
 		if (!('gBrowser' in window)) return;
 
 		window.removeEventListener('load', this, false);
+		window.addEventListener('unload', this, false);
+		document.getElementById('appcontent').addEventListener('select', this, false);
 
 		var func;
 
@@ -218,6 +233,7 @@ var ViewSourceInTab = {
 	destroy : function() 
 	{
 		window.removeEventListener('unload', this, false);
+		document.getElementById('appcontent').removeEventListener('select', this, false);
 	},
  
 	handleEvent : function(aEvent) 
@@ -230,6 +246,23 @@ var ViewSourceInTab = {
 
 			case 'unload':
 				this.destroy();
+				return;
+
+			case 'select':
+				var tab = aEvent.originalTarget;
+				if (tab.localName != 'tabs') return;
+				tab = tab.selectedItem;
+				var b = tab.linkedBrowser;
+				if ('chrome://global/content/viewSource.xul|chrome://global/content/viewPartialSource.xul'.indexOf(b.currentURI.spec) < 0) {
+					if (this.statusTextModified) {
+						this.statusText = '';
+						this.statusTextModified = false;
+					}
+				}
+				else {
+					if (!this.statusTextModified)
+						b.contentWindow.setTimeout('updateStatusBar()', 0);
+				}
 				return;
 		}
 	},

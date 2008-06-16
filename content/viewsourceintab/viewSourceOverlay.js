@@ -47,6 +47,9 @@ var gOwnerTab;
 
 function initUI()
 {
+	if (gInitUIDone) return;
+	gInitUIDone = true;
+
 	var bar = document.getElementById('FindToolbar');
 	if (bar)
 		bar.parentNode.removeChild(bar);
@@ -64,7 +67,10 @@ function initUI()
 	textbox.setAttribute('flex', 1);
 	textbox.setAttribute('readonly', true);
 	textbox.value = window.arguments[0];
+
+	document.getElementById('status-bar').setAttribute('hidden', true);
 }
+var gInitUIDone = false;
 
 
 
@@ -217,6 +223,34 @@ if (gViewSourceInTab && !window.arguments) {
 			).replace(
 				'getBrowser().contentDocument.title',
 				'document.title'
+			)
+		);
+	}
+
+	if ('viewSource' in window) {
+		eval('window.viewSource = '+
+			window.viewSource.toSource().replace(
+				/(webNavigation\.sessionHistory = Components\.classes\[[^\]]+\]\.createInstance\([^\)]*\);)/,
+				<><![CDATA[
+					try {
+						$1
+					}
+					catch(e) {
+						//Components.utils.reportError(e);
+					}
+				]]></>
+			)
+		);
+	}
+
+	if ('updateStatusBar' in window) {
+		eval('window.updateStatusBar = '+
+			window.updateStatusBar.toSource().replace(
+				'document.getElementById("statusbar-line-col")',
+				'getParentBrowserWindow().ViewSourceInTab.statusBarPanel'
+			).replace(
+				/(\}\)?)$/,
+				'getParentBrowserWindow().ViewSourceInTab.statusTextModified = true; $1'
 			)
 		);
 	}
