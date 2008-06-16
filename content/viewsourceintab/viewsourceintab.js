@@ -272,8 +272,7 @@ var ViewSourceInTab = {
 				tab = tab.selectedItem;
 				var b = tab.linkedBrowser;
 				if (/^(view-source-tab|view-partial-source-tab):/.test(b.currentURI.spec)) {
-					if (!this.statusTextModified)
-						b.contentWindow.setTimeout('updateStatusBar()', 0);
+					b.contentWindow.setTimeout('updateStatusBar()', 0);
 				}
 				else {
 					if (this.statusTextModified) {
