@@ -68,7 +68,9 @@ function initUI()
 	textbox.setAttribute('readonly', true);
 	textbox.value = window.arguments[0];
 
-	document.getElementById('status-bar').setAttribute('hidden', true);
+	var status = document.getElementById('status-bar');
+	if (status)
+		status.setAttribute('hidden', true);
 }
 var gInitUIDone = false;
 
@@ -89,6 +91,30 @@ if (gViewSourceInTab && !window.arguments) {
 		gViewSourceInTab.getTabValue(getParentBrowserTab(), gViewSourceInTab.kVIEWSOURCE_CONTEXT)
 	];
 	delete gFindBar;
+
+	if (/^(view-source-tab|view-partial-source):/.test(location.href)) {
+		var uri = location.href.substring(location.href.indexOf(':')+1);
+		var query = '';
+		var startPoint = '#viewsourceintab(';
+		if (uri.indexOf(startPoint) > -1) {
+			uri   = uri.split(startPoint)[0];
+			query = uri.split(startPoint)[1];
+		}
+		if (uri != window.arguments[0]) {
+			var charset = null;
+			var reference = null;
+			var context = null;
+			if (query) {
+				/charset=([^;\)])/.test(query);
+				charset = decodeURIComponent(RegExp.$1 || '') || null ;
+				/reference=([^;\)])/.test(query);
+				reference = decodeURIComponent(RegExp.$1 || '') || null ;
+				/context=([^;\)])/.test(query);
+				context = decodeURIComponent(RegExp.$1 || '') || null ;
+			}
+			window.arguments = [uri, charset, reference, context];
+		}
+	}
 
 	var status = document.getElementById('status-bar');
 	if (status) {

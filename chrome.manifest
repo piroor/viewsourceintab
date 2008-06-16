@@ -1,8 +1,6 @@
 content	viewsourceintab	jar:chrome/viewsourceintab.jar!/content/viewsourceintab/
 
 overlay	chrome://browser/content/browser.xul	chrome://viewsourceintab/content/viewsourceintab.xul
-overlay	chrome://global/content/viewSource.xul	chrome://viewsourceintab/content/viewSourceOverlay.xul
-overlay	chrome://global/content/viewPartialSource.xul	chrome://viewsourceintab/content/viewSourceOverlay.xul
 
 locale	viewsourceintab	en-US	jar:chrome/viewsourceintab.jar!/locale/en-US/viewsourceintab/
 locale	viewsourceintab	ja	jar:chrome/viewsourceintab.jar!/locale/ja/viewsourceintab/

@@ -157,7 +157,13 @@ var ViewSourceInTab = {
 								if ('TreeStyleTabService' in window)
 									TreeStyleTabService.readyToOpenChildTab(focusedWindow);
 								var b = ViewSourceInTab.getTabBrowserFromFrame(focusedWindow);
-								b.loadOneTab('chrome://global/content/viewPartialSource.xul', null, null, null, false);
+								var uri = focusedWindow.location.href;
+								if (uri.indexOf('#') > -1) uri = uri.substring(0, uri.indexOf('#'));
+								b.loadOneTab(
+									'view-partial-source-tab:'+
+										uri+
+										ViewSourceInTab.createQuery(ViewSourceInTab.targetInfo),
+									null, null, null, false);
 							}
 							else
 								window.openDialog(]]></>
@@ -212,7 +218,10 @@ var ViewSourceInTab = {
 						if ('TreeStyleTabService' in window)
 							TreeStyleTabService.readyToOpenChildTab(ViewSourceInTab.targetInfo.frame);
 						var b = ViewSourceInTab.getTabBrowserFromFrame(ViewSourceInTab.targetInfo.frame);
-						b.loadOneTab('chrome://global/content/viewSource.xul', null, null, null, false);
+						b.loadOneTab(
+							'view-source-tab:'+b.currentURI.spec,
+							null, null, null, false
+						);
 					}
 					else {
 						ViewSourceInTab.targetInfo.clear();
@@ -228,6 +237,15 @@ var ViewSourceInTab = {
 				'var prefPath = decodeURIComponent(escape(prefs.getCharPref("view_source.editor.path")));'
 			)
 		);
+	},
+ 
+	createQuery : function(aInfo) 
+	{
+		var info = [];
+		if (aInfo.charset) info.push('charset='+encodeURIComponent(aInfo.charset));
+		if (aInfo.reference) info.push('reference='+encodeURIComponent(aInfo.reference));
+		if (aInfo.context) info.push('context='+encodeURIComponent(aInfo.context));
+		return '#viewsourceintab('+info.join(';')+')';
 	},
  
 	destroy : function() 
@@ -253,15 +271,15 @@ var ViewSourceInTab = {
 				if (tab.localName != 'tabs') return;
 				tab = tab.selectedItem;
 				var b = tab.linkedBrowser;
-				if ('chrome://global/content/viewSource.xul|chrome://global/content/viewPartialSource.xul'.indexOf(b.currentURI.spec) < 0) {
+				if (/^(view-source-tab|view-partial-source-tab):/.test(b.currentURI.spec)) {
+					if (!this.statusTextModified)
+						b.contentWindow.setTimeout('updateStatusBar()', 0);
+				}
+				else {
 					if (this.statusTextModified) {
 						this.statusText = '';
 						this.statusTextModified = false;
 					}
-				}
-				else {
-					if (!this.statusTextModified)
-						b.contentWindow.setTimeout('updateStatusBar()', 0);
 				}
 				return;
 		}
