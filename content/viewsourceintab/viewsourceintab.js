@@ -271,7 +271,7 @@ var ViewSourceInTab = {
 				if (tab.localName != 'tabs') return;
 				tab = tab.selectedItem;
 				var b = tab.linkedBrowser;
-				if (/^(view-source-tab|view-partial-source-tab):/.test(b.currentURI.spec)) {
+				if (this.viewerURIPattern.test(b.currentURI.spec)) {
 					b.contentWindow.setTimeout('updateStatusBar()', 0);
 				}
 				else {
@@ -283,6 +283,7 @@ var ViewSourceInTab = {
 				return;
 		}
 	},
+	viewerURIPattern : /^(view-source-tab:|view-partial-source-tab:|chrome:\/\/viewsourceintab\/content\/(viewer\.xul|partialViewer\.xul)\?)/,
  	 
 /* Save/Load Prefs */ 
 	

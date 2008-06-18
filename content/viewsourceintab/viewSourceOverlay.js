@@ -92,8 +92,13 @@ if (gViewSourceInTab && !window.arguments) {
 	];
 	delete gFindBar;
 
-	if (/^(view-source-tab|view-partial-source):/.test(location.href)) {
-		var uri = location.href.substring(location.href.indexOf(':')+1);
+
+	var uri = location.href;
+
+	var viewerURIPattern = /^(?:view-source-tab:|view-partial-source-tab:|chrome:\/\/viewsourceintab\/content\/(?:viewer\.xul|partialViewer\.xul)\?)(.+)$/;
+	if (viewerURIPattern.test(uri)) {
+		uri = RegExp.$1;
+
 		var query = '';
 		var startPoint = '#viewsourceintab(';
 		if (uri.indexOf(startPoint) > -1) {
