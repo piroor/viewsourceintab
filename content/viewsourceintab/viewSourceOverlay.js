@@ -102,8 +102,7 @@ if (gViewSourceInTab && !window.arguments) {
 		var query = '';
 		var startPoint = '#viewsourceintab(';
 		if (uri.indexOf(startPoint) > -1) {
-			uri   = uri.split(startPoint)[0];
-			query = uri.split(startPoint)[1];
+			[uri, query] = uri.split(startPoint);
 		}
 		if (uri != window.arguments[0]) {
 			var charset = null;

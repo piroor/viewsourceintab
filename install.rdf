@@ -22,26 +22,32 @@
       <RDF:Description em:locale="en-US"
                        em:name="Source Viewer Tab"
                        em:description="Shows web page sources in tab."
-                       em:homepageURL="http://piro.sakura.ne.jp/xul/_viewsourceintab.html.en"/>
+                       em:homepageURL="http://piro.sakura.ne.jp/xul/_viewsourceintab.html.en"
+                       em:creator="SHIMODA Hiroshi">
+      </RDF:Description>
     </em:localized>
     <em:localized>
       <RDF:Description em:locale="ja"
                        em:name="ソース表示タブ"
                        em:description="ページのソースをタブの中で表示します。"
-                       em:homepageURL="http://piro.sakura.ne.jp/xul/_viewsourceintab.html"/>
+                       em:homepageURL="http://piro.sakura.ne.jp/xul/_viewsourceintab.html"
+                       em:creator="SHIMODA Hiroshi">
+      </RDF:Description>
     </em:localized>
     <em:localized>
       <RDF:Description em:locale="it-IT"
                        em:name="Source Viewer Tab"
                        em:description="Permette di visualizzare il codice sorgente della pagina in una scheda"
-                       em:homepageURL="http://piro.sakura.ne.jp/xul/_viewsourceintab.html.en"/>
+                       em:homepageURL="http://piro.sakura.ne.jp/xul/_viewsourceintab.html.en"
+                       em:creator="SHIMODA Hiroshi">
+      </RDF:Description>
     </em:localized>
 
 
     <em:targetApplication>
       <RDF:Description em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
                        em:minVersion="2.0"
-                       em:maxVersion="3.0.*" />
+                       em:maxVersion="3.1b2pre" />
     </em:targetApplication>
   </RDF:Description>
 </RDF:RDF>
