@@ -188,27 +188,38 @@ var ViewSourceInTab = {
 			if (aItem in window) {
 				eval('window.'+aItem+' = '+
 					window[aItem].toSource().replace(
-						'ViewSourceOfURL(',
+						/((ViewSourceOfURL|top\.gViewSourceUtils\.viewSource)\()/,
 						<><![CDATA[
 							if (!ViewSourceInTab.targetInfo.frame) {
 								ViewSourceInTab.targetInfo.clear();
 								ViewSourceInTab.targetInfo.frame = ViewSourceInTab.browser.contentWindow;
 							}
-							ViewSourceOfURL(]]></>
+							$1]]></>
 					)
 				);
 			}
 		});
 
-
-		eval('window.ViewSourceOfURL = '+
-			window.ViewSourceOfURL.toSource().replace(
-				'gViewSourceUtils.openInExternalEditor(',
-				<><![CDATA[
-					ViewSourceInTab.targetInfo.clear();
-					gViewSourceUtils.openInExternalEditor(]]></>
-			)
-		);
+		if ('ViewSourceOfURL' in window) { // Firefox 2.0.0.x, Firefox 3.0.x
+			eval('window.ViewSourceOfURL = '+
+				window.ViewSourceOfURL.toSource().replace(
+					/((gViewSourceUtils|utils)\.openInExternalEditor\()/,
+					<><![CDATA[
+						ViewSourceInTab.targetInfo.clear();
+						$1]]></>
+				)
+			);
+		}
+		if ('viewSource' in gViewSourceUtils) { // Firefox 3.1 or later
+			eval('gViewSourceUtils.viewSource = '+
+				gViewSourceUtils.viewSource.toSource().replace(
+					'this.openInExternalEditor(',
+					<><![CDATA[
+						ViewSourceInTab.targetInfo.clear();
+						$&]]></>
+				)
+			);
+		}
 
 		eval('gViewSourceUtils.openInInternalViewer = '+
 			gViewSourceUtils.openInInternalViewer.toSource().replace(
@@ -233,8 +244,8 @@ var ViewSourceInTab = {
 
 		eval('gViewSourceUtils.getExternalViewSourceEditor = '+
 			gViewSourceUtils.getExternalViewSourceEditor.toSource().replace(
-				'var prefPath = prefs.getCharPref("view_source.editor.path");',
-				'var prefPath = decodeURIComponent(escape(prefs.getCharPref("view_source.editor.path")));'
+				'initWithPath(prefPath)',
+				'initWithPath(decodeURIComponent(escape(prefPath)))'
 			)
 		);
 	},
