@@ -70,7 +70,10 @@ ViewSourceTabProtocolBase.prototype = {
 	/* implementation */
 
 	defaultPort   : -1,
-	protocolFlags : Components.interfaces.nsIProtocolHandler.URI_NORELATIVE | Components.interfaces.nsIProtocolHandler.URI_NOAUTH,
+	protocolFlags : Components.interfaces.nsIProtocolHandler.URI_NORELATIVE |
+					Components.interfaces.nsIProtocolHandler.URI_NOAUTH |
+					Components.interfaces.nsIProtocolHandler.URI_LOADED_BY_ANYONE |
+					Components.interfaces.nsIProtocolHandler.URI_DANGEROUS_TO_LOAD,
 
 	allowPort: function(aPort, aScheme)
 	{

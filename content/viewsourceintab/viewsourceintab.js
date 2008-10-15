@@ -219,7 +219,7 @@ var ViewSourceInTab = {
 							TreeStyleTabService.readyToOpenChildTab(ViewSourceInTab.targetInfo.frame);
 						var b = ViewSourceInTab.getTabBrowserFromFrame(ViewSourceInTab.targetInfo.frame);
 						b.loadOneTab(
-							'view-source-tab:'+b.currentURI.spec,
+							'view-source-tab:'+(ViewSourceInTab.targetInfo.uri || ViewSourceInTab.targetInfo.frame.location.href),
 							null, null, null, false
 						);
 					}
