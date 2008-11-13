@@ -76,8 +76,8 @@ var ViewSourceInTabOverlay = {
 		this.updateUI();
 		this.updateFunctions();
 
-//		window.addEventListener('load', this, false);
-//		window.addEventListener('unload', this, false);
+		window.addEventListener('load', this, false);
+		window.addEventListener('unload', this, false);
 	},
 
 
@@ -102,11 +102,15 @@ var ViewSourceInTabOverlay = {
 		var textbox = toolbar.appendChild(document.createElement('textbox'));
 		textbox.setAttribute('flex', 1);
 		textbox.setAttribute('readonly', true);
-		textbox.value = window.arguments[0];
+		textbox.setAttribute('onfocus', 'this.value = this.originalValue');
+		textbox.setAttribute('onblur', 'this.value = this.readableValue');
+		this.locationBar = textbox;
 
 		var status = document.getElementById('status-bar');
 		if (status)
 			status.setAttribute('hidden', true);
+
+		this.updateLocationBar(window.arguments[0]);
 
 		return true;
 	},
@@ -276,6 +280,14 @@ var ViewSourceInTabOverlay = {
 		}
 	},
 
+	updateLocationBar : function(aValue)
+	{
+		this.locationBar.originalValue = aValue;
+		this.locationBar.readableValue =
+			this.locationBar.value = decodeURI(aValue);
+	},
+	locationBar : null,
+
 	updateLinks : function()
 	{
 		var doc = getBrowser().contentDocument;
@@ -343,14 +355,17 @@ var ViewSourceInTabOverlay = {
 	},
 
 
-
-
 	handleEvent : function(aEvent)
 	{
 		switch(aEvent.type)
 		{
 			case 'load':
-				this.onLoad();
+				if (aEvent.currentTarget == window) {
+					this.onLoad();
+				}
+				else {
+					this.onContentLoad();
+				}
 				return;
 
 			case 'unload':
@@ -362,13 +377,21 @@ var ViewSourceInTabOverlay = {
 	onLoad : function()
 	{
 		window.removeEventListener('load', this, false);
-		getBrowser().addEventListener('load', this.updateLinks, false);
+		getBrowser().addEventListener('load', this, false);
 	},
 
 	onUnload : function()
 	{
 		window.removeEventListener('unload', this, false);
-		getBrowser().removeEventListener('load', this.updateLinks, false);
+		getBrowser().removeEventListener('load', this, false);
+	},
+
+	onContentLoad : function()
+	{
+		var uri = getBrowser().currentURI.spec.replace('view-source:', '');
+		this.setTabValue(this.kVIEWSOURCE_URI, uri);
+		this.updateLocationBar(uri);
+//		this.updateLinks();
 	}
 
 };
