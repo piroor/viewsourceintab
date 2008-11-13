@@ -38,11 +38,11 @@ var ViewSourceInTab = {
 		return 'SplitBrowser' in window ? SplitBrowser.activeBrowser : gBrowser ;
 	},
  
-	get statusBarPanel() {
+	get statusBarPanel() { 
 		return document.getElementById("statusbar-display");
 	},
  
-	get statusText() {
+	get statusText() { 
 		return this.statusBarPanel.label;
 	},
 	set statusText(aValue) {
@@ -127,7 +127,12 @@ var ViewSourceInTab = {
 		catch(e) {
 		}
 	},
-  
+ 
+	replaceViewSourceLink : function(aURI) 
+	{
+		return aURI.replace(/^view-source:/, 'view-source-tab:');
+	},
+ 	 
 /* Initializing */ 
 	 
 	init : function() 
@@ -142,34 +147,33 @@ var ViewSourceInTab = {
 
 		func = 'viewPartialSource __ctxextensions__viewPartialSource'.split(' ');
 		func.forEach(function(aItem) {
-			if (aItem in nsContextMenu.prototype) {
-				eval('nsContextMenu.prototype.'+aItem+' = '+
-					nsContextMenu.prototype[aItem].toSource().replace(
-						'window.openDialog(',
-						<><![CDATA[
-							if (ViewSourceInTab.getPref('extensions.viewsourceintab.enabled')) {
-								ViewSourceInTab.targetInfo.clear();
-								ViewSourceInTab.targetInfo.frame     = focusedWindow;
-								ViewSourceInTab.targetInfo.uri       = docUrl;
-								ViewSourceInTab.targetInfo.charset   = docCharset;
-								ViewSourceInTab.targetInfo.reference = reference;
-								ViewSourceInTab.targetInfo.context   = arguments[0];
-								if ('TreeStyleTabService' in window)
-									TreeStyleTabService.readyToOpenChildTab(focusedWindow);
-								var b = ViewSourceInTab.getTabBrowserFromFrame(focusedWindow);
-								var uri = focusedWindow.location.href;
-								if (uri.indexOf('#') > -1) uri = uri.substring(0, uri.indexOf('#'));
-								b.loadOneTab(
-									'view-partial-source-tab:'+
-										uri+
-										ViewSourceInTab.createQuery(ViewSourceInTab.targetInfo),
-									null, null, null, false);
-							}
-							else
-								window.openDialog(]]></>
-					)
-				);
-			}
+			if (!(aItem in nsContextMenu.prototype)) return;
+			eval('nsContextMenu.prototype.'+aItem+' = '+
+				nsContextMenu.prototype[aItem].toSource().replace(
+					'window.openDialog(',
+					<><![CDATA[
+						if (ViewSourceInTab.getPref('extensions.viewsourceintab.enabled')) {
+							ViewSourceInTab.targetInfo.clear();
+							ViewSourceInTab.targetInfo.frame     = focusedWindow;
+							ViewSourceInTab.targetInfo.uri       = docUrl;
+							ViewSourceInTab.targetInfo.charset   = docCharset;
+							ViewSourceInTab.targetInfo.reference = reference;
+							ViewSourceInTab.targetInfo.context   = arguments[0];
+							if ('TreeStyleTabService' in window)
+								TreeStyleTabService.readyToOpenChildTab(focusedWindow);
+							var b = ViewSourceInTab.getTabBrowserFromFrame(focusedWindow);
+							var uri = focusedWindow.location.href;
+							if (uri.indexOf('#') > -1) uri = uri.substring(0, uri.indexOf('#'));
+							b.loadOneTab(
+								'view-partial-source-tab:'+
+									uri+
+									ViewSourceInTab.createQuery(ViewSourceInTab.targetInfo),
+								null, null, null, false);
+						}
+						else
+							window.openDialog(]]></>
+				)
+			);
 		});
 
 		eval('nsContextMenu.prototype.viewFrameSource = '+
@@ -185,19 +189,18 @@ var ViewSourceInTab = {
 
 		func = 'BrowserViewSourceOfDocument __ctxextensions__BrowserViewSourceOfDocument'.split(' ');
 		func.forEach(function(aItem) {
-			if (aItem in window) {
-				eval('window.'+aItem+' = '+
-					window[aItem].toSource().replace(
-						/((ViewSourceOfURL|top\.gViewSourceUtils\.viewSource)\()/,
-						<><![CDATA[
-							if (!ViewSourceInTab.targetInfo.frame) {
-								ViewSourceInTab.targetInfo.clear();
-								ViewSourceInTab.targetInfo.frame = ViewSourceInTab.browser.contentWindow;
-							}
-							$1]]></>
-					)
-				);
-			}
+			if (!(aItem in window)) return;
+			eval('window.'+aItem+' = '+
+				window[aItem].toSource().replace(
+					/((ViewSourceOfURL|top\.gViewSourceUtils\.viewSource)\()/,
+					<><![CDATA[
+						if (!ViewSourceInTab.targetInfo.frame) {
+							ViewSourceInTab.targetInfo.clear();
+							ViewSourceInTab.targetInfo.frame = ViewSourceInTab.browser.contentWindow;
+						}
+						$1]]></>
+				)
+			);
 		});
 
 		if ('ViewSourceOfURL' in window) { // Firefox 2.0.0.x, Firefox 3.0.x
@@ -248,6 +251,22 @@ var ViewSourceInTab = {
 				'initWithPath(decodeURIComponent(escape(prefPath)))'
 			)
 		);
+
+/*
+		func = 'handleLinkClick __splitbrowser__handleLinkClick __ctxextensions__handleLinkClick __treestyletab__highlander__origHandleLinkClick'.split(' ');
+		func.some(function(aFunc) {
+			if (!(aFunc in window) ||
+				!/^function handleLinkClick/.test(window[aFunc].toString()))
+				return false;
+			eval('window.'+aFunc+' = '+
+				window[aFunc].toSource().replace(
+					/((openNewTabWith|openNewWindowWith)\()/g,
+					'href = ViewSourceInTab.replaceViewSourceLink(href); $1'
+				)
+			);
+			return true;
+		});
+*/
 	},
  
 	createQuery : function(aInfo) 
@@ -295,7 +314,7 @@ var ViewSourceInTab = {
 		}
 	},
 	viewerURIPattern : /^(view-source-tab:|view-partial-source-tab:|chrome:\/\/viewsourceintab\/content\/(viewer\.xul|partialViewer\.xul)\?)/,
- 	 
+  
 /* Save/Load Prefs */ 
 	
 	get Prefs() 
