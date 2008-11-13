@@ -391,7 +391,4 @@ var ViewSourceInTab = {
 	}
    
 }; 
-
-window.addEventListener('load', ViewSourceInTab, false);
-//window.addEventListener('unload', ViewSourceInTab, false);
  
