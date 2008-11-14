@@ -35,13 +35,14 @@ the terms of any one of the MPL, the GPL or the LGPL.
 ***** END LICENSE BLOCK *****
 */
 
-const IOService = Components
-		.classes['@mozilla.org/network/io-service;1']
-		.getService(Components.interfaces.nsIIOService);
+var Cc = Components.classes;
+var Ci = Components.interfaces;
 
-const XULAppInfo = Components
-		.classes['@mozilla.org/xre/app-info;1']
-		.getService(Components.interfaces.nsIXULAppInfo);
+const IOService = Cc['@mozilla.org/network/io-service;1']
+		.getService(Ci.nsIIOService);
+
+const XULAppInfo = Cc['@mozilla.org/xre/app-info;1']
+		.getService(Ci.nsIXULAppInfo);
 
 function isGecko18() {
 	var version = XULAppInfo.platformVersion.split('.');
@@ -60,8 +61,8 @@ ViewSourceTabProtocolBase.prototype = {
 
 	QueryInterface: function(aIID)
 	{
-		if (!aIID.equals(Components.interfaces.nsIProtocolHandler) &&
-			!aIID.equals(Components.interfaces.nsISupports))
+		if (!aIID.equals(Ci.nsIProtocolHandler) &&
+			!aIID.equals(Ci.nsISupports))
 			throw Components.results.NS_ERROR_NO_INTERFACE;
 		return this;
 	},
@@ -70,10 +71,10 @@ ViewSourceTabProtocolBase.prototype = {
 	/* implementation */
 
 	defaultPort   : -1,
-	protocolFlags : Components.interfaces.nsIProtocolHandler.URI_NORELATIVE |
-					Components.interfaces.nsIProtocolHandler.URI_NOAUTH |
-					Components.interfaces.nsIProtocolHandler.URI_LOADED_BY_ANYONE |
-					Components.interfaces.nsIProtocolHandler.URI_DANGEROUS_TO_LOAD,
+	protocolFlags : Ci.nsIProtocolHandler.URI_NORELATIVE |
+					Ci.nsIProtocolHandler.URI_NOAUTH |
+//					Ci.nsIProtocolHandler.URI_DANGEROUS_TO_LOAD |
+					Ci.nsIProtocolHandler.URI_LOADED_BY_ANYONE,
 
 	allowPort: function(aPort, aScheme)
 	{
@@ -82,8 +83,8 @@ ViewSourceTabProtocolBase.prototype = {
 
 	newURI: function(aSpec, aCharset, aBaseURI)
 	{
-		var uri = Components.classes['@mozilla.org/network/simple-uri;1']
-					.createInstance(Components.interfaces.nsIURI);
+		var uri = Cc['@mozilla.org/network/simple-uri;1']
+					.createInstance(Ci.nsIURI);
 		try {
 			uri.spec = aSpec;
 		}
@@ -164,26 +165,26 @@ ViewSourceTabRedirector.prototype = {
 
 	QueryInterface : function(aIID)
 	{
-		if (!aIID.equals(Components.interfaces.nsIContentPolicy) &&
-			!aIID.equals(Components.interfaces.nsISupportsWeakReference) &&
-			!aIID.equals(Components.interfaces.nsISupports))
+		if (!aIID.equals(Ci.nsIContentPolicy) &&
+			!aIID.equals(Ci.nsISupportsWeakReference) &&
+			!aIID.equals(Ci.nsISupports))
 			throw Components.results.NS_ERROR_NO_INTERFACE;
 		return this;
 	},
 
-	TYPE_OTHER			: Components.interfaces.nsIContentPolicy.TYPE_OTHER,
-	TYPE_SCRIPT			: Components.interfaces.nsIContentPolicy.TYPE_SCRIPT,
-	TYPE_IMAGE			: Components.interfaces.nsIContentPolicy.TYPE_IMAGE,
-	TYPE_STYLESHEET		: Components.interfaces.nsIContentPolicy.TYPE_STYLESHEET,
-	TYPE_OBJECT			: Components.interfaces.nsIContentPolicy.TYPE_OBJECT,
-	TYPE_DOCUMENT		: Components.interfaces.nsIContentPolicy.TYPE_DOCUMENT,
-	TYPE_SUBDOCUMENT	: Components.interfaces.nsIContentPolicy.TYPE_SUBDOCUMENT,
-	TYPE_REFRESH		: Components.interfaces.nsIContentPolicy.TYPE_REFRESH,
-	ACCEPT				: Components.interfaces.nsIContentPolicy.ACCEPT,
-	REJECT_REQUEST		: Components.interfaces.nsIContentPolicy.REJECT_REQUEST,
-	REJECT_TYPE			: Components.interfaces.nsIContentPolicy.REJECT_TYPE,
-	REJECT_SERVER		: Components.interfaces.nsIContentPolicy.REJECT_SERVER,
-	REJECT_OTHER		: Components.interfaces.nsIContentPolicy.REJECT_OTHER,
+	TYPE_OTHER			: Ci.nsIContentPolicy.TYPE_OTHER,
+	TYPE_SCRIPT			: Ci.nsIContentPolicy.TYPE_SCRIPT,
+	TYPE_IMAGE			: Ci.nsIContentPolicy.TYPE_IMAGE,
+	TYPE_STYLESHEET		: Ci.nsIContentPolicy.TYPE_STYLESHEET,
+	TYPE_OBJECT			: Ci.nsIContentPolicy.TYPE_OBJECT,
+	TYPE_DOCUMENT		: Ci.nsIContentPolicy.TYPE_DOCUMENT,
+	TYPE_SUBDOCUMENT	: Ci.nsIContentPolicy.TYPE_SUBDOCUMENT,
+	TYPE_REFRESH		: Ci.nsIContentPolicy.TYPE_REFRESH,
+	ACCEPT				: Ci.nsIContentPolicy.ACCEPT,
+	REJECT_REQUEST		: Ci.nsIContentPolicy.REJECT_REQUEST,
+	REJECT_TYPE			: Ci.nsIContentPolicy.REJECT_TYPE,
+	REJECT_SERVER		: Ci.nsIContentPolicy.REJECT_SERVER,
+	REJECT_OTHER		: Ci.nsIContentPolicy.REJECT_OTHER,
 
 	shouldLoad : function(aContentType, aContentLocation, aRequestOrigin, aContext, aMimeTypeGuess, aExtra)
 	{
@@ -219,17 +220,15 @@ ViewSourceTabRedirector.prototype = {
 
 	get redirectDelay()
 	{
-		return Components
-				.classes['@mozilla.org/preferences;1']
-				.getService(Components.interfaces.nsIPrefBranch)
+		return Cc['@mozilla.org/preferences;1']
+				.getService(Ci.nsIPrefBranch)
 				.getIntPref('extensions.viewsourceintab.redirectDelay');
 	}
 };
 
 
-const categoryManager = Components
-		.classes['@mozilla.org/categorymanager;1']
-		.getService(Components.interfaces.nsICategoryManager);
+const categoryManager = Cc['@mozilla.org/categorymanager;1']
+		.getService(Ci.nsICategoryManager);
 
 var gModule = { 
 	_firstTime: true,
@@ -240,7 +239,7 @@ var gModule = {
 			this._firstTime = false;
 			throw Components.results.NS_ERROR_FACTORY_REGISTER_AGAIN;
 		}
-		aComponentManager = aComponentManager.QueryInterface(Components.interfaces.nsIComponentRegistrar);
+		aComponentManager = aComponentManager.QueryInterface(Ci.nsIComponentRegistrar);
 		for (var key in this._objects) {
 			var obj = this._objects[key];
 			if (!obj.available) continue;
@@ -252,7 +251,7 @@ var gModule = {
 
 	unregisterSelf : function (aComponentManager, aFileSpec, aLocation)
 	{
-		aComponentManager = aComponentManager.QueryInterface(Components.interfaces.nsIComponentRegistrar);
+		aComponentManager = aComponentManager.QueryInterface(Ci.nsIComponentRegistrar);
 		for (var key in this._objects) {
 			var obj = this._objects[key];
 			if (!obj.available) continue;
@@ -264,7 +263,7 @@ var gModule = {
 
 	getClassObject : function (aComponentManager, aCID, aIID)
 	{
-		if (!aIID.equals(Components.interfaces.nsIFactory))
+		if (!aIID.equals(Ci.nsIFactory))
 			throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
 
 		for (var key in this._objects) {

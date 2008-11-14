@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="Sfhit_JIS"?>
+<html xml:lang="ja">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS" />
+	<title>ƒeƒXƒg</title>
+</head>
+<script type="text/javascript"><!--
+function dump()
+{
+	document.getElementById('f0').contentDocument.write(Array.slice(arguments).join('<br/>')+'<br/>');
+}
+
+function dumpFrameInfo(aFrame)
+{
+	try {
+		dump(aFrame);
+		dump('contentDocument', aFrame.contentDocument);
+		dump('contentDocument.defaultView', aFrame.contentDocument.defaultView);
+	}
+	catch(e) {
+		dump(e);
+	}
+}
+
+function f1(aFrame, aEvent)
+{
+	dump('f1');
+	dumpFrameInfo(aFrame);
+}
+
+function f2(aFrame, aEvent)
+{
+	dump('f2');
+	dumpFrameInfo(aFrame);
+}
+
+// --></script>
+<frameset rows="*,*,*">
+	<frame id="f0" src="about:blank"/>
+	<frame id="f1"
+		onload="f1(this, event)"
+		src="view-source:http://piro.sakura.ne.jp/" />
+	<frame id="f2"
+		onload="f2(this, event)"
+		src="view-source-tab:http://piro.sakura.ne.jp/" />
+</frameset>
+</html>

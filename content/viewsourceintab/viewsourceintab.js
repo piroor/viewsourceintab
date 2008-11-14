@@ -252,7 +252,6 @@ var ViewSourceInTab = {
 			)
 		);
 
-/*
 		func = 'handleLinkClick __splitbrowser__handleLinkClick __ctxextensions__handleLinkClick __treestyletab__highlander__origHandleLinkClick'.split(' ');
 		func.some(function(aFunc) {
 			if (!(aFunc in window) ||
@@ -266,7 +265,6 @@ var ViewSourceInTab = {
 			);
 			return true;
 		});
-*/
 	},
  
 	createQuery : function(aInfo) 
