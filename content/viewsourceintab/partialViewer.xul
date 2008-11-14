@@ -16,6 +16,8 @@
 	titlemenuseparator ="&mainWindow.titlemodifierseparator;"
 	windowtype="navigator:view-source">
 
+<script src="chrome://viewsourceintab/content/redirector.js" type="application/x-javascript"/>
+
 <stringbundle id="viewSourceBundle"/>
 
 <command id="cmd_savePage"/>
