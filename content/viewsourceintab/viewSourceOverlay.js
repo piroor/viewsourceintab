@@ -102,8 +102,8 @@ var ViewSourceInTabOverlay = {
 		var textbox = toolbar.appendChild(document.createElement('textbox'));
 		textbox.setAttribute('flex', 1);
 		textbox.setAttribute('readonly', true);
-		textbox.setAttribute('onfocus', 'this.value = this.originalValue');
-		textbox.setAttribute('onblur', 'this.value = this.readableValue');
+		textbox.setAttribute('onfocus', 'if (this.value != this.originalValue) this.value = this.originalValue');
+		textbox.setAttribute('onblur', 'if (this.value != this.originalValue) this.value = this.readableValue');
 		this.locationBar = textbox;
 
 		var status = document.getElementById('status-bar');
@@ -402,7 +402,14 @@ ViewSourceInTabOverlay.__proto__ = ViewSourceInTab;
 
 
 ViewSourceInTabOverlay.updateInfo();
-if (ViewSourceInTabOverlay.service && !window.arguments) {
+if (window.parent && window.parent.location.href.indexOf('chrome:') != 0) {
+	location.replace(
+		location.href
+			.replace(/^view-source-tab:/, 'view-source:')
+			.replace(/^chrome:\/\/viewsourceintab\/[^\?]+\?/, 'view-source:')
+	);
+}
+else if (ViewSourceInTabOverlay.service && !window.arguments) {
 	delete gFindBar;
 	ViewSourceInTabOverlay.init();
 }
