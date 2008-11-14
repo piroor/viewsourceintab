@@ -391,6 +391,8 @@ var ViewSourceInTabOverlay = {
 		var uri = getBrowser().currentURI.spec.replace('view-source:', '');
 		this.setTabValue(this.kVIEWSOURCE_URI, uri);
 		this.updateLocationBar(uri);
+		var root = document.documentElement;
+		document.title = root.getAttribute('titlepreface') + uri + root.getAttribute('titlemenuseparator') + root.getAttribute('titlemodifier');
 //		this.updateLinks();
 	}
 
