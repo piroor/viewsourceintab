@@ -355,7 +355,13 @@ var ViewSourceInTab = {
 			inTabCommand = !inTabCommand;
 		}
 
-		this.shouldLoadInTab = inTabCommand;
+		var useExternal = this.getPref('view_source.editor.external');
+		if (useExternal) {
+			this.setPref('view_source.editor.external', false);
+		}
+		else {
+			this.shouldLoadInTab = inTabCommand;
+		}
 
 		var item = aEvent.currentTarget;
 		var popups = document.evaluate('ancestor::*[local-name()="menupopup" or local-name()="popup"]', item, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
@@ -373,6 +379,9 @@ var ViewSourceInTab = {
 			}
 		}
 
+		if (useExternal) {
+			this.setPref('view_source.editor.external', true);
+		}
 		this.shouldLoadInTab = null;
 
 		for (var i = popups.snapshotLength-1; i > -1; i--)
