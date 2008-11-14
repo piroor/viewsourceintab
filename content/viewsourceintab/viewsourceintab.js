@@ -31,6 +31,21 @@ var ViewSourceInTab = {
 		context   : null
 	},
  
+	get shouldLoadInTab() 
+	{
+		return (
+			this._overrideShouldLoadInTab === null ||
+			this._overrideShouldLoadInTab === void(0)
+			) ?
+			this.getPref('extensions.viewsourceintab.enabled') :
+			this._overrideShouldLoadInTab ;
+	},
+	set shouldLoadInTab(aValue)
+	{
+		this._overrideShouldLoadInTab = aValue;
+		return aValue;
+	},
+ 	
 /* Utilities */ 
 	 
 	get browser() 
@@ -132,7 +147,7 @@ var ViewSourceInTab = {
 	{
 		return aURI.replace(/^view-source:/, 'view-source-tab:');
 	},
- 	 
+  
 /* Initializing */ 
 	 
 	init : function() 
@@ -152,7 +167,7 @@ var ViewSourceInTab = {
 				nsContextMenu.prototype[aItem].toSource().replace(
 					'window.openDialog(',
 					<><![CDATA[
-						if (ViewSourceInTab.getPref('extensions.viewsourceintab.enabled')) {
+						if (ViewSourceInTab.shouldLoadInTab) {
 							ViewSourceInTab.targetInfo.clear();
 							ViewSourceInTab.targetInfo.frame     = focusedWindow;
 							ViewSourceInTab.targetInfo.uri       = docUrl;
@@ -228,7 +243,7 @@ var ViewSourceInTab = {
 			gViewSourceUtils.openInInternalViewer.toSource().replace(
 				/(openDialog\([^\)]+\))/,
 				<><![CDATA[
-					if (ViewSourceInTab.getPref('extensions.viewsourceintab.enabled')) {
+					if (ViewSourceInTab.shouldLoadInTab) {
 						if ('TreeStyleTabService' in window)
 							TreeStyleTabService.readyToOpenChildTab(ViewSourceInTab.targetInfo.frame);
 						var b = ViewSourceInTab.getTabBrowserFromFrame(ViewSourceInTab.targetInfo.frame);
@@ -265,6 +280,17 @@ var ViewSourceInTab = {
 			);
 			return true;
 		});
+
+		this.viewSourceItems = [
+				document.evaluate('/descendant::*[local-name()="menuitem" and @command="View:PageSource"]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue,
+				document.getElementById('context-viewsource'),
+				document.getElementById('context-viewframesource'),
+				document.getElementById('context-viewpartialsource-selection'),
+				document.getElementById('context-viewpartialsource-mathml')
+			];
+		this.viewSourceItems.forEach(function(aItem) {
+			if (aItem) aItem.addEventListener('click', this, false);
+		}, this);
 	},
  
 	createQuery : function(aInfo) 
@@ -280,6 +306,10 @@ var ViewSourceInTab = {
 	{
 		window.removeEventListener('unload', this, false);
 		document.getElementById('appcontent').removeEventListener('select', this, false);
+
+		this.viewSourceItems.forEach(function(aItem) {
+			if (aItem) aItem.removeEventListener('click', this, false);
+		}, this);
 	},
  
 	handleEvent : function(aEvent) 
@@ -309,10 +339,52 @@ var ViewSourceInTab = {
 					}
 				}
 				return;
+
+			case 'click':
+				this.onClickMenuItem(aEvent);
+				return;
 		}
 	},
 	viewerURIPattern : /^(view-source-tab:|view-partial-source-tab:|chrome:\/\/viewsourceintab\/content\/(viewer\.xul|partialViewer\.xul)\?)/,
-  
+	 
+	onClickMenuItem : function(aEvent) 
+	{
+		var inTabCommand = (aEvent.button == 1 || (navigator.platform.toLowerCase().indexOf('mac') == -1 ? aEvent.ctrlKey : aEvent.metaKey ));
+		if (!inTabCommand) return;
+		if (this.getPref('extensions.viewsourceintab.enabled')) {
+			inTabCommand = !inTabCommand;
+		}
+
+		this.shouldLoadInTab = inTabCommand;
+
+		var item = aEvent.currentTarget;
+		var popups = document.evaluate('ancestor::*[local-name()="menupopup" or local-name()="popup"]', item, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+		if (item.hasAttribute('command')) {
+			item = document.getElementById(item.getAttribute('command'));
+		}
+		var command = item.getAttribute('oncommand');
+		if (command) {
+			try {
+				var func;
+				eval('func = function(event) {'+command+'};');
+				func.call(item, aEvent);
+			}
+			catch(e) {
+			}
+		}
+
+		this.shouldLoadInTab = null;
+
+		for (var i = popups.snapshotLength-1; i > -1; i--)
+		{
+			try {
+				popups.snapshotItem(i).hidePopup();
+			}
+			catch(e) {
+			}
+		}
+	},
+   
 /* Save/Load Prefs */ 
 	
 	get Prefs() 
