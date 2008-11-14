@@ -30,6 +30,11 @@ var ViewSourceInTabOverlay = {
 		return this.browserWindow.ViewSourceInTab;
 	},
 
+	get isSelection()
+	{
+		return getBrowser().currentURI.spec.indexOf('data:') == 0;
+	},
+
 	get info()
 	{
 		if (!this.service) return null;
@@ -102,8 +107,8 @@ var ViewSourceInTabOverlay = {
 		var textbox = toolbar.appendChild(document.createElement('textbox'));
 		textbox.setAttribute('flex', 1);
 		textbox.setAttribute('readonly', true);
-		textbox.setAttribute('onfocus', 'if (this.value != this.originalValue) this.value = this.originalValue');
-		textbox.setAttribute('onblur', 'if (this.value != this.originalValue) this.value = this.readableValue');
+		textbox.setAttribute('onfocus', 'if (this.readableValue != this.originalValue) this.value = this.originalValue');
+		textbox.setAttribute('onblur', 'if (this.readableValue != this.originalValue) this.value = this.readableValue');
 		this.locationBar = textbox;
 
 		var status = document.getElementById('status-bar');
@@ -162,7 +167,7 @@ var ViewSourceInTabOverlay = {
 				window.onLoadViewPartialSource.toSource().replace( // prevent infinity reloading
 					'{',
 					<><![CDATA[$&
-						if (!ViewSourceInTabOverlay.initialize()) return;
+						if (!ViewSourceInTabOverlay.initializeOnLoad()) return;
 					]]></>
 				).replace(
 					'window._content.focus();',
@@ -392,7 +397,9 @@ var ViewSourceInTabOverlay = {
 		this.setTabValue(this.kVIEWSOURCE_URI, uri);
 		this.updateLocationBar(uri);
 		var root = document.documentElement;
-		document.title = root.getAttribute('titlepreface') + uri + root.getAttribute('titlemenuseparator') + root.getAttribute('titlemodifier');
+		if (!this.isSelection) {
+			document.title = root.getAttribute('titlepreface') + uri + root.getAttribute('titlemenuseparator') + root.getAttribute('titlemodifier');
+		}
 //		this.updateLinks();
 	}
 
