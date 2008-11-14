@@ -34,6 +34,8 @@
 <command id="cmd_textZoomReduce"/>
 <command id="cmd_textZoomEnlarge"/>
 <command id="cmd_textZoomReset"/>
+<command id="Browser:Back"/>
+<command id="Browser:Forward"/>
 
 <keyset id="editMenuKeys"/>
 <keyset id="viewSourceKeys"/>
