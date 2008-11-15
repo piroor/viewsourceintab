@@ -1,0 +1,10 @@
+<!ENTITY config.title        "Source Viewer Tab - beállítások">
+
+<!ENTITY config.tabs.general "Általános">
+
+<!ENTITY config.viewSourceIn.caption  "Az oldal forrásának megjelenítése:">
+<!ENTITY config.viewSourceIn.window   "Új ablakban (Firefox alapértelmezett)">
+<!ENTITY config.viewSourceIn.tab      "Új lapon">
+<!ENTITY config.viewSourceIn.external "Külsõ alkalmazással">
+<!ENTITY config.viewSourceIn.choose   "Tallózás...">
+<!ENTITY config.viewSourceIn.picker   "Külsõ alkalmazás kiválasztása...">
