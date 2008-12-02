@@ -155,6 +155,9 @@ var ViewSourceInTab = {
 		if (!('gBrowser' in window)) return;
 
 		window.removeEventListener('load', this, false);
+
+		if (this.overrideExtensionsOnInitBefore) this.overrideExtensionsOnInitBefore();
+
 		window.addEventListener('unload', this, false);
 		document.getElementById('appcontent').addEventListener('select', this, false);
 
@@ -291,6 +294,8 @@ var ViewSourceInTab = {
 		this.viewSourceItems.forEach(function(aItem) {
 			if (aItem) aItem.addEventListener('click', this, false);
 		}, this);
+
+		if (this.overrideExtensionsOnInitAfter) this.overrideExtensionsOnInitAfter();
 	},
  
 	createQuery : function(aInfo) 
@@ -316,6 +321,11 @@ var ViewSourceInTab = {
 	{
 		switch (aEvent.type)
 		{
+			case 'DOMContentLoaded':
+				window.removeEventListener('DOMContentLoaded', this, false);
+				if (this.overrideExtensionsPreInit) this.overrideExtensionsPreInit();
+				return;
+
 			case 'load':
 				this.init();
 				return;

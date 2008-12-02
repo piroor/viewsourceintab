@@ -1,7 +1,9 @@
 <?xml version="1.0"?>
 <overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 <script src="chrome://viewsourceintab/content/viewsourceintab.js" type="application/x-javascript"/>
+<script src="chrome://viewsourceintab/content/hacks.js" type="application/x-javascript"/>
 <script type="application/x-javascript"><![CDATA[
+window.addEventListener('DOMContentLoaded', ViewSourceInTab, false);
 window.addEventListener('load', ViewSourceInTab, false);
 //window.addEventListener('unload', ViewSourceInTab, false);
 ]]></script>
