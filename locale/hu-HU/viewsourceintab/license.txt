@@ -13,11 +13,11 @@ License.
 
 The Original Code is the Source Viewer Tab.
 
-The Initial Developer of the Original Code is Mikes Kaszmí@n Iství@n.
+The Initial Developer of the Original Code is SHIMODA Hiroshi.
 Portions created by the Initial Developer are Copyright (C) 2008
 the Initial Developer. All Rights Reserved.
 
-Contributor(s): Mikes Kaszmí@n Iství@n <cashman@inmail.sk>
+Contributor(s): Mikes Kaszm√°n Istv√°n <cashman@inmail.sk>
 
 Alternatively, the contents of this file may be used under the terms of
 either the GNU General Public License Version 2 or later (the "GPL"), or
