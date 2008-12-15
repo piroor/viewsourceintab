@@ -6,3 +6,4 @@ locale	viewsourceintab	en-US	jar:chrome/viewsourceintab.jar!/locale/en-US/viewso
 locale	viewsourceintab	ja	jar:chrome/viewsourceintab.jar!/locale/ja/viewsourceintab/
 locale	viewsourceintab	it-IT	jar:chrome/viewsourceintab.jar!/locale/it-IT/viewsourceintab/
 locale	viewsourceintab	hu-HU	jar:chrome/viewsourceintab.jar!/locale/hu-HU/viewsourceintab/
+locale	viewsourceintab	ru-RU	jar:chrome/viewsourceintab.jar!/locale/ru-RU/viewsourceintab/

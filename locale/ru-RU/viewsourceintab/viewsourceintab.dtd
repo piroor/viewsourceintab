@@ -1,0 +1,10 @@
+<!ENTITY config.title        "Настройки просмотра исходного кода во вкладке">
+
+<!ENTITY config.tabs.general "Главные">
+
+<!ENTITY config.viewSourceIn.caption  "Отображать &quot;исходный код страницы&quot; в">
+<!ENTITY config.viewSourceIn.window   "Окне (по умолчанию в Firefox)">
+<!ENTITY config.viewSourceIn.tab      "Вкладке">
+<!ENTITY config.viewSourceIn.external "Внешней программе">
+<!ENTITY config.viewSourceIn.choose   "Обзор...">
+<!ENTITY config.viewSourceIn.picker   "Выбор внешней программы для просмотра исходного кода страницы.">
