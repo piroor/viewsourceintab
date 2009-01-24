@@ -82,11 +82,13 @@ var ViewSourceInTab = {
 			.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
 			.getInterface(Components.interfaces.nsIWebNavigation)
 			.QueryInterface(Components.interfaces.nsIDocShell);
-		var tabs = b.mTabContainer.childNodes;
-		for (var i = 0, maxi = tabs.length; i < maxi; i++)
+		var tabs = this.getTabs(b);
+		var tab;
+		for (var i = 0, maxi = tabs.snapshotLength; i < maxi; i++)
 		{
-			if (tabs[i].linkedBrowser.docShell == docShell)
-				return tabs[i];
+			tab = tabs.snapshotItem(i);
+			if (tab.linkedBrowser.docShell == docShell)
+				return tab;
 		}
 		return null;
 	},
@@ -105,6 +107,17 @@ var ViewSourceInTab = {
 	getTabBrowserFromFrame : function(aFrame) 
 	{
 		return ('SplitBrowser' in window) ? this.getTabBrowserFromChildren(SplitBrowser.getSubBrowserAndBrowserFromFrame(aFrame.top).browser) : gBrowser ;
+	},
+ 
+	getTabs : function(aTabBrowser) 
+	{
+		return aTabBrowser.ownerDocument.evaluate(
+				'descendant::*[local-name()="tab"]',
+				aTabBrowser.mTabContainer,
+				null,
+				XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
+				null
+			);
 	},
  
 	getTabValue : function(aTab, aKey) 
