@@ -117,6 +117,8 @@ var ViewSourceInTabOverlay = {
 		this.locationBar = textbox;
 
 		toolbar.insertBefore(toolbox.firstChild, toolbar.firstChild);
+		toolbar.firstChild.style.background = 'transparent';
+		toolbar.firstChild.style.border = '0 none';
 		toolbar.firstChild.style.MozAppearance = 'none';
 
 		var status = document.getElementById('status-bar');
