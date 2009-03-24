@@ -95,8 +95,13 @@ var ViewSourceInTabOverlay = {
 		if (bar)
 			bar.parentNode.removeChild(bar);
 
-		document.getElementById('menu_edit').setAttribute('hidden', true);
-		document.getElementById('helpMenu').setAttribute('hidden', true);
+		[
+			document.getElementById('menu_edit'),
+			document.getElementById('helpMenu'),
+			document.getElementById('windowMenu') // Mac OS X
+		].forEach(function(aMenu) {
+			if (aMenu) aMenu.setAttribute('hidden', true);
+		});
 
 		var toolbox = document.getElementsByTagName('toolbox')[0];
 		toolbox.setAttribute('orient', 'horizontal');
@@ -110,6 +115,9 @@ var ViewSourceInTabOverlay = {
 		textbox.setAttribute('onfocus', 'if (this.readableValue != this.originalValue) this.value = this.originalValue');
 		textbox.setAttribute('onblur', 'if (this.readableValue != this.originalValue) this.value = this.readableValue');
 		this.locationBar = textbox;
+
+		toolbar.insertBefore(toolbox.firstChild, toolbar.firstChild);
+		toolbar.firstChild.style.MozAppearance = 'none';
 
 		var status = document.getElementById('status-bar');
 		if (status)
