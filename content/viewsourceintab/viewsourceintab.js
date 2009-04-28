@@ -283,6 +283,13 @@ var ViewSourceInTab = {
 			)
 		);
 
+		eval('gViewSourceUtils.viewSourceProgressListener.onStateChange = '+
+			gViewSourceUtils.viewSourceProgressListener.onStateChange.toSource().replace(
+				'prefs.getCharPref("view_source.editor.args")',
+				'decodeURIComponent(escape($&))'
+			)
+		);
+
 		func = 'handleLinkClick __splitbrowser__handleLinkClick __ctxextensions__handleLinkClick __treestyletab__highlander__origHandleLinkClick'.split(' ');
 		func.some(function(aFunc) {
 			if (!(aFunc in window) ||
