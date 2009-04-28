@@ -6,5 +6,7 @@
 <!ENTITY config.viewSourceIn.window   "Új ablakban (Firefox alapértelmezett)">
 <!ENTITY config.viewSourceIn.tab      "Új lapon">
 <!ENTITY config.viewSourceIn.external "Külső alkalmazással">
+<!ENTITY config.viewSourceIn.external.args.label "Command Line Options:">
+<!ENTITY config.viewSourceIn.external.args.description "*A place holder for the line number, &#37;LINE&#37; is available.">
 <!ENTITY config.viewSourceIn.choose   "Tallózás...">
 <!ENTITY config.viewSourceIn.picker   "Külső alkalmazás kiválasztása...">

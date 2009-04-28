@@ -23,6 +23,9 @@
 		<preference id="view_source.editor.path"
 			name="view_source.editor.path"
 			type="file"/>
+		<preference id="view_source.editor.args"
+			name="view_source.editor.args"
+			type="string"/>
 	</preferences>
 
 	<groupbox>
@@ -42,6 +45,22 @@
 					label="&config.viewSourceIn.choose;"
 					picker-title="&config.viewSourceIn.picker;"
 					oncommand="showFilePicker('view_source.editor.path-filefield', this.getAttribute('picker-title'));"/>
+			</hbox>
+			<hbox id="view_source.editor.args-container">
+				<spacer style="width:3em;"/>
+				<vbox flex="1">
+					<hbox align="center">
+						<label id="view_source.editor.args-label"
+							value="&config.viewSourceIn.external.args.label;"
+							control="view_source.editor.args-textbox"/>
+						<textbox id="view_source.editor.args-textbox"
+							preference="view_source.editor.args"
+							flex="1"
+							disabled="true"/>
+					</hbox>
+					<description id="view_source.editor.args-description"
+						value="&config.viewSourceIn.external.args.description;"/>
+				</vbox>
 			</hbox>
 		</radiogroup>
 	</groupbox>

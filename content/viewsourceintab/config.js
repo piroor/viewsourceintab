@@ -1,11 +1,23 @@
+const XULAppInfo = Components.classes['@mozilla.org/xre/app-info;1']
+		.getService(Components.interfaces.nsIXULAppInfo);
+const comparator = Components.classes['@mozilla.org/xpcom/version-comparator;1']
+					.getService(Components.interfaces.nsIVersionComparator);
+
 var gViewSourceInRadio,
 	gViewSourceInTab,
 	gViewSourceInExternal,
 	gExternalViewerPath,
-	gExternalViewerButton;
+	gExternalViewerButton,
+	gExternalViewerItems;
 
 function initGeneralPane()
 {
+	var container = document.getElementById('view_source.editor.args-container');
+	if (comparator.compare(XULAppInfo.version, '3.1') < 0)
+		container.setAttribute('collapsed', true);
+	else
+		container.removeAttribute('collapsed');
+
 	gViewSourceInRadio = document.getElementById('viewSourceIn-radiogroup');
 	gViewSourceInTab = document.getElementById('extensions.viewsourceintab.enabled');
 	gViewSourceInExternal = document.getElementById('view_source.editor.external');
@@ -19,6 +31,14 @@ function initGeneralPane()
 	gExternalViewerButton = document.getElementById('view_source.editor.path-choose');
 	gExternalViewerPath.file = document.getElementById(gExternalViewerPath.getAttribute('preference')).value;
 	gExternalViewerPath.disabled = gExternalViewerButton.disabled = gViewSourceInRadio.value != 'external';
+
+	gExternalViewerItems = [
+		gExternalViewerPath,
+		gExternalViewerButton,
+		document.getElementById('view_source.editor.args-textbox'),
+		document.getElementById('view_source.editor.args-label'),
+		document.getElementById('view_source.editor.args-description')
+	];
 }
 
 function onChangeViewSourceInRadio()
@@ -26,7 +46,12 @@ function onChangeViewSourceInRadio()
 	gViewSourceInTab.value      = gViewSourceInRadio.value == 'tab';
 	gViewSourceInExternal.value = gViewSourceInRadio.value == 'external';
 
-	gExternalViewerPath.disabled = gExternalViewerButton.disabled = gViewSourceInRadio.value != 'external';
+	gExternalViewerItems.forEach(function(aItem) {
+		if (gViewSourceInRadio.value != 'external')
+			aItem.setAttribute('disabled', true);
+		else
+			aItem.removeAttribute('disabled');
+	});
 	if (gViewSourceInRadio.value == 'external' &&
 		!gExternalViewerPath.file)
 		showFilePicker('view_source.editor.path-filefield', gExternalViewerButton.getAttribute('picker-title'));

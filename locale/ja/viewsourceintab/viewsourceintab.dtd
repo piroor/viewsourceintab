@@ -6,5 +6,7 @@
 <!ENTITY config.viewSourceIn.window   "別ウィンドウで開く（Firefox初期状態）">
 <!ENTITY config.viewSourceIn.tab      "タブで開く">
 <!ENTITY config.viewSourceIn.external "別アプリケーションで開く">
+<!ENTITY config.viewSourceIn.external.args.label "追加のコマンドライン引数：">
+<!ENTITY config.viewSourceIn.external.args.description "※行番号のためのプレースホルダーとして&#37;LINE&#37;を利用できます">
 <!ENTITY config.viewSourceIn.choose   "参照...">
 <!ENTITY config.viewSourceIn.picker   "ソースを表示するアプリケーションを選択してください">
