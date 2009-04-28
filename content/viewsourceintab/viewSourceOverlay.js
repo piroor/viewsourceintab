@@ -32,7 +32,7 @@ var ViewSourceInTabOverlay = {
 
 	get isSelection()
 	{
-		return getBrowser().currentURI.spec.indexOf('data:') == 0;
+		return /^(view-source:)?data:/.test(getBrowser().currentURI.spec);
 	},
 
 	get info()
@@ -234,7 +234,7 @@ var ViewSourceInTabOverlay = {
 						if (!fragmentSource) {
 					]]></>
 				).replace(
-					'var doc = ',
+					/(var doc = |getBrowser\(\).loadURI\()/,
 					<><![CDATA[
 							if (ViewSourceInTabOverlay.service && !ViewSourceInTabOverlay.source) {
 								ViewSourceInTabOverlay.setTabValue(ViewSourceInTabOverlay.kVIEWSOURCE_SOURCE, encodeURIComponent(source));
@@ -243,7 +243,7 @@ var ViewSourceInTabOverlay = {
 						else {
 							var source = fragmentSource;
 						}
-						$&]]></>
+						$1]]></>
 				)
 			);
 		}
@@ -303,25 +303,6 @@ var ViewSourceInTabOverlay = {
 	},
 	locationBar : null,
 
-	updateLinks : function()
-	{
-		var doc = getBrowser().contentDocument;
-		var links = doc.evaluate(
-				'/descendant::*[starts-with(@href, "view-source:")]',
-				doc,
-				null,
-				XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
-				null
-			);
-		var link;
-		var prefix = 'view-source-tab:';
-		for (var i = 0, maxi = links.snapshotLength; i < maxi; i++)
-		{
-			link = links.snapshotItem(i);
-			link.href = link.href.replace('view-source:', prefix);
-		}
-	},
-
 	updateInfo : function()
 	{
 		var info = this.info;
@@ -337,7 +318,7 @@ var ViewSourceInTabOverlay = {
 		window.arguments = [
 			this.getTabValue(this.kVIEWSOURCE_URI),
 			this.getTabValue(this.kVIEWSOURCE_CHARSET),
-			this.info ? this.info.reference : null ,
+			(this.info ? this.info.reference : null ),
 			this.getTabValue(this.kVIEWSOURCE_CONTEXT)
 		];
 
@@ -355,15 +336,15 @@ var ViewSourceInTabOverlay = {
 		}
 		if (uri == window.arguments[0]) return;
 
-		var charset = null;
-		var reference = null;
-		var context = null;
-		if (query) {
-			/charset=([^;\)])/.test(query);
+		var charset   = window.arguments[1];
+		var reference = window.arguments[2];
+		var context   = window.arguments[3];
+		if (query && !reference) {
+			/charset=([^;\)]+)/.test(query);
 			charset = decodeURIComponent(RegExp.$1 || '') || null ;
-			/reference=([^;\)])/.test(query);
+			/reference=([^;\)]+)/.test(query);
 			reference = decodeURIComponent(RegExp.$1 || '') || null ;
-			/context=([^;\)])/.test(query);
+			/context=([^;\)]+)/.test(query);
 			context = decodeURIComponent(RegExp.$1 || '') || null ;
 		}
 		window.arguments = [uri, charset, reference, context];
@@ -405,12 +386,10 @@ var ViewSourceInTabOverlay = {
 	{
 		var uri = getBrowser().currentURI.spec.replace('view-source:', '');
 		this.setTabValue(this.kVIEWSOURCE_URI, uri);
+		if (this.isSelection) return;
 		this.updateLocationBar(uri);
 		var root = document.documentElement;
-		if (!this.isSelection) {
-			document.title = root.getAttribute('titlepreface') + uri + root.getAttribute('titlemenuseparator') + root.getAttribute('titlemodifier');
-		}
-//		this.updateLinks();
+		document.title = root.getAttribute('titlepreface') + uri + root.getAttribute('titlemenuseparator') + root.getAttribute('titlemodifier');
 	}
 
 };
