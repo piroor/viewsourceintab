@@ -6,6 +6,7 @@ const comparator = Components.classes['@mozilla.org/xpcom/version-comparator;1']
 var gViewSourceInRadio,
 	gViewSourceInTab,
 	gViewSourceInExternal,
+	gTabViewerItems,
 	gExternalViewerPath,
 	gExternalViewerButton,
 	gExternalViewerItems;
@@ -32,6 +33,9 @@ function initGeneralPane()
 	gExternalViewerPath.file = document.getElementById(gExternalViewerPath.getAttribute('preference')).value;
 	gExternalViewerPath.disabled = gExternalViewerButton.disabled = gViewSourceInRadio.value != 'external';
 
+	gTabViewerItems = [
+		document.getElementById('extensions.viewsourceintab.useViewSourceUI-check'),
+	];
 	gExternalViewerItems = [
 		gExternalViewerPath,
 		gExternalViewerButton,
@@ -46,6 +50,12 @@ function onChangeViewSourceInRadio()
 	gViewSourceInTab.value      = gViewSourceInRadio.value == 'tab';
 	gViewSourceInExternal.value = gViewSourceInRadio.value == 'external';
 
+	gTabViewerItems.forEach(function(aItem) {
+		if (gViewSourceInRadio.value != 'tab')
+			aItem.setAttribute('disabled', true);
+		else
+			aItem.removeAttribute('disabled');
+	});
 	gExternalViewerItems.forEach(function(aItem) {
 		if (gViewSourceInRadio.value != 'external')
 			aItem.setAttribute('disabled', true);

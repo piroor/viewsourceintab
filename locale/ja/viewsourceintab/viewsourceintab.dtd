@@ -2,10 +2,11 @@
 
 <!ENTITY config.tabs.general "全般">
 
-<!ENTITY config.viewSourceIn.caption  "「ページのソース」の開き方">
-<!ENTITY config.viewSourceIn.window   "別ウィンドウで開く（Firefox初期状態）">
-<!ENTITY config.viewSourceIn.tab      "タブで開く">
-<!ENTITY config.viewSourceIn.external "別アプリケーションで開く">
+<!ENTITY config.viewSourceIn.caption     "「ページのソース」の開き方">
+<!ENTITY config.viewSourceIn.window      "別ウィンドウで開く（Firefox初期状態）">
+<!ENTITY config.viewSourceIn.tab         "タブで開く">
+<!ENTITY config.viewSourceIn.tab.toolbar "ツールバーを表示する">
+<!ENTITY config.viewSourceIn.external    "別アプリケーションで開く">
 <!ENTITY config.viewSourceIn.external.args.label "追加のコマンドライン引数：">
 <!ENTITY config.viewSourceIn.external.args.description "※行番号のためのプレースホルダーとして&#37;LINE&#37;を利用できます">
 <!ENTITY config.viewSourceIn.choose   "参照...">

@@ -127,6 +127,14 @@ var ViewSourceInTabOverlay = {
 
 		this.updateLocationBar(window.arguments[0]);
 
+		if (Components
+				.classes['@mozilla.org/preferences;1']
+				.getService(Components.interfaces.nsIPrefBranch)
+				.getBoolPref('extensions.viewsourceintab.useViewSourceUI'))
+			toolbar.removeAttribute('collapsed');
+		else
+			toolbar.setAttribute('collapsed', true);
+
 		return true;
 	},
 	_initialized : false,

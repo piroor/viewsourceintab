@@ -17,6 +17,9 @@
 		<preference id="extensions.viewsourceintab.enabled"
 			name="extensions.viewsourceintab.enabled"
 			type="bool"/>
+		<preference id="extensions.viewsourceintab.useViewSourceUI"
+			name="extensions.viewsourceintab.useViewSourceUI"
+			type="bool"/>
 		<preference id="view_source.editor.external"
 			name="view_source.editor.external"
 			type="bool"/>
@@ -35,6 +38,12 @@
 			oncommand="onChangeViewSourceInRadio();">
 			<radio value="window"   label="&config.viewSourceIn.window;"/>
 			<radio value="tab"      label="&config.viewSourceIn.tab;"/>
+			<hbox align="center">
+				<spacer style="width:3em;"/>
+				<checkbox id="extensions.viewsourceintab.useViewSourceUI-check"
+					label="&config.viewSourceIn.tab.toolbar;"
+					preference="extensions.viewsourceintab.useViewSourceUI"/>
+			</hbox>
 			<radio value="external" label="&config.viewSourceIn.external;"/>
 			<hbox align="center">
 				<spacer style="width:3em;"/>

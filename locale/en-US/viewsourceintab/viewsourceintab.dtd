@@ -5,6 +5,7 @@
 <!ENTITY config.viewSourceIn.caption  "Show &quot;View Page Source&quot; in">
 <!ENTITY config.viewSourceIn.window   "Window (Firefox default)">
 <!ENTITY config.viewSourceIn.tab      "Tab">
+<!ENTITY config.viewSourceIn.tab.toolbar "Show toolbar">
 <!ENTITY config.viewSourceIn.external "External application">
 <!ENTITY config.viewSourceIn.external.args.label "Command Line Options:">
 <!ENTITY config.viewSourceIn.external.args.description "*A place holder for the line number, &#37;LINE&#37; is available.">

@@ -5,6 +5,7 @@
 <!ENTITY config.viewSourceIn.caption  "Отображать &quot;исходный код страницы&quot; в">
 <!ENTITY config.viewSourceIn.window   "Окне (по умолчанию в Firefox)">
 <!ENTITY config.viewSourceIn.tab      "Вкладке">
+<!ENTITY config.viewSourceIn.tab.toolbar "Show toolbar">
 <!ENTITY config.viewSourceIn.external "Внешней программе">
 <!ENTITY config.viewSourceIn.external.args.label "Command Line Options:">
 <!ENTITY config.viewSourceIn.external.args.description "*A place holder for the line number, &#37;LINE&#37; is available.">
