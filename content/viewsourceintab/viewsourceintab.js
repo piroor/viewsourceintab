@@ -270,6 +270,8 @@ var ViewSourceInTab = {
 							) + (ViewSourceInTab.targetInfo.uri || ViewSourceInTab.targetInfo.frame.location.href),
 							null, null, null, false
 						);
+						if (!ViewSourceInTab.getPref('extensions.viewsourceintab.useViewSourceUI'))
+							ViewSourceInTab.targetInfo.clear();
 					}
 					else {
 						ViewSourceInTab.targetInfo.clear();
