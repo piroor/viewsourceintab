@@ -1,7 +1,9 @@
 const XULAppInfo = Components.classes['@mozilla.org/xre/app-info;1']
 		.getService(Components.interfaces.nsIXULAppInfo);
 const comparator = Components.classes['@mozilla.org/xpcom/version-comparator;1']
-					.getService(Components.interfaces.nsIVersionComparator);
+		.getService(Components.interfaces.nsIVersionComparator);
+const ObserverService = Components.classes['@mozilla.org/observer-service;1']
+		.getService(Components.interfaces.nsIObserverService);
 
 var gViewSourceInRadio,
 	gViewSourceInTab,
@@ -41,8 +43,17 @@ function initGeneralPane()
 		gExternalViewerButton,
 		document.getElementById('view_source.editor.args-textbox'),
 		document.getElementById('view_source.editor.args-label'),
-		document.getElementById('view_source.editor.args-description')
+		document.getElementById('view_source.editor.args-description'),
+		document.getElementById('view_source.editor.path.encoding-label'),
+		document.getElementById('view_source.editor.path.encoding-menulist')
 	];
+
+	ObserverService.notifyObservers(null, 'charsetmenu-selected', 'other');
+	var charset = document.getElementById('extensions.viewsourceintab.path.encoding').value;
+	if (charset)
+		document.getElementById('view_source.editor.path.encoding-menulist').value = charset;
+
+	onChangeViewSourceInRadio();
 }
 
 function onChangeViewSourceInRadio()

@@ -9,5 +9,7 @@
 <!ENTITY config.viewSourceIn.external "Внешней программе">
 <!ENTITY config.viewSourceIn.external.args.label "Command Line Options:">
 <!ENTITY config.viewSourceIn.external.args.description "*A place holder for the line number, &#37;LINE&#37; is available.">
+<!ENTITY config.viewSourceIn.external.path.encoding.label "Encoding of file path:">
+<!ENTITY config.viewSourceIn.external.path.encoding.default "(choose the encoding)">
 <!ENTITY config.viewSourceIn.choose   "Обзор...">
 <!ENTITY config.viewSourceIn.picker   "Выбор внешней программы для просмотра исходного кода страницы.">

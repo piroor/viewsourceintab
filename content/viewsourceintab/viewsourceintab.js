@@ -14,7 +14,7 @@ var ViewSourceInTab = {
 		return this._SessionStore;
 	},
 	_SessionStore : null,
-	 
+	
 	targetInfo : { 
 		clear : function()
 		{
@@ -45,9 +45,9 @@ var ViewSourceInTab = {
 		this._overrideShouldLoadInTab = aValue;
 		return aValue;
 	},
- 	
+ 
 /* Utilities */ 
-	 
+	
 	get browser() 
 	{
 		return 'SplitBrowser' in window ? SplitBrowser.activeBrowser : gBrowser ;
@@ -160,9 +160,26 @@ var ViewSourceInTab = {
 	{
 		return aURI.replace(/^view-source:/, 'view-source-tab:');
 	},
+ 
+	convertEncodingForPlatformFilePath : function(aPath) 
+	{
+		var encoding = this.getPref('extensions.viewsourceintab.path.encoding');
+		if (encoding) {
+			try {
+				var UCONV = Components
+								.classes['@mozilla.org/intl/scriptableunicodeconverter']
+								.getService(Ci.nsIScriptableUnicodeConverter);
+				UCONV.charset = 'Shift_JIS';
+				aPath = UCONV.ConvertFromUnicode(aPath);
+			}
+			catch(e) {
+			}
+		}
+		return aPath;
+	},
   
 /* Initializing */ 
-	 
+	
 	init : function() 
 	{
 		if (!('gBrowser' in window)) return;
@@ -281,6 +298,13 @@ var ViewSourceInTab = {
 			)
 		);
 
+		eval('gViewSourceUtils.openInExternalEditor = '+
+			gViewSourceUtils.openInExternalEditor.toSource().replace(
+				'path = uri.QueryInterface(Components.interfaces.nsIFileURL).file.path;',
+				'$& path = ViewSourceInTab.convertEncodingForPlatformFilePath(path);'
+			)
+		);
+
 		eval('gViewSourceUtils.getExternalViewSourceEditor = '+
 			gViewSourceUtils.getExternalViewSourceEditor.toSource().replace(
 				'initWithPath(prefPath)',
@@ -292,6 +316,9 @@ var ViewSourceInTab = {
 			gViewSourceUtils.viewSourceProgressListener.onStateChange.toSource().replace(
 				'prefs.getCharPref("view_source.editor.args")',
 				'decodeURIComponent(escape($&))'
+			).replace(
+				/(this\.file\.path)/g,
+				'ViewSourceInTab.convertEncodingForPlatformFilePath($1)'
 			)
 		);
 
@@ -381,7 +408,7 @@ var ViewSourceInTab = {
 		}
 	},
 	viewerURIPattern : /^(view-source-tab:|view-partial-source-tab:|chrome:\/\/viewsourceintab\/content\/(viewer\.xul|partialViewer\.xul)\?)/,
-	 
+	
 	onClickMenuItem : function(aEvent) 
 	{
 		var inTabCommand = (aEvent.button == 1 || (navigator.platform.toLowerCase().indexOf('mac') == -1 ? aEvent.ctrlKey : aEvent.metaKey ));

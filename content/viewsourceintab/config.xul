@@ -29,6 +29,9 @@
 		<preference id="view_source.editor.args"
 			name="view_source.editor.args"
 			type="string"/>
+		<preference id="extensions.viewsourceintab.path.encoding"
+			name="extensions.viewsourceintab.path.encoding"
+			type="string"/>
 	</preferences>
 
 	<groupbox>
@@ -69,6 +72,24 @@
 					</hbox>
 					<description id="view_source.editor.args-description"
 						value="&config.viewSourceIn.external.args.description;"/>
+					<hbox align="center">
+						<label id="view_source.editor.path.encoding-label"
+							value="&config.viewSourceIn.external.path.encoding.label;"
+							control="view_source.editor.path.encoding-menulist"/>
+						<menulist id="view_source.editor.path.encoding-menulist"
+							preference="extensions.viewsourceintab.path.encoding"
+							label="&config.viewSourceIn.external.path.encoding.default;"
+							datasources="rdf:charset-menu"
+							ref="NC:DecodersRoot">
+							<template>
+								<menupopup>
+									<menuitem uri="..."
+										label="rdf:http://home.netscape.com/NC-rdf#Name"
+										value="..."/>
+								</menupopup>
+							</template>
+						</menulist>
+					</hbox>
 				</vbox>
 			</hbox>
 		</radiogroup>
