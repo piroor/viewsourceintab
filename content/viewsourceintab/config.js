@@ -48,6 +48,7 @@ function initGeneralPane()
 		document.getElementById('view_source.editor.path.encoding-menulist')
 	];
 
+	// initialize the list
 	ObserverService.notifyObservers(null, 'charsetmenu-selected', 'other');
 	var charset = document.getElementById('extensions.viewsourceintab.path.encoding').value;
 	if (charset)
