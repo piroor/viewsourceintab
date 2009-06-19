@@ -306,8 +306,14 @@ var ViewSourceInTabOverlay = {
 	updateLocationBar : function(aValue)
 	{
 		this.locationBar.originalValue = aValue;
+		var readableURI = aValue;
+		try {
+			readableURI = decodeURI(aValue);
+		}
+		catch(e) {
+		}
 		this.locationBar.readableValue =
-			this.locationBar.value = decodeURI(aValue);
+			this.locationBar.value = readableURI;
 	},
 	locationBar : null,
 
