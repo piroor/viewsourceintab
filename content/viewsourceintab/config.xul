@@ -72,25 +72,26 @@
 					</hbox>
 					<description id="view_source.editor.args-description"
 						value="&config.viewSourceIn.external.args.description;"/>
-					<hbox align="center">
-						<label id="view_source.editor.path.encoding-label"
-							value="&config.viewSourceIn.external.path.encoding.label;"
-							control="view_source.editor.path.encoding-menulist"/>
-						<menulist id="view_source.editor.path.encoding-menulist"
-							preference="extensions.viewsourceintab.path.encoding"
-							label="&config.viewSourceIn.external.path.encoding.default;"
-							datasources="rdf:charset-menu"
-							ref="NC:DecodersRoot">
-							<template>
-								<menupopup>
-									<menuitem uri="..."
-										label="rdf:http://home.netscape.com/NC-rdf#Name"
-										value="..."/>
-								</menupopup>
-							</template>
-						</menulist>
-					</hbox>
 				</vbox>
+			</hbox>
+			<hbox align="center">
+				<spacer style="width:3em;"/>
+				<label id="view_source.editor.path.encoding-label"
+					value="&config.viewSourceIn.external.path.encoding.label;"
+					control="view_source.editor.path.encoding-menulist"/>
+				<menulist id="view_source.editor.path.encoding-menulist"
+					preference="extensions.viewsourceintab.path.encoding"
+					label="&config.viewSourceIn.external.path.encoding.default;"
+					datasources="rdf:charset-menu"
+					ref="NC:DecodersRoot">
+					<template>
+						<menupopup>
+							<menuitem uri="..."
+								label="rdf:http://home.netscape.com/NC-rdf#Name"
+								value="..."/>
+						</menupopup>
+					</template>
+				</menulist>
 			</hbox>
 		</radiogroup>
 	</groupbox>
