@@ -177,6 +177,23 @@ var ViewSourceInTab = {
 		}
 		return aPath;
 	},
+ 
+	getViewSourceTabURI : function() 
+	{
+		var uri = this.targetInfo.uri || this.targetInfo.frame.location.href;
+		var prefix = this.getPref('extensions.viewsourceintab.useViewSourceUI') ?
+					'view-source-tab:' :
+					'view-source:' ;
+		try {
+			uri = Components.classes['@mozilla.org/network/io-service;1']
+					.getService(Components.interfaces.nsIIOService)
+					.newURI(uri, null, null)
+					.asciiSpec;
+		}
+		catch(e) {
+		}
+		return prefix + uri;
+	},
   
 /* Initializing */ 
 	
@@ -281,10 +298,7 @@ var ViewSourceInTab = {
 							TreeStyleTabService.readyToOpenChildTab(ViewSourceInTab.targetInfo.frame);
 						var b = ViewSourceInTab.getTabBrowserFromFrame(ViewSourceInTab.targetInfo.frame);
 						b.loadOneTab(
-							(ViewSourceInTab.getPref('extensions.viewsourceintab.useViewSourceUI') ?
-								'view-source-tab:' :
-								'view-source:'
-							) + (ViewSourceInTab.targetInfo.uri || ViewSourceInTab.targetInfo.frame.location.href),
+							ViewSourceInTab.getViewSourceTabURI(),
 							null, null, null, false
 						);
 						if (!ViewSourceInTab.getPref('extensions.viewsourceintab.useViewSourceUI'))
