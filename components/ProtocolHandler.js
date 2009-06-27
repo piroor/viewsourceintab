@@ -103,7 +103,10 @@ ViewSourceTabProtocolBase.prototype = {
 
 	getDestinationURI : function(aURI)
 	{
-		return this.viewerURI+'?'+aURI;
+		aURI = aURI.substring(aURI.indexOf(':')+1);
+		aURI = decodeURI(aURI);
+		var uri = IOService.newURI(aURI, null, null);
+		return this.viewerURI+'?'+uri.asciiSpec;
 	}
 };
 

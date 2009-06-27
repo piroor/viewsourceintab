@@ -348,6 +348,7 @@ var ViewSourceInTabOverlay = {
 		if (uri.indexOf(startPoint) > -1) {
 			[uri, query] = uri.split(startPoint);
 		}
+		uri = decodeURI(uri);
 		if (uri == window.arguments[0]) return;
 
 		var charset   = window.arguments[1];
