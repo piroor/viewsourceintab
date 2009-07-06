@@ -405,6 +405,46 @@ var ViewSourceInTabOverlay = {
 		this.updateLocationBar(uri);
 		var root = document.documentElement;
 		document.title = root.getAttribute('titlepreface') + uri + root.getAttribute('titlemenuseparator') + root.getAttribute('titlemodifier');
+
+		// See: Bug 502644 -  Links in "view source" for IDN pages refer wrong URIs
+		//      https://bugzilla.mozilla.org/show_bug.cgi?id=502644
+		var doc = getBrowser().contentDocument;
+		var links = doc.evaluate(
+				'/descendant::*[translate(local-name(), "a", "A")="A"]',
+				doc,
+				null,
+				XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
+				null
+			);
+		var link, base, baseURI;
+		const IOService = Cc['@mozilla.org/network/io-service;1']
+				.getService(Ci.nsIIOService);
+		for (var i = 0, maxi = links.snapshotLength; i < maxi; i++)
+		{
+			link = links.snapshotItem(i);
+			if (/^[^:]+:/.test(link.textContent)) {
+				link.href = 'view-source:'+link.textContent;
+			}
+			else {
+				base = null;
+				while (base = this.getPreviousBase(link))
+				{
+					if (/^[^:]+:/.test(base.textContent)) break;
+				}
+				baseURI = IOService.newURI((base ? base.textContent : uri ), null, null);
+				link.href = 'view-source:'+IOService.newURI(link.textContent, null, baseURI).asciiSpec;
+			}
+		}
+	},
+	getPreviousBase : function(aNode)
+	{
+		return aNode.ownerDocument.evaluate(
+			'preceding::*[translate(text(), "base", "BASE")="BASE"][1]/following::*[translate(local-name(), "a", "A")="A"][1]',
+			aNode,
+			null,
+			XPathResult.FIRST_ORDERED_NODE_TYPE,
+			null
+		).singleNodeValue;
 	}
 
 };
