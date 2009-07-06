@@ -184,14 +184,6 @@ var ViewSourceInTab = {
 		var prefix = this.getPref('extensions.viewsourceintab.useViewSourceUI') ?
 					'view-source-tab:' :
 					'view-source:' ;
-		try {
-			uri = Components.classes['@mozilla.org/network/io-service;1']
-					.getService(Components.interfaces.nsIIOService)
-					.newURI(uri, null, null)
-					.asciiSpec;
-		}
-		catch(e) {
-		}
 		return prefix + uri;
 	},
   

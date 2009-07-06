@@ -86,7 +86,7 @@ ViewSourceTabProtocolBase.prototype = {
 		var uri = Cc['@mozilla.org/network/simple-uri;1']
 					.createInstance(Ci.nsIURI);
 		try {
-			uri.spec = aSpec;
+			uri.spec = aSpec.split(':')[0]+':'+this.getInnerURI(aSpec);
 		}
 		catch(e) {
 			dump(e+'\n');
@@ -103,10 +103,16 @@ ViewSourceTabProtocolBase.prototype = {
 
 	getDestinationURI : function(aURI)
 	{
-		aURI = aURI.substring(aURI.indexOf(':')+1);
-		aURI = decodeURI(aURI);
+		return this.viewerURI+'?'+this.getInnerURI(aURI);
+	},
+
+	getInnerURI : function(aURI)
+	{
+		if (aURI.match(/^[^:]+:[^:]+:/)) {
+			aURI = aURI.substring(aURI.indexOf(':')+1);
+		}
 		var uri = IOService.newURI(aURI, null, null);
-		return this.viewerURI+'?'+uri.asciiSpec;
+		return uri.asciiSpec;
 	}
 };
 
