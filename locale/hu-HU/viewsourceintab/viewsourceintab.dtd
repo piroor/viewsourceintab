@@ -5,11 +5,11 @@
 <!ENTITY config.viewSourceIn.caption  "Az oldal forrásának megjelenítése:">
 <!ENTITY config.viewSourceIn.window   "Új ablakban (Firefox alapértelmezett)">
 <!ENTITY config.viewSourceIn.tab      "Új lapon">
-<!ENTITY config.viewSourceIn.tab.toolbar "Show toolbar">
+<!ENTITY config.viewSourceIn.tab.toolbar "Eszköztár megjelenítése">
 <!ENTITY config.viewSourceIn.external "Külső alkalmazással">
-<!ENTITY config.viewSourceIn.external.args.label "Command Line Options:">
-<!ENTITY config.viewSourceIn.external.args.description "*A place holder for the line number, &#37;LINE&#37; is available.">
-<!ENTITY config.viewSourceIn.external.path.encoding.label "Encoding of file path:">
-<!ENTITY config.viewSourceIn.external.path.encoding.default "(choose the encoding)">
+<!ENTITY config.viewSourceIn.external.args.label "Parancssor opciók:">
+<!ENTITY config.viewSourceIn.external.args.description "*Szerkeszthető doboz elérhető a &#37;LINE&#37; sorhoz.">
+<!ENTITY config.viewSourceIn.external.path.encoding.label "Fájl útvonalának kódolása:">
+<!ENTITY config.viewSourceIn.external.path.encoding.default "(kódolás kiválasztása)">
 <!ENTITY config.viewSourceIn.choose   "Tallózás...">
 <!ENTITY config.viewSourceIn.picker   "Külső alkalmazás kiválasztása...">
