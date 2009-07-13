@@ -2,14 +2,14 @@
 
 <!ENTITY config.tabs.general "Generale">
 
-<!ENTITY config.viewSourceIn.caption  "&quot;Visualizza --> Sorgente pagina&quot; apre ">
+<!ENTITY config.viewSourceIn.caption  "La voce &quot;Visualizza --> Sorgente pagina&quot; apre ">
 <!ENTITY config.viewSourceIn.window   "una finestra (comportamento predefinito di Firefox)">
 <!ENTITY config.viewSourceIn.tab      "una scheda">
 <!ENTITY config.viewSourceIn.tab.toolbar "Visualizza barra degli strumenti">
 <!ENTITY config.viewSourceIn.external "una applicazione esterna">
-<!ENTITY config.viewSourceIn.external.args.label "Command Line Options:">
+<!ENTITY config.viewSourceIn.external.args.label "Parametri della riga di comando:">
 <!ENTITY config.viewSourceIn.external.args.description "Un segnaposto è disponibile per la linea numero, &#37;LINE&#37; .">
-<!ENTITY config.viewSourceIn.external.path.encoding.label "Encoding of file path:">
-<!ENTITY config.viewSourceIn.external.path.encoding.default "(choose the encoding)">
+<!ENTITY config.viewSourceIn.external.path.encoding.label "Codifica del percorso del file:">
+<!ENTITY config.viewSourceIn.external.path.encoding.default "(Selezionare una codifica)">
 <!ENTITY config.viewSourceIn.choose   "Sfoglia...">
 <!ENTITY config.viewSourceIn.picker   "Selezionare il visualizzatore esterno per il codice sorgente delle pagine">
