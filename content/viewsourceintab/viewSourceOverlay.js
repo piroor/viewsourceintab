@@ -306,16 +306,38 @@ var ViewSourceInTabOverlay = {
 	updateLocationBar : function(aValue)
 	{
 		this.locationBar.originalValue = aValue;
-		var readableURI = aValue;
-		try {
-			readableURI = decodeURI(aValue);
-		}
-		catch(e) {
-		}
+		var readableURI = this.losslessDecodeURI(aValue);
 		this.locationBar.readableValue =
 			this.locationBar.value = readableURI;
 	},
 	locationBar : null,
+
+	losslessDecodeURI : function(aURI)
+	{
+		var browser = Cc['@mozilla.org/appshell/window-mediator;1']
+					.getService(Ci.nsIWindowMediator)
+					.getMostRecentWindow('navigator:browser');
+		if (browser && browser.losslessDecodeURI) {
+			aURI = Cc['@mozilla.org/network/io-service;1']
+					.getService(Ci.nsIIOService)
+					.newURI(aURI, null, null);
+			return browser.losslessDecodeURI(aURI);
+		}
+
+		// fallback: snapshot from http://mxr.mozilla.org/mozilla-central/source/browser/base/content/browser.js at 2009.9.9
+		var value = aURI;
+		if (!/%25(?:3B|2F|3F|3A|40|26|3D|2B|24|2C|23)/i.test(value)) {
+			try {
+				value = decodeURI(value)
+						.replace(/%(?!3B|2F|3F|3A|40|26|3D|2B|24|2C|23)|[\r\n\t]/ig, encodeURIComponent);
+			}
+			catch(e) {
+			}
+		}
+		return value
+				.replace(/[\v\x0c\x1c\x1d\x1e\x1f\u00ad\u200b\ufeff\u2028\u2029\u2060\u2062\u2063\ufffc]/g, encodeURIComponent)
+				.replace(/[\u200e\u200f\u202a\u202b\u202c\u202d\u202e]/g, encodeURIComponent);
+	},
 
 	updateInfo : function()
 	{
