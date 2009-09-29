@@ -150,6 +150,7 @@ var ViewSourceInTab = {
 	{
 		aTab.removeAttribute(aKey);
 		try {
+			this.SessionStore.setTabValue(aTab, aKey, '');
 			this.SessionStore.deleteTabValue(aTab, aKey);
 		}
 		catch(e) {
