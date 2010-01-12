@@ -16,7 +16,7 @@
 	titlemenuseparator ="&mainWindow.titlemodifierseparator;"
 	windowtype="navigator:view-source">
 
-<script src="chrome://viewsourceintab/content/redirector.js" type="application/x-javascript"/>
+<script src="chrome://viewsourceintab/content/redirector.js" type="application/javascript"/>
 
 <stringbundle id="viewSourceBundle"/>
 
