@@ -354,7 +354,7 @@ var ViewSourceInTabOverlay = {
 		window.arguments = [
 			this.getTabValue(this.kVIEWSOURCE_URI),
 			this.getTabValue(this.kVIEWSOURCE_CHARSET),
-			(this.info ? this.info.reference : null ),
+			(this.info ? (this.info.descriptor || this.info.reference) : null ),
 			this.getTabValue(this.kVIEWSOURCE_CONTEXT)
 		];
 

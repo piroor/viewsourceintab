@@ -18,17 +18,19 @@ var ViewSourceInTab = {
 	targetInfo : { 
 		clear : function()
 		{
-			this.frame     = null;
-			this.uri       = null;
-			this.charset   = null;
-			this.reference = null;
-			this.context   = null;
+			this.frame      = null;
+			this.uri        = null;
+			this.charset    = null;
+			this.descriptor = null;
+			this.reference  = null;
+			this.context    = null;
 		},
-		frame     : null,
-		uri       : null,
-		charset   : null,
-		reference : null,
-		context   : null
+		frame      : null,
+		uri        : null,
+		charset    : null,
+		descriptor : null,
+		reference  : null,
+		context    : null
 	},
  
 	get shouldLoadInTab() 
@@ -268,6 +270,7 @@ var ViewSourceInTab = {
 						if (!ViewSourceInTab.targetInfo.frame) {
 							ViewSourceInTab.targetInfo.clear();
 							ViewSourceInTab.targetInfo.frame = ViewSourceInTab.browser.contentWindow;
+							ViewSourceInTab.targetInfo.descriptor = pageCookie;
 						}
 						$1]]></>
 				)
