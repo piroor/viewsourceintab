@@ -305,7 +305,7 @@ var ViewSourceInTabOverlay = {
 							entry.AddChild(aChild, 0);
 
 							// destroy current history because the existing entry doesn't work correctly.
-							history.PurgeHistory(history.count);
+							history.PurgeHistory(history.index+1);
 
 							return entry;
 						})(shEntry);
