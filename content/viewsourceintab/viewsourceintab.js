@@ -377,7 +377,7 @@ var ViewSourceInTab = {
 		var info = [];
 		if (aInfo.charset) info.push('charset='+encodeURIComponent(aInfo.charset));
 		if (aInfo.reference) info.push('reference='+encodeURIComponent(aInfo.reference));
-// this causes crash...
+// restoring of view-source tab from query causes crash, so I don't put cacheKey information into the query...
 //		if (aInfo.descriptor) {
 //			let key = aInfo.descriptor.QueryInterface(Components.interfaces.nsISHEntry).cacheKey;
 //			if (key) {
