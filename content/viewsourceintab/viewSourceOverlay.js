@@ -431,37 +431,39 @@ var ViewSourceInTabOverlay = {
 		// See: Bug 502644 -  Links in "view source" for IDN pages refer wrong URIs
 		//      https://bugzilla.mozilla.org/show_bug.cgi?id=502644
 		var doc = getBrowser().contentDocument;
-		var links = doc.evaluate(
-				'/descendant::*[translate(local-name(), "a", "A")="A"]',
+		var basesAndLinks = doc.evaluate(
+				'/descendant::*[translate(text(), "base", "BASE")="BASE"] | /descendant::*[translate(local-name(), "a", "A")="A"]',
 				doc,
 				null,
 				XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
 				null
 			);
-		var link, base, baseURI;
 		const IOService = Cc['@mozilla.org/network/io-service;1']
 				.getService(Ci.nsIIOService);
-		for (var i = 0, maxi = links.snapshotLength; i < maxi; i++)
+		var base = IOService.newURI(uri, null, null);
+		for (let i = 0, maxi = basesAndLinks.snapshotLength; i < maxi; i++)
 		{
-			link = links.snapshotItem(i);
+			let link = basesAndLinks.snapshotItem(i);
+			if (link.localName.toLowerCase() != 'a' && i < maxi-1) {
+				let baseLink = basesAndLinks.snapshotItem(i+1);
+				if (/^[^:]+:/.test(baseLink.textContent)) {
+					base = IOService.newURI(baseLink.textContent, null, null);
+				}
+				i++;
+				continue;
+			}
 			if (/^[^:]+:/.test(link.textContent)) {
 				link.href = 'view-source:'+link.textContent;
 			}
 			else {
-				base = null;
-				while (base = this.getPreviousBase(link))
-				{
-					if (/^[^:]+:/.test(base.textContent)) break;
-				}
-				baseURI = IOService.newURI((base ? base.textContent : uri ), null, null);
-				link.href = 'view-source:'+IOService.newURI(link.textContent, null, baseURI).asciiSpec;
+				link.href = 'view-source:'+IOService.newURI(link.textContent, null, base).asciiSpec;
 			}
 		}
 	},
 	getPreviousBase : function(aNode)
 	{
 		return aNode.ownerDocument.evaluate(
-			'preceding::*[translate(text(), "base", "BASE")="BASE"][1]/following::*[translate(local-name(), "a", "A")="A"][1]',
+			'preceding::*[text()="base" or text()="BASE"][1]/following::*[local-name()="a" or local-name()="A"][1]',
 			aNode,
 			null,
 			XPathResult.FIRST_ORDERED_NODE_TYPE,
