@@ -459,16 +459,6 @@ var ViewSourceInTabOverlay = {
 				link.href = 'view-source:'+IOService.newURI(link.textContent, null, base).asciiSpec;
 			}
 		}
-	},
-	getPreviousBase : function(aNode)
-	{
-		return aNode.ownerDocument.evaluate(
-			'preceding::*[text()="base" or text()="BASE"][1]/following::*[local-name()="a" or local-name()="A"][1]',
-			aNode,
-			null,
-			XPathResult.FIRST_ORDERED_NODE_TYPE,
-			null
-		).singleNodeValue;
 	}
 
 };
