@@ -377,13 +377,14 @@ var ViewSourceInTab = {
 		var info = [];
 		if (aInfo.charset) info.push('charset='+encodeURIComponent(aInfo.charset));
 		if (aInfo.reference) info.push('reference='+encodeURIComponent(aInfo.reference));
-		if (aInfo.descriptor) {
-			let key = aInfo.descriptor.QueryInterface(Components.interfaces.nsISHEntry).cacheKey;
-			if (key) {
-				key = key.QueryInterface(Components.interfaces.nsISupportsPRUint32);
-				info.push('cacheKey='+encodeURIComponent(key.data));
-			}
-		}
+// this causes crash...
+//		if (aInfo.descriptor) {
+//			let key = aInfo.descriptor.QueryInterface(Components.interfaces.nsISHEntry).cacheKey;
+//			if (key) {
+//				key = key.QueryInterface(Components.interfaces.nsISupportsPRUint32);
+//				info.push('cacheKey='+encodeURIComponent(key.data));
+//			}
+//		}
 		if (aInfo.context) info.push('context='+encodeURIComponent(aInfo.context));
 		return info.length ? '#viewsourceintab('+info.join(';')+')' : '' ;
 	},
