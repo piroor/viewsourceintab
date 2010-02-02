@@ -155,16 +155,16 @@ var ViewSourceInTabOverlay = {
 			eval('window.onLoadViewSource = '+
 				window.onLoadViewSource.toSource().replace( // prevent infinity reloading
 					'{',
-					<><![CDATA[
+					<![CDATA[
 						{
 							if (!ViewSourceInTabOverlay.initializeOnLoad()) return;
-					]]></>
+					]]>.toString()
 				).replace(
 					'}',
-					<><![CDATA[;
+					<![CDATA[;
 						ViewSourceInTabOverlay.clearInfo();
 						document.title = document.documentElement.getAttribute('titlepreface') + (getBrowser().contentDocument.title || window.arguments[0]);
-					}]]></>
+					}]]>.toString()
 				).replace(
 					'gFindBar.initFindBar();',
 					''
@@ -209,13 +209,13 @@ var ViewSourceInTabOverlay = {
 			eval('window.viewPartialSourceForSelection = '+
 				window.viewPartialSourceForSelection.toSource().replace(
 					'{',
-					<><![CDATA[$&
+					<![CDATA[$&
 						var selectionSource = ViewSourceInTabOverlay.source;
 						if (!selectionSource) {
-					]]></>
+					]]>.toString()
 				).replace(
 					/(getBrowser\(\)\.webNavigation\.[^\}]+)/,
-					<><![CDATA[
+					<![CDATA[
 						if (ViewSourceInTabOverlay.service && !ViewSourceInTabOverlay.source) {
 							ViewSourceInTabOverlay.setTabValue(ViewSourceInTabOverlay.kVIEWSOURCE_SOURCE, encodeURIComponent(tmpNode.innerHTML));
 						}
@@ -228,7 +228,7 @@ var ViewSourceInTabOverlay = {
 						getBrowser().webNavigation.loadURI(
 							'view-source:data:text/html;charset=utf-8,' + selectionSource,
 							loadFlags, null, null, null);
-					}]]></>
+					}]]>.toString()
 				)
 			);
 		}
@@ -237,13 +237,13 @@ var ViewSourceInTabOverlay = {
 			eval('window.viewPartialSourceForFragment = '+
 				window.viewPartialSourceForFragment.toSource().replace(
 					'{',
-					<><![CDATA[$&
+					<![CDATA[$&
 						var fragmentSource = ViewSourceInTabOverlay.source;
 						if (!fragmentSource) {
-					]]></>
+					]]>.toString()
 				).replace(
 					/(var doc = |getBrowser\(\).loadURI\()/,
-					<><![CDATA[
+					<![CDATA[
 							if (ViewSourceInTabOverlay.service && !ViewSourceInTabOverlay.source) {
 								ViewSourceInTabOverlay.setTabValue(ViewSourceInTabOverlay.kVIEWSOURCE_SOURCE, encodeURIComponent(source));
 							}
@@ -251,7 +251,7 @@ var ViewSourceInTabOverlay = {
 						else {
 							var source = fragmentSource;
 						}
-						$1]]></>
+						$1]]>.toString()
 				)
 			);
 		}
@@ -260,13 +260,13 @@ var ViewSourceInTabOverlay = {
 			eval('window.drawSelection = '+
 				window.drawSelection.toSource().replace(
 					'{',
-					<><![CDATA[$&
+					<![CDATA[$&
 							try {
 								window.document.getElementById('appcontent').removeEventListener('load', drawSelection, true);
 							}
 							catch(e) {
 							}
-					]]></>
+					]]>.toString()
 				).replace(
 					'getBrowser().contentDocument.title',
 					'document.title'
@@ -278,14 +278,48 @@ var ViewSourceInTabOverlay = {
 			eval('window.viewSource = '+
 				window.viewSource.toSource().replace(
 					/(webNavigation\.sessionHistory = Components\.classes\[[^\]]+\]\.createInstance\([^\)]*\);)/,
-					<><![CDATA[
+					<![CDATA[
 						try {
 							$1
 						}
 						catch(e) {
 							//Components.utils.reportError(e);
 						}
-					]]></>
+					]]>.toString()
+				).replace(
+					'getBrowser().webNavigation.sessionHistory.QueryInterface(Ci.nsISHistoryInternal).addEntry(shEntry, true);',
+					<![CDATA[
+						shEntry = (function(aChild) {
+							var history = ViewSourceInTabOverlay.tab.linkedBrowser
+											.webNavigation
+											.sessionHistory;
+
+							var entry = Cc['@mozilla.org/browser/session-history-entry;1']
+											.createInstance(Ci.nsISHEntry)
+											.QueryInterface(Ci.nsISHContainer);
+							entry.setURI(makeURI(location.href, null, null));
+							entry.setTitle(location.href);
+							entry.loadType = Ci.nsIDocShellLoadInfo.loadHistory;
+
+							aChild.setIsSubFrame(true);
+							entry.AddChild(aChild, 0);
+
+							// destroy current history because the existing entry doesn't work correctly.
+							history.PurgeHistory(history.count);
+
+							return entry;
+						})(shEntry);
+
+						// we have to add the entry to the parent browser's history.
+						ViewSourceInTabOverlay.tab.linkedBrowser
+							.webNavigation
+							.sessionHistory
+							.QueryInterface(Ci.nsISHistoryInternal)
+							.addEntry(shEntry, true);
+					]]>.toString()
+				).replace(
+					/(catch \(ex\) \{\})/g,
+					'catch(ex){alert(ex);}'
 				)
 			);
 		}
@@ -314,12 +348,12 @@ var ViewSourceInTabOverlay = {
 
 	losslessDecodeURI : function(aURI)
 	{
-		var browser = Cc['@mozilla.org/appshell/window-mediator;1']
-					.getService(Ci.nsIWindowMediator)
+		var browser = Components.classes['@mozilla.org/appshell/window-mediator;1']
+					.getService(Components.interfaces.nsIWindowMediator)
 					.getMostRecentWindow('navigator:browser');
 		if (browser && browser.losslessDecodeURI) {
-			aURI = Cc['@mozilla.org/network/io-service;1']
-					.getService(Ci.nsIIOService)
+			aURI = Components.classes['@mozilla.org/network/io-service;1']
+					.getService(Components.interfaces.nsIIOService)
 					.newURI(aURI, null, null);
 			return browser.losslessDecodeURI(aURI);
 		}
@@ -438,8 +472,8 @@ var ViewSourceInTabOverlay = {
 				XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
 				null
 			);
-		const IOService = Cc['@mozilla.org/network/io-service;1']
-				.getService(Ci.nsIIOService);
+		const IOService = Components.classes['@mozilla.org/network/io-service;1']
+				.getService(Components.interfaces.nsIIOService);
 		var base = IOService.newURI(uri, null, null);
 		for (let i = 0, maxi = basesAndLinks.snapshotLength; i < maxi; i++)
 		{
@@ -453,11 +487,13 @@ var ViewSourceInTabOverlay = {
 				continue;
 			}
 			if (/^[^:]+:/.test(link.textContent)) {
-				link.href = 'view-source:'+link.textContent;
+				uri = link.textContent;
 			}
 			else {
-				link.href = 'view-source:'+IOService.newURI(link.textContent, null, base).asciiSpec;
+				uri = IOService.newURI(link.textContent, null, base).asciiSpec;
 			}
+			link.href = 'view-source-tab:'+uri;
+			link.target = '_parent';
 		}
 	}
 
