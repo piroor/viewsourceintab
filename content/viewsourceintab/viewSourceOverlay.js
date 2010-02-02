@@ -407,18 +407,31 @@ var ViewSourceInTabOverlay = {
 		uri = decodeURI(uri);
 		if (uri == window.arguments[0]) return;
 
-		var charset   = window.arguments[1];
-		var reference = window.arguments[2];
-		var context   = window.arguments[3];
+		var charset    = window.arguments[1];
+		var descriptor = window.arguments[2];
+		var reference  = window.arguments[2];
+		var context    = window.arguments[3];
 		if (query && !reference) {
 			/charset=([^;\)]+)/.test(query);
 			charset = decodeURIComponent(RegExp.$1 || '') || null ;
-			/reference=([^;\)]+)/.test(query);
-			reference = decodeURIComponent(RegExp.$1 || '') || null ;
+			if (/cacheKey=([^;\)]+)/.test(query) && RegExp.$1) {
+				descriptor = Components
+								.classes['@mozilla.org/browser/session-history-entry;1']
+								.createInstance(Components.interfaces.nsISHEntry);
+				let cacheKey = Components
+								.classes['@mozilla.org/supports-PRUint32;1']
+								.createInstance(Components.interfaces.nsISupportsPRUint32);
+				cacheKey.data = RegExp.$1;
+				descriptor.cacheKey = cacheKey;
+			}
+			else {
+				/reference=([^;\)]+)/.test(query);
+				reference = decodeURIComponent(RegExp.$1 || '') || null ;
+			}
 			/context=([^;\)]+)/.test(query);
 			context = decodeURIComponent(RegExp.$1 || '') || null ;
 		}
-		window.arguments = [uri, charset, reference, context];
+		window.arguments = [uri, charset, descriptor || reference, context];
 	},
 
 

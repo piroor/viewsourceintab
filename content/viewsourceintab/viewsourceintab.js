@@ -197,10 +197,9 @@ var ViewSourceInTab = {
 	getViewSourceTabURI : function() 
 	{
 		var uri = this.targetInfo.uri || this.targetInfo.frame.location.href;
-		var prefix = this.getPref('extensions.viewsourceintab.useViewSourceUI') ?
-					'view-source-tab:' :
-					'view-source:' ;
-		return prefix + uri;
+		var withUI = this.getPref('extensions.viewsourceintab.useViewSourceUI');
+		var prefix = withUI ? 'view-source-tab:' : 'view-source:' ;
+		return prefix + uri + this.createQuery(this.targetInfo);
 	},
   
 /* Initializing */ 
@@ -378,6 +377,13 @@ var ViewSourceInTab = {
 		var info = [];
 		if (aInfo.charset) info.push('charset='+encodeURIComponent(aInfo.charset));
 		if (aInfo.reference) info.push('reference='+encodeURIComponent(aInfo.reference));
+		if (aInfo.descriptor) {
+			let key = aInfo.descriptor.QueryInterface(Components.interfaces.nsISHEntry).cacheKey;
+			if (key) {
+				key = key.QueryInterface(Components.interfaces.nsISupportsPRUint32);
+				info.push('cacheKey='+encodeURIComponent(key.data));
+			}
+		}
 		if (aInfo.context) info.push('context='+encodeURIComponent(aInfo.context));
 		return '#viewsourceintab('+info.join(';')+')';
 	},
