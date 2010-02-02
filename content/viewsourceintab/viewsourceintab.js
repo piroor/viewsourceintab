@@ -385,7 +385,7 @@ var ViewSourceInTab = {
 			}
 		}
 		if (aInfo.context) info.push('context='+encodeURIComponent(aInfo.context));
-		return '#viewsourceintab('+info.join(';')+')';
+		return info.length ? '#viewsourceintab('+info.join(';')+')' : '' ;
 	},
  
 	destroy : function() 
