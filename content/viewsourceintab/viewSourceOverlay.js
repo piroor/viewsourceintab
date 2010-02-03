@@ -214,7 +214,7 @@ var ViewSourceInTabOverlay = {
 						if (!selectionSource) {
 					]]>.toString()
 				).replace(
-					/(getBrowser\(\)\.webNavigation\.[^\}]+)/,
+					/((getBrowser\(\)|gBrowser)\.webNavigation\.[^\}]+)/,
 					<![CDATA[
 						if (ViewSourceInTabOverlay.service && !ViewSourceInTabOverlay.source) {
 							ViewSourceInTabOverlay.setTabValue(ViewSourceInTabOverlay.kVIEWSOURCE_SOURCE, encodeURIComponent(tmpNode.innerHTML));
@@ -225,7 +225,7 @@ var ViewSourceInTabOverlay = {
 						if (decodeURIComponent(selectionSource).indexOf(MARK_SELECTION_START) > -1) {
 							window.document.getElementById('appcontent').addEventListener('load', drawSelection, true);
 						}
-						getBrowser().webNavigation.loadURI(
+						$2.webNavigation.loadURI(
 							'view-source:data:text/html;charset=utf-8,' + selectionSource,
 							loadFlags, null, null, null);
 					}]]>.toString()
@@ -242,7 +242,7 @@ var ViewSourceInTabOverlay = {
 						if (!fragmentSource) {
 					]]>.toString()
 				).replace(
-					/(var doc = |getBrowser\(\).loadURI\()/,
+					/(var doc = |(getBrowser\(\)|gBrowser).loadURI\()/,
 					<![CDATA[
 							if (ViewSourceInTabOverlay.service && !ViewSourceInTabOverlay.source) {
 								ViewSourceInTabOverlay.setTabValue(ViewSourceInTabOverlay.kVIEWSOURCE_SOURCE, encodeURIComponent(source));
@@ -268,7 +268,7 @@ var ViewSourceInTabOverlay = {
 							}
 					]]>.toString()
 				).replace(
-					'getBrowser().contentDocument.title',
+					/(getBrowser\(\)|gBrowser)\.contentDocument\.title/,
 					'document.title'
 				)
 			);
@@ -287,7 +287,7 @@ var ViewSourceInTabOverlay = {
 						}
 					]]>.toString()
 				).replace(
-					'getBrowser().webNavigation.sessionHistory.QueryInterface(Ci.nsISHistoryInternal).addEntry(shEntry, true);',
+					/(getBrowser\(\)|gBrowser)(\.webNavigation)?\.sessionHistory\.QueryInterface\(Ci\.nsISHistoryInternal\)\.addEntry\(shEntry, true\);/,
 					<![CDATA[
 						shEntry = (function(aChild) {
 							var history = ViewSourceInTabOverlay.tab.linkedBrowser
@@ -432,6 +432,13 @@ var ViewSourceInTabOverlay = {
 			context = decodeURIComponent(RegExp.$1 || '') || null ;
 		}
 		window.arguments = [uri, charset, descriptor || reference, context];
+
+		if (
+			this.info &&
+			this.info.descriptor &&
+			this.info.descriptor.QueryInterface(Components.interfaces.nsISHEntry).URI.spec != uri
+			)
+			window.arguments[2] = null;
 	},
 
 
