@@ -15,7 +15,7 @@ License.
 The Original Code is the Source Viewer Tab.
 
 The Initial Developer of the Original Code is SHIMODA Hiroshi.
-Portions created by the Initial Developer are Copyright (C) 2008-2009
+Portions created by the Initial Developer are Copyright (C) 2008-2010
 the Initial Developer. All Rights Reserved.
 
 Contributor(s): SHIMODA Hiroshi <piro@p.club.ne.jp>
@@ -74,7 +74,7 @@ ViewSourceTabProtocolBase.prototype = {
 	protocolFlags : Ci.nsIProtocolHandler.URI_NORELATIVE |
 					Ci.nsIProtocolHandler.URI_NOAUTH |
 //					Ci.nsIProtocolHandler.URI_DANGEROUS_TO_LOAD |
-					Ci.nsIProtocolHandler.URI_LOADED_BY_ANYONE,
+					Ci.nsIProtocolHandler.URI_LOADABLE_BY_ANYONE,
 
 	allowPort: function(aPort, aScheme)
 	{
