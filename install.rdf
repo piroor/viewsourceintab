@@ -80,7 +80,7 @@
     <em:localized>
       <RDF:Description em:locale="es-ES"
                        em:name="Source Viewer Tab"
-                       em:description="Muestra cÃ³digo fuente de sitio en pestaÃ±a."
+                       em:description="Muestra código fuente de sitio en pestaña."
                        em:homepageURL="http://piro.sakura.ne.jp/xul/_viewsourceintab.html.en"
                        em:creator="SHIMODA Hiroshi">
 		<em:translator>Godai71.Extenzilla (it-IT locale)</em:translator>
