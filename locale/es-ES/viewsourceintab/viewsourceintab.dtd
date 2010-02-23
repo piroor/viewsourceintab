@@ -1,0 +1,13 @@
+<!ENTITY config.title "ConfiguraciÃ³on de Source Viewer Tab">
+<!ENTITY config.tabs.general "General">
+<!ENTITY config.viewSourceIn.caption "Mostrar &quot;View Page Source&quot; en">
+<!ENTITY config.viewSourceIn.window "Ventana (Firefox por defecto)">
+<!ENTITY config.viewSourceIn.tab "PestaÃ±a">
+<!ENTITY config.viewSourceIn.tab.toolbar "Mostrar barra de herramientas">
+<!ENTITY config.viewSourceIn.external "Otro programa">
+<!ENTITY config.viewSourceIn.external.args.label "ParÃ¡metros:">
+<!ENTITY config.viewSourceIn.external.args.description "*Es posible usar un parÃ¡metro de nÃºmero de lÃnea, &#37;LINE&#37;.">
+<!ENTITY config.viewSourceIn.external.path.encoding.label "Alfabeto:">
+<!ENTITY config.viewSourceIn.external.path.encoding.default "(alfabeto)">
+<!ENTITY config.viewSourceIn.choose "Examinar">
+<!ENTITY config.viewSourceIn.picker "Elegir otro programa para ver cÃ³digo fuente.">
