@@ -108,17 +108,22 @@ var ViewSourceInTab = {
 	getTabBrowserFromChildren : function(aTab) 
 	{
 		if (!aTab) return null;
-
-		var target = aTab;
-		while (target.localName != 'tabbrowser' && target.parentNode)
-			target = target.parentNode;
-
-		return (target.localName == 'tabbrowser') ? target : null ;
+		var b = aTabBrowser.ownerDocument.evaluate(
+				'ancestor-or-self::*[local-name()="tabbrowser"] | '+
+				'ancestor-or-self::*[local-name()="tabs"][@tabbrowser]',
+				aTab,
+				null,
+				XPathResult.FIRST_ORDERED_NODE_TYPE,
+				null
+			);
+		return (b && b.tabbrowser) || b;
 	},
  
 	getTabBrowserFromFrame : function(aFrame) 
 	{
-		return ('SplitBrowser' in window) ? this.getTabBrowserFromChildren(SplitBrowser.getSubBrowserAndBrowserFromFrame(aFrame.top).browser) : gBrowser ;
+		return ('SplitBrowser' in window) ?
+				this.getTabBrowserFromChildren(SplitBrowser.getSubBrowserAndBrowserFromFrame(aFrame.top).browser) :
+				gBrowser ;
 	},
  
 	getTabs : function(aTabBrowser) 
