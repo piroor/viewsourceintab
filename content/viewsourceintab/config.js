@@ -1,6 +1,6 @@
 const XULAppInfo = Components.classes['@mozilla.org/xre/app-info;1']
 		.getService(Components.interfaces.nsIXULAppInfo);
-const comparator = Components.classes['@mozilla.org/xpcom/version-comparator;1']
+const Comparator = Components.classes['@mozilla.org/xpcom/version-comparator;1']
 		.getService(Components.interfaces.nsIVersionComparator);
 const ObserverService = Components.classes['@mozilla.org/observer-service;1']
 		.getService(Components.interfaces.nsIObserverService);
@@ -16,7 +16,13 @@ var gViewSourceInRadio,
 function initGeneralPane()
 {
 	var container = document.getElementById('view_source.editor.args-container');
-	if (comparator.compare(XULAppInfo.version, '3.1') < 0)
+	if (Comparator.compare(XULAppInfo.version, '3.1') < 0)
+		container.setAttribute('collapsed', true);
+	else
+		container.removeAttribute('collapsed');
+
+	container = document.getElementById('view_source.editor.path.encoding-container');
+	if (Comparator.compare(XULAppInfo.version, '3.7a4pre') >= 0)
 		container.setAttribute('collapsed', true);
 	else
 		container.removeAttribute('collapsed');

@@ -8,12 +8,22 @@ var ViewSourceInTab = {
 	kVIEWSOURCE_SOURCE  : 'viewsource-source',
 
 	get SessionStore() {
-		if (!this._SessionStore) {
-			this._SessionStore = Components.classes['@mozilla.org/browser/sessionstore;1'].getService(Components.interfaces.nsISessionStore);
-		}
-		return this._SessionStore;
+		delete this.SessionStore;
+		return this.SessionStore = Components.classes['@mozilla.org/browser/sessionstore;1']
+									.getService(Components.interfaces.nsISessionStore);
 	},
-	_SessionStore : null,
+
+	get XULAppInfo() {
+		delete this.XULAppInfo;
+		return this.XULAppInfo = Components.classes['@mozilla.org/xre/app-info;1']
+									.getService(Components.interfaces.nsIXULAppInfo);
+	},
+
+	get Comparator() {
+		delete this.Comparator;
+		return this.Comparator = Components.classes['@mozilla.org/xpcom/version-comparator;1']
+									.getService(Components.interfaces.nsIVersionComparator);
+	},
 	
 	targetInfo : { 
 		clear : function()
@@ -320,13 +330,6 @@ var ViewSourceInTab = {
 			)
 		);
 
-		eval('gViewSourceUtils.openInExternalEditor = '+
-			gViewSourceUtils.openInExternalEditor.toSource().replace(
-				'path = uri.QueryInterface(Components.interfaces.nsIFileURL).file.path;',
-				'$& path = ViewSourceInTab.convertEncodingForPlatformFilePath(path);'
-			)
-		);
-
 		eval('gViewSourceUtils.getExternalViewSourceEditor = '+
 			gViewSourceUtils.getExternalViewSourceEditor.toSource().replace(
 				'initWithPath(prefPath)',
@@ -334,15 +337,24 @@ var ViewSourceInTab = {
 			)
 		);
 
-		eval('gViewSourceUtils.viewSourceProgressListener.onStateChange = '+
-			gViewSourceUtils.viewSourceProgressListener.onStateChange.toSource().replace(
-				'prefs.getCharPref("view_source.editor.args")',
-				'decodeURIComponent(escape($&))'
-			).replace(
-				/(this\.file\.path)/g,
-				'ViewSourceInTab.convertEncodingForPlatformFilePath($1)'
-			)
-		);
+		if (this.Comparator.compare(this.XULAppInfo.version, '3.7a4pre') >= 0) {
+			eval('gViewSourceUtils.openInExternalEditor = '+
+				gViewSourceUtils.openInExternalEditor.toSource().replace(
+					'path = uri.QueryInterface(Components.interfaces.nsIFileURL).file.path;',
+					'$& path = ViewSourceInTab.convertEncodingForPlatformFilePath(path);'
+				)
+			);
+
+			eval('gViewSourceUtils.viewSourceProgressListener.onStateChange = '+
+				gViewSourceUtils.viewSourceProgressListener.onStateChange.toSource().replace(
+					'prefs.getCharPref("view_source.editor.args")',
+					'decodeURIComponent(escape($&))'
+				).replace(
+					/(this\.file\.path)/g,
+					'ViewSourceInTab.convertEncodingForPlatformFilePath($1)'
+				)
+			);
+		}
 
 		func = 'handleLinkClick __splitbrowser__handleLinkClick __ctxextensions__handleLinkClick __treestyletab__highlander__origHandleLinkClick'.split(' ');
 		func.some(function(aFunc) {

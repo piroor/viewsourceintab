@@ -74,7 +74,7 @@
 						value="&config.viewSourceIn.external.args.description;"/>
 				</vbox>
 			</hbox>
-			<hbox align="center">
+			<hbox align="center" id="view_source.editor.path.encoding-container">
 				<spacer style="width:3em;"/>
 				<label id="view_source.editor.path.encoding-label"
 					value="&config.viewSourceIn.external.path.encoding.label;"
