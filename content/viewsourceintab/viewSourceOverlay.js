@@ -214,7 +214,7 @@ var ViewSourceInTabOverlay = {
 						if (!selectionSource) {
 					]]>.toString()
 				).replace(
-					/((getBrowser\(\)|gBrowser)\.webNavigation\.[^\}]+)/,
+					/(((?:getBrowser\(\)|gBrowser)\.webNavigation|getWebNavigation\(\))\.[^\}]+)/,
 					<![CDATA[
 						if (ViewSourceInTabOverlay.service && !ViewSourceInTabOverlay.source) {
 							ViewSourceInTabOverlay.setTabValue(ViewSourceInTabOverlay.kVIEWSOURCE_SOURCE, encodeURIComponent(tmpNode.innerHTML));
@@ -225,7 +225,7 @@ var ViewSourceInTabOverlay = {
 						if (decodeURIComponent(selectionSource).indexOf(MARK_SELECTION_START) > -1) {
 							window.document.getElementById('appcontent').addEventListener('load', drawSelection, true);
 						}
-						$2.webNavigation.loadURI(
+						$2.loadURI(
 							'view-source:data:text/html;charset=utf-8,' + selectionSource,
 							loadFlags, null, null, null);
 					}]]>.toString()
