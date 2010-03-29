@@ -105,24 +105,24 @@ var ViewSourceInTab = {
 		return null;
 	},
  
-	getTabBrowserFromChildren : function(aTab) 
+	getTabBrowserFromChild : function(aElement) 
 	{
-		if (!aTab) return null;
-		var b = aTab.ownerDocument.evaluate(
+		if (!aElement) return null;
+		var b = aElement.ownerDocument.evaluate(
 				'ancestor-or-self::*[local-name()="tabbrowser"] | '+
 				'ancestor-or-self::*[local-name()="tabs"][@tabbrowser]',
-				aTab,
+				aElement,
 				null,
 				XPathResult.FIRST_ORDERED_NODE_TYPE,
 				null
-			);
+			).singleNodeValue;
 		return (b && b.tabbrowser) || b;
 	},
  
 	getTabBrowserFromFrame : function(aFrame) 
 	{
 		return ('SplitBrowser' in window) ?
-				this.getTabBrowserFromChildren(SplitBrowser.getSubBrowserAndBrowserFromFrame(aFrame.top).browser) :
+				this.getTabBrowserFromChild(SplitBrowser.getSubBrowserAndBrowserFromFrame(aFrame.top).browser) :
 				gBrowser ;
 	},
  
