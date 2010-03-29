@@ -282,7 +282,7 @@ var ViewSourceInTab = {
 				window[aItem].toSource().replace(
 					/((ViewSourceOfURL|top\.gViewSourceUtils\.viewSource)\()/,
 					<><![CDATA[
-						if (!aDocument || !ViewSourceInTab.targetInfo.frame) {
+						if (!aDocument && !ViewSourceInTab.targetInfo.frame) {
 							ViewSourceInTab.targetInfo.clear();
 							ViewSourceInTab.targetInfo.frame = ViewSourceInTab.browser.contentWindow;
 							ViewSourceInTab.targetInfo.descriptor = pageCookie;
