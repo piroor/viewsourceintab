@@ -232,6 +232,7 @@ var ViewSourceInTab = {
 
 		var func;
 
+		// Firefox 3.6 or older
 		func = 'viewPartialSource __ctxextensions__viewPartialSource'.split(' ');
 		func.forEach(function(aItem) {
 			if (!(aItem in nsContextMenu.prototype)) return;
@@ -281,7 +282,7 @@ var ViewSourceInTab = {
 				window[aItem].toSource().replace(
 					/((ViewSourceOfURL|top\.gViewSourceUtils\.viewSource)\()/,
 					<><![CDATA[
-						if (!ViewSourceInTab.targetInfo.frame) {
+						if (!aDocument || !ViewSourceInTab.targetInfo.frame) {
 							ViewSourceInTab.targetInfo.clear();
 							ViewSourceInTab.targetInfo.frame = ViewSourceInTab.browser.contentWindow;
 							ViewSourceInTab.targetInfo.descriptor = pageCookie;
@@ -301,7 +302,7 @@ var ViewSourceInTab = {
 				)
 			);
 		}
-		if ('viewSource' in gViewSourceUtils) { // Firefox 3.1 or later
+		if ('viewSource' in gViewSourceUtils) { // Firefox 3.5 or later
 			eval('gViewSourceUtils.viewSource = '+
 				gViewSourceUtils.viewSource.toSource().replace(
 					'this.openInExternalEditor(',
