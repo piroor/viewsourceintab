@@ -108,7 +108,7 @@ var ViewSourceInTab = {
 	getTabBrowserFromChildren : function(aTab) 
 	{
 		if (!aTab) return null;
-		var b = aTabBrowser.ownerDocument.evaluate(
+		var b = aTab.ownerDocument.evaluate(
 				'ancestor-or-self::*[local-name()="tabbrowser"] | '+
 				'ancestor-or-self::*[local-name()="tabs"][@tabbrowser]',
 				aTab,
