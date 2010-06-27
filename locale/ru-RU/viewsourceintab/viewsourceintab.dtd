@@ -3,13 +3,13 @@
 <!ENTITY config.tabs.general "Главные">
 
 <!ENTITY config.viewSourceIn.caption  "Отображать &quot;исходный код страницы&quot; в">
-<!ENTITY config.viewSourceIn.window   "Окне (по умолчанию в Firefox)">
+<!ENTITY config.viewSourceIn.window   "Окне (в Firefox по умолчанию)">
 <!ENTITY config.viewSourceIn.tab      "Вкладке">
-<!ENTITY config.viewSourceIn.tab.toolbar "Show toolbar">
+<!ENTITY config.viewSourceIn.tab.toolbar "Показывать панель инструментов">
 <!ENTITY config.viewSourceIn.external "Внешней программе">
-<!ENTITY config.viewSourceIn.external.args.label "Command Line Options:">
-<!ENTITY config.viewSourceIn.external.args.description "*A place holder for the line number, &#37;LINE&#37; is available.">
-<!ENTITY config.viewSourceIn.external.path.encoding.label "Encoding of file path:">
-<!ENTITY config.viewSourceIn.external.path.encoding.default "(choose the encoding)">
+<!ENTITY config.viewSourceIn.external.args.label "Параметры:">
+<!ENTITY config.viewSourceIn.external.args.description "*Для передачи числа строк кода доступен параметр &#37;LINE&#37;">
+<!ENTITY config.viewSourceIn.external.path.encoding.label "Кодировка пути файла:">
+<!ENTITY config.viewSourceIn.external.path.encoding.default "(выбор кодировки)">
 <!ENTITY config.viewSourceIn.choose   "Обзор...">
 <!ENTITY config.viewSourceIn.picker   "Выбор внешней программы для просмотра исходного кода страницы.">
