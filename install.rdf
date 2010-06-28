@@ -5,7 +5,7 @@
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:id="viewsourceintab@piro.sakura.ne.jp"
                    em:name="Source Viewer Tab"
-                   em:version="0.3.2010032902"
+                   em:version="0.3.2010062901"
                    em:creator="SHIMODA Hiroshi"
                    em:description="Shows web page sources in tab."
                    em:homepageURL="http://piro.sakura.ne.jp/xul/viewsourceintab/"
