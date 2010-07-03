@@ -41,13 +41,7 @@ var Ci = Components.interfaces;
 const IOService = Cc['@mozilla.org/network/io-service;1']
 		.getService(Ci.nsIIOService);
 
-const XULAppInfo = Cc['@mozilla.org/xre/app-info;1']
-		.getService(Ci.nsIXULAppInfo);
-
-function isGecko18() {
-	var version = XULAppInfo.platformVersion.split('.');
-	return parseInt(version[0]) <= 1 && parseInt(version[1]) <= 8;
-}
+Components.utils.import('resource://gre/modules/XPCOMUtils.jsm');
 
 
 function ViewSourceTabProtocolBase()
@@ -59,13 +53,9 @@ ViewSourceTabProtocolBase.prototype = {
 		return '@mozilla.org/network/protocol;1?name='+this.scheme;
 	},
 
-	QueryInterface: function(aIID)
-	{
-		if (!aIID.equals(Ci.nsIProtocolHandler) &&
-			!aIID.equals(Ci.nsISupports))
-			throw Components.results.NS_ERROR_NO_INTERFACE;
-		return this;
-	},
+	QueryInterface: XPCOMUtils.generateQI([Components.interfaces.nsIProtocolHandler]),
+
+	xpcom_categories: ['content-policy'],
 
 
 	/* implementation */
@@ -96,7 +86,7 @@ ViewSourceTabProtocolBase.prototype = {
 
 	newChannel: function(aURI)
 	{
-		var uri = isGecko18() ? 'about:blank' : this.getDestinationURI(aURI.spec) ;
+		var uri = this.getDestinationURI(aURI.spec);
 		var channel = IOService.newChannel(uri, null, null);
 		return channel;
 	},
@@ -157,187 +147,8 @@ ViewPartialSourceTabProtocol.prototype = {
 ViewPartialSourceTabProtocol.prototype.__proto__ = ViewSourceTabProtocolBase.prototype;
 
 
-function ViewSourceTabRedirector()
-{
-}
 
-ViewSourceTabRedirector.prototype = {
-	get contractID() {
-		return '@piro.sakura.ne.jp/viewsourceintab/redirector;1';
-	},
-	get classDescription() {
-		return 'Source Viewer Tab Redirect Service';
-	},
-	get classID() {
-		return Components.ID('{2264ca30-3d58-11dd-ae16-0800200c9a66}');
-	},
-
-	QueryInterface : function(aIID)
-	{
-		if (!aIID.equals(Ci.nsIContentPolicy) &&
-			!aIID.equals(Ci.nsISupportsWeakReference) &&
-			!aIID.equals(Ci.nsISupports))
-			throw Components.results.NS_ERROR_NO_INTERFACE;
-		return this;
-	},
-
-	TYPE_OTHER			: Ci.nsIContentPolicy.TYPE_OTHER,
-	TYPE_SCRIPT			: Ci.nsIContentPolicy.TYPE_SCRIPT,
-	TYPE_IMAGE			: Ci.nsIContentPolicy.TYPE_IMAGE,
-	TYPE_STYLESHEET		: Ci.nsIContentPolicy.TYPE_STYLESHEET,
-	TYPE_OBJECT			: Ci.nsIContentPolicy.TYPE_OBJECT,
-	TYPE_DOCUMENT		: Ci.nsIContentPolicy.TYPE_DOCUMENT,
-	TYPE_SUBDOCUMENT	: Ci.nsIContentPolicy.TYPE_SUBDOCUMENT,
-	TYPE_REFRESH		: Ci.nsIContentPolicy.TYPE_REFRESH,
-	ACCEPT				: Ci.nsIContentPolicy.ACCEPT,
-	REJECT_REQUEST		: Ci.nsIContentPolicy.REJECT_REQUEST,
-	REJECT_TYPE			: Ci.nsIContentPolicy.REJECT_TYPE,
-	REJECT_SERVER		: Ci.nsIContentPolicy.REJECT_SERVER,
-	REJECT_OTHER		: Ci.nsIContentPolicy.REJECT_OTHER,
-
-	shouldLoad : function(aContentType, aContentLocation, aRequestOrigin, aContext, aMimeTypeGuess, aExtra)
-	{
-		var redirector;
-		switch (aContentLocation.scheme)
-		{
-			default:
-				return this.ACCEPT;
-
-			case ViewSourceTabProtocol.prototype.scheme:
-				redirector = ViewSourceTabProtocol;
-				break;
-
-			case ViewPartialSourceTabProtocol.prototype.scheme:
-				redirector = ViewPartialSourceTabProtocol;
-				break;
-		}
-
-		// aContext == <xul:browser/>
-		var uri = aContentLocation.spec;
-		uri = redirector.prototype.getDestinationURI(uri.substring(uri.indexOf(':')+1));
-		aContext.stop();
-		aContext.ownerDocument.defaultView.setTimeout(function() {
-			aContext.loadURI(uri, null, null);
-		}, this.redirectDelay);
-		return this.ACCEPT;
-	},
-
-	shouldProcess : function(aContentType, aContentLocation, aRequestOrigin, aContext, aMimeTypeGuess, aExtra)
-	{
-		return this.ACCEPT;
-	},
-
-	get redirectDelay()
-	{
-		return Cc['@mozilla.org/preferences;1']
-				.getService(Ci.nsIPrefBranch)
-				.getIntPref('extensions.viewsourceintab.redirectDelay');
-	}
-};
-
-
-const categoryManager = Cc['@mozilla.org/categorymanager;1']
-		.getService(Ci.nsICategoryManager);
-
-var gModule = { 
-	_firstTime: true,
-
-	registerSelf : function (aComponentManager, aFileSpec, aLocation, aType)
-	{
-		if (this._firstTime) {
-			this._firstTime = false;
-			throw Components.results.NS_ERROR_FACTORY_REGISTER_AGAIN;
-		}
-		aComponentManager = aComponentManager.QueryInterface(Ci.nsIComponentRegistrar);
-		for (var key in this._objects) {
-			var obj = this._objects[key];
-			if (!obj.available) continue;
-			aComponentManager.registerFactoryLocation(obj.CID, obj.className, obj.contractID, aFileSpec, aLocation, aType);
-			if (obj.isContentPolicy)
-				categoryManager.addCategoryEntry('content-policy', obj.contractID, obj.contractID, true, true);
-		}
-	},
-
-	unregisterSelf : function (aComponentManager, aFileSpec, aLocation)
-	{
-		aComponentManager = aComponentManager.QueryInterface(Ci.nsIComponentRegistrar);
-		for (var key in this._objects) {
-			var obj = this._objects[key];
-			if (!obj.available) continue;
-			aComponentManager.unregisterFactoryLocation(obj.CID, aFileSpec);
-			if (obj.isContentPolicy)
-				categoryManager.deleteCategoryEntry('content-policy', obj.contractID, true);
-		}
-	},
-
-	getClassObject : function (aComponentManager, aCID, aIID)
-	{
-		if (!aIID.equals(Ci.nsIFactory))
-			throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
-
-		for (var key in this._objects) {
-			if (aCID.equals(this._objects[key].CID))
-				return this._objects[key].factory;
-		}
-
-		throw Components.results.NS_ERROR_NO_INTERFACE;
-	},
-
-	_objects : {
-		managerForViewSourceTabProtocol : {
-			CID        : ViewSourceTabProtocol.prototype.classID,
-			contractID : ViewSourceTabProtocol.prototype.contractID,
-			className  : ViewSourceTabProtocol.prototype.classDescription,
-			factory    : {
-				createInstance : function (aOuter, aIID)
-				{
-					if (aOuter != null)
-						throw Components.results.NS_ERROR_NO_AGGREGATION;
-					return (new ViewSourceTabProtocol()).QueryInterface(aIID);
-				}
-			},
-			available : true
-		},
-		managerForViewPartialSourceTabProtocol : {
-			CID        : ViewPartialSourceTabProtocol.prototype.classID,
-			contractID : ViewPartialSourceTabProtocol.prototype.contractID,
-			className  : ViewPartialSourceTabProtocol.prototype.classDescription,
-			factory    : {
-				createInstance : function (aOuter, aIID)
-				{
-					if (aOuter != null)
-						throw Components.results.NS_ERROR_NO_AGGREGATION;
-					return (new ViewPartialSourceTabProtocol()).QueryInterface(aIID);
-				}
-			},
-			available : true
-		},
-		managerForViewSourceTabRedirector : {
-			CID        : ViewSourceTabRedirector.prototype.classID,
-			contractID : ViewSourceTabRedirector.prototype.contractID,
-			className  : ViewSourceTabRedirector.prototype.classDescription,
-			factory    : {
-				createInstance : function (aOuter, aIID)
-				{
-					if (aOuter != null)
-						throw Components.results.NS_ERROR_NO_AGGREGATION;
-					return (new ViewSourceTabRedirector()).QueryInterface(aIID);
-				}
-			},
-			get available() {
-				return isGecko18();
-			},
-			isContentPolicy : true
-		}
-	},
-
-	canUnload : function (aComponentManager)
-	{
-		return true;
-	}
-};
-
-function NSGetModule(compMgr, fileSpec)
-{
-	return gModule;
-}
+if (XPCOMUtils.generateNSGetFactory)
+	var NSGetFactory = XPCOMUtils.generateNSGetFactory([ViewSourceTabProtocol, ViewPartialSourceTabProtocol]);
+else
+	var NSGetModule = XPCOMUtils.generateNSGetModule([ViewSourceTabProtocol, ViewPartialSourceTabProtocol]);
