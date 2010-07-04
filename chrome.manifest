@@ -9,6 +9,8 @@ locale	viewsourceintab	hu-HU	jar:chrome/viewsourceintab.jar!/locale/hu-HU/viewso
 locale	viewsourceintab	ru-RU	jar:chrome/viewsourceintab.jar!/locale/ru-RU/viewsourceintab/
 locale	viewsourceintab	es-ES	jar:chrome/viewsourceintab.jar!/locale/es-ES/viewsourceintab/
 
+resource viewsourceintab-modules modules/
+
 component	{9cd42e30-3b70-11dd-ae16-0800200c9a66}	components/ProtocolHandler.js
 component	{3ef379f0-3b71-11dd-ae16-0800200c9a66}	components/ProtocolHandler.js
 contract	@mozilla.org/network/protocol;1?name=view-source-tab	{9cd42e30-3b70-11dd-ae16-0800200c9a66}
