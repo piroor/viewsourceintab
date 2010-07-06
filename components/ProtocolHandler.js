@@ -113,7 +113,7 @@ function ViewSourceTabProtocol()
 
 ViewSourceTabProtocol.prototype = {
 	get classDescription() {
-		return 'Source Viewer Tab Protocol';
+		return 'ViewSourceTabProtocol';
 	},
 	get classID() {
 		return Components.ID('{9cd42e30-3b70-11dd-ae16-0800200c9a66}');
@@ -133,7 +133,7 @@ function ViewPartialSourceTabProtocol()
 
 ViewPartialSourceTabProtocol.prototype = {
 	get classDescription() {
-		return 'Partial Source Viewer Tab Protocol';
+		return 'ViewPartialSourceTabProtocol';
 	},
 	get classID() {
 		return Components.ID('{3ef379f0-3b71-11dd-ae16-0800200c9a66}');

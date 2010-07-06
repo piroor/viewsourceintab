@@ -15,5 +15,3 @@ component	{9cd42e30-3b70-11dd-ae16-0800200c9a66}	components/ProtocolHandler.js
 component	{3ef379f0-3b71-11dd-ae16-0800200c9a66}	components/ProtocolHandler.js
 contract	@mozilla.org/network/protocol;1?name=view-source-tab	{9cd42e30-3b70-11dd-ae16-0800200c9a66}
 contract	@mozilla.org/network/protocol;1?name=view-partial-source-tab	{3ef379f0-3b71-11dd-ae16-0800200c9a66}
-category	profile-after-change	Source Viewer Tab Protocol	@mozilla.org/network/protocol;1?name=view-source-tab
-category	profile-after-change	Partial Source Viewer Tab Protocol	@mozilla.org/network/protocol;1?name=view-partial-source-tab
