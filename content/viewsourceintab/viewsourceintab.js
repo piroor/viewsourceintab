@@ -184,7 +184,7 @@ var ViewSourceInTab = {
 		if (data &&
 			data._tabStillLoading &&
 			aTab.getAttribute('busy') != 'true' &&
-			!aTab.linkedBrowser.__SS_restoring)
+			aTab.linkedBrowser.__SS_restoreState != 1)
 			data._tabStillLoading = false;
 	},
  
