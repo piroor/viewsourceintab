@@ -6,7 +6,7 @@
                    em:id="viewsourceintab@piro.sakura.ne.jp"
                    em:name="Source Viewer Tab"
                    em:version="0.3.2010070401"
-                   em:creator="SHIMODA Hiroshi"
+                   em:creator="YUKI &quot;Piro&quot; Hiroshi"
                    em:description="Shows web page sources in tab."
                    em:homepageURL="http://piro.sakura.ne.jp/xul/viewsourceintab/"
                    em:optionsURL="chrome://viewsourceintab/content/config.xul">
@@ -23,7 +23,7 @@
                        em:name="Source Viewer Tab"
                        em:description="Shows web page sources in tab."
                        em:homepageURL="http://piro.sakura.ne.jp/xul/_viewsourceintab.html.en"
-                       em:creator="SHIMODA Hiroshi">
+                       em:creator="YUKI &quot;Piro&quot; Hiroshi">
 		<em:translator>Godai71.Extenzilla (it-IT locale)</em:translator>
 		<em:translator>Mikes Kaszmán István (hu-HU locale)</em:translator>
 		<em:translator>L'Autour (ru-RU locale)</em:translator>
@@ -35,7 +35,7 @@
                        em:name="ソース表示タブ"
                        em:description="ページのソースをタブの中で表示します。"
                        em:homepageURL="http://piro.sakura.ne.jp/xul/_viewsourceintab.html"
-                       em:creator="SHIMODA Hiroshi">
+                       em:creator="YUKI &quot;Piro&quot; Hiroshi">
 		<em:translator>Godai71.Extenzilla (it-IT locale)</em:translator>
 		<em:translator>Mikes Kaszmán István (hu-HU locale)</em:translator>
 		<em:translator>L'Autour (ru-RU locale)</em:translator>
@@ -47,7 +47,7 @@
                        em:name="Source Viewer Tab"
                        em:description="Permette di visualizzare il codice sorgente della pagina in una scheda"
                        em:homepageURL="http://piro.sakura.ne.jp/xul/_viewsourceintab.html.en"
-                       em:creator="SHIMODA Hiroshi">
+                       em:creator="YUKI &quot;Piro&quot; Hiroshi">
 		<em:translator>Godai71.Extenzilla (it-IT locale)</em:translator>
 		<em:translator>Mikes Kaszmán István (hu-HU locale)</em:translator>
 		<em:translator>L'Autour (ru-RU locale)</em:translator>
@@ -59,7 +59,7 @@
                        em:name="Source Viewer Tab"
                        em:description="Oldal forrásának megjelenítése új lapon vagy külső alkalmazással."
                        em:homepageURL="http://piro.sakura.ne.jp/xul/_viewsourceintab.html.en"
-                       em:creator="SHIMODA Hiroshi">
+                       em:creator="YUKI &quot;Piro&quot; Hiroshi">
 		<em:translator>Godai71.Extenzilla (it-IT locale)</em:translator>
 		<em:translator>Mikes Kaszmán István (hu-HU locale)</em:translator>
 		<em:translator>L'Autour(ru-RU locale)</em:translator>
@@ -70,7 +70,7 @@
                        em:name="Source Viewer Tab (Просмотр исходного кода во вкладке)"
                        em:description="Показывает исходный код веб-страницы во вкладке"
                        em:homepageURL="http://piro.sakura.ne.jp/xul/_viewsourceintab.html.en"
-                       em:creator="SHIMODA Hiroshi">
+                       em:creator="YUKI &quot;Piro&quot; Hiroshi">
 		<em:translator>Godai71.Extenzilla (it-IT locale)</em:translator>
 		<em:translator>Mikes Kaszmán István (hu-HU locale)</em:translator>
 		<em:translator>L'Autour (ru-RU locale)</em:translator>
@@ -82,7 +82,7 @@
                        em:name="Source Viewer Tab"
                        em:description="Muestra código fuente de sitio en pestaña."
                        em:homepageURL="http://piro.sakura.ne.jp/xul/_viewsourceintab.html.en"
-                       em:creator="SHIMODA Hiroshi">
+                       em:creator="YUKI &quot;Piro&quot; Hiroshi">
 		<em:translator>Godai71.Extenzilla (it-IT locale)</em:translator>
 		<em:translator>Mikes Kaszmán István (hu-HU locale)</em:translator>
 		<em:translator>L'Autour (ru-RU locale)</em:translator>
