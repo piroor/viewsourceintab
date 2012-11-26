@@ -240,27 +240,26 @@ var ViewSourceInTab = {
 			eval('nsContextMenu.prototype.'+aItem+' = '+
 				nsContextMenu.prototype[aItem].toSource().replace(
 					'window.openDialog(',
-					<><![CDATA[
-						if (ViewSourceInTab.shouldLoadInTab) {
-							ViewSourceInTab.targetInfo.clear();
-							ViewSourceInTab.targetInfo.frame     = focusedWindow;
-							ViewSourceInTab.targetInfo.uri       = docUrl;
-							ViewSourceInTab.targetInfo.charset   = docCharset;
-							ViewSourceInTab.targetInfo.reference = reference;
-							ViewSourceInTab.targetInfo.context   = arguments[0];
-							if ('TreeStyleTabService' in window)
-								TreeStyleTabService.readyToOpenChildTab(focusedWindow);
-							var b = ViewSourceInTab.getTabBrowserFromFrame(focusedWindow);
-							var uri = focusedWindow.location.href;
-							if (uri.indexOf('#') > -1) uri = uri.substring(0, uri.indexOf('#'));
-							b.loadOneTab(
-								'view-partial-source-tab:'+
-									uri+
-									ViewSourceInTab.createQuery(ViewSourceInTab.targetInfo),
-								null, null, null, false);
-						}
-						else
-							window.openDialog(]]></>
+					'if (ViewSourceInTab.shouldLoadInTab) {\n' +
+					'  ViewSourceInTab.targetInfo.clear();\n' +
+					'  ViewSourceInTab.targetInfo.frame     = focusedWindow;\n' +
+					'  ViewSourceInTab.targetInfo.uri       = docUrl;\n' +
+					'  ViewSourceInTab.targetInfo.charset   = docCharset;\n' +
+					'  ViewSourceInTab.targetInfo.reference = reference;\n' +
+					'  ViewSourceInTab.targetInfo.context   = arguments[0];\n' +
+					'  if ("TreeStyleTabService" in window)\n' +
+					'    TreeStyleTabService.readyToOpenChildTab(focusedWindow);\n' +
+					'  var b = ViewSourceInTab.getTabBrowserFromFrame(focusedWindow);\n' +
+					'  var uri = focusedWindow.location.href;\n' +
+					'  if (uri.indexOf("#") > -1) uri = uri.substring(0, uri.indexOf("#"));\n' +
+					'  b.loadOneTab(\n' +
+					'    "view-partial-source-tab:"+\n' +
+					'      uri+\n' +
+					'      ViewSourceInTab.createQuery(ViewSourceInTab.targetInfo),\n' +
+					'    null, null, null, false);\n' +
+					'}\n' +
+					'else\n' +
+					'  window.openDialog('
 				)
 			);
 		});
@@ -268,11 +267,9 @@ var ViewSourceInTab = {
 		eval('nsContextMenu.prototype.viewFrameSource = '+
 			nsContextMenu.prototype.viewFrameSource.toSource().replace(
 				'{',
-				<><![CDATA[
-					{
-						ViewSourceInTab.targetInfo.clear();
-						ViewSourceInTab.targetInfo.frame = this.target.ownerDocument.defaultView;
-				]]></>
+				'{\n' +
+				'  ViewSourceInTab.targetInfo.clear();\n' +
+				'  ViewSourceInTab.targetInfo.frame = this.target.ownerDocument.defaultView;'
 			)
 		);
 
@@ -282,13 +279,12 @@ var ViewSourceInTab = {
 			eval('window.'+aItem+' = '+
 				window[aItem].toSource().replace(
 					/((ViewSourceOfURL|top\.gViewSourceUtils\.viewSource)\()/,
-					<><![CDATA[
-						if (aDocument || !ViewSourceInTab.targetInfo.frame) {
-							ViewSourceInTab.targetInfo.clear();
-							ViewSourceInTab.targetInfo.frame = aDocument ? aDocument.defaultView : ViewSourceInTab.browser.contentWindow ;
-							ViewSourceInTab.targetInfo.descriptor = pageCookie;
-						}
-						$1]]></>
+					'if (aDocument || !ViewSourceInTab.targetInfo.frame) {\n' +
+					'  ViewSourceInTab.targetInfo.clear();\n' +
+					'  ViewSourceInTab.targetInfo.frame = aDocument ? aDocument.defaultView : ViewSourceInTab.browser.contentWindow ;\n' +
+					'  ViewSourceInTab.targetInfo.descriptor = pageCookie;\n' +
+					'}\n' +
+					'$1'
 				)
 			);
 		});
@@ -297,9 +293,8 @@ var ViewSourceInTab = {
 			eval('window.ViewSourceOfURL = '+
 				window.ViewSourceOfURL.toSource().replace(
 					/((gViewSourceUtils|utils)\.openInExternalEditor\()/,
-					<><![CDATA[
-						ViewSourceInTab.targetInfo.clear();
-						$1]]></>
+					'ViewSourceInTab.targetInfo.clear();\n' +
+					'$1'
 				)
 			);
 		}
@@ -307,9 +302,8 @@ var ViewSourceInTab = {
 			eval('gViewSourceUtils.viewSource = '+
 				gViewSourceUtils.viewSource.toSource().replace(
 					'this.openInExternalEditor(',
-					<><![CDATA[
-						ViewSourceInTab.targetInfo.clear();
-						$&]]></>
+					'ViewSourceInTab.targetInfo.clear(),\n' +
+					'$&'
 				)
 			);
 		}
@@ -317,23 +311,21 @@ var ViewSourceInTab = {
 		eval('gViewSourceUtils.openInInternalViewer = '+
 			gViewSourceUtils.openInInternalViewer.toSource().replace(
 				/(openDialog\([^\)]+\))/,
-				<><![CDATA[
-					if (ViewSourceInTab.shouldLoadInTab) {
-						if ('TreeStyleTabService' in window)
-							TreeStyleTabService.readyToOpenChildTab(ViewSourceInTab.targetInfo.frame);
-						var b = ViewSourceInTab.getTabBrowserFromFrame(ViewSourceInTab.targetInfo.frame);
-						b.loadOneTab(
-							ViewSourceInTab.getViewSourceTabURI(),
-							null, null, null, false
-						);
-						if (!ViewSourceInTab.getPref('extensions.viewsourceintab.useViewSourceUI'))
-							ViewSourceInTab.targetInfo.clear();
-					}
-					else {
-						ViewSourceInTab.targetInfo.clear();
-						$1;
-					}
-				]]></>
+				'if (ViewSourceInTab.shouldLoadInTab) {\n' +
+				'  if ("TreeStyleTabService" in window)\n' +
+				'    TreeStyleTabService.readyToOpenChildTab(ViewSourceInTab.targetInfo.frame);\n' +
+				'  var b = ViewSourceInTab.getTabBrowserFromFrame(ViewSourceInTab.targetInfo.frame);\n' +
+				'  b.loadOneTab(\n' +
+				'    ViewSourceInTab.getViewSourceTabURI(),\n' +
+				'    null, null, null, false\n' +
+				'  );\n' +
+				'  if (!ViewSourceInTab.getPref("extensions.viewsourceintab.useViewSourceUI"))\n' +
+				'    ViewSourceInTab.targetInfo.clear();\n' +
+				'}\n' +
+				'else {\n' +
+				'  ViewSourceInTab.targetInfo.clear();\n' +
+				'  $1;\n' +
+				'}'
 			)
 		);
 
