@@ -155,16 +155,14 @@ var ViewSourceInTabOverlay = {
 			eval('window.onLoadViewSource = '+
 				window.onLoadViewSource.toSource().replace( // prevent infinity reloading
 					'{',
-					<![CDATA[
-						{
-							if (!ViewSourceInTabOverlay.initializeOnLoad()) return;
-					]]>.toString()
+					'{\n' +
+					'  if (!ViewSourceInTabOverlay.initializeOnLoad()) return;\n'
 				).replace(
 					'}',
-					<![CDATA[;
-						ViewSourceInTabOverlay.clearInfo();
-						document.title = document.documentElement.getAttribute('titlepreface') + (getBrowser().contentDocument.title || window.arguments[0]);
-					}]]>.toString()
+					';\n' +
+					'ViewSourceInTabOverlay.clearInfo();\n' +
+					'document.title = document.documentElement.getAttribute("titlepreface") + (getBrowser().contentDocument.title || window.arguments[0]);\n' +
+					'}\n'
 				).replace(
 					'gFindBar.initFindBar();',
 					''
@@ -184,9 +182,8 @@ var ViewSourceInTabOverlay = {
 			eval('window.onLoadViewPartialSource = '+
 				window.onLoadViewPartialSource.toSource().replace( // prevent infinity reloading
 					'{',
-					<><![CDATA[$&
-						if (!ViewSourceInTabOverlay.initializeOnLoad()) return;
-					]]></>
+					'$&\n' +
+					'  if (!ViewSourceInTabOverlay.initializeOnLoad()) return;\n'
 				).replace(
 					'window._content.focus();',
 					'ViewSourceInTabOverlay.clearInfo(); $&'
@@ -209,26 +206,24 @@ var ViewSourceInTabOverlay = {
 			eval('window.viewPartialSourceForSelection = '+
 				window.viewPartialSourceForSelection.toSource().replace(
 					'{',
-					<![CDATA[$&
-						var selectionSource = ViewSourceInTabOverlay.source;
-						if (!selectionSource) {
-					]]>.toString()
+					'{\n' +
+					'  var selectionSource = ViewSourceInTabOverlay.source;\n' +
+					'  if (!selectionSource) {\n'
 				).replace(
 					/(((?:getBrowser\(\)|gBrowser)\.webNavigation|getWebNavigation\(\))\.[^\}]+)/,
-					<![CDATA[
-						if (ViewSourceInTabOverlay.service && !ViewSourceInTabOverlay.source) {
-							ViewSourceInTabOverlay.setTabValue(ViewSourceInTabOverlay.kVIEWSOURCE_SOURCE, encodeURIComponent(tmpNode.innerHTML));
-						}
-						$1;
-					}
-					else {
-						if (decodeURIComponent(selectionSource).indexOf(MARK_SELECTION_START) > -1) {
-							window.document.getElementById('appcontent').addEventListener('load', drawSelection, true);
-						}
-						$2.loadURI(
-							'view-source:data:text/html;charset=utf-8,' + selectionSource,
-							loadFlags, null, null, null);
-					}]]>.toString()
+					'  if (ViewSourceInTabOverlay.service && !ViewSourceInTabOverlay.source) {\n' +
+					'    ViewSourceInTabOverlay.setTabValue(ViewSourceInTabOverlay.kVIEWSOURCE_SOURCE, encodeURIComponent(tmpNode.innerHTML));\n' +
+					'  }\n' +
+					'  $1;\n' +
+					'}\n' +
+					'else {\n' +
+					'  if (decodeURIComponent(selectionSource).indexOf(MARK_SELECTION_START) > -1) {\n' +
+					'    window.document.getElementById("appcontent").addEventListener("load", drawSelection, true);\n' +
+					'  }\n' +
+					'  $2.loadURI(\n' +
+					'    "view-source:data:text/html;charset=utf-8," + selectionSource,\n' +
+					'    loadFlags, null, null, null);\n' +
+					'}\n'
 				)
 			);
 		}
@@ -237,21 +232,19 @@ var ViewSourceInTabOverlay = {
 			eval('window.viewPartialSourceForFragment = '+
 				window.viewPartialSourceForFragment.toSource().replace(
 					'{',
-					<![CDATA[$&
-						var fragmentSource = ViewSourceInTabOverlay.source;
-						if (!fragmentSource) {
-					]]>.toString()
+					'{\n' +
+					'  var fragmentSource = ViewSourceInTabOverlay.source;\n' +
+					'  if (!fragmentSource) {\n'
 				).replace(
 					/(var doc = |(getBrowser\(\)|gBrowser).loadURI\()/,
-					<![CDATA[
-							if (ViewSourceInTabOverlay.service && !ViewSourceInTabOverlay.source) {
-								ViewSourceInTabOverlay.setTabValue(ViewSourceInTabOverlay.kVIEWSOURCE_SOURCE, encodeURIComponent(source));
-							}
-						}
-						else {
-							var source = fragmentSource;
-						}
-						$1]]>.toString()
+					'  if (ViewSourceInTabOverlay.service && !ViewSourceInTabOverlay.source) {\n' +
+					'    ViewSourceInTabOverlay.setTabValue(ViewSourceInTabOverlay.kVIEWSOURCE_SOURCE, encodeURIComponent(source));\n' +
+					'  }\n' +
+					'}\n' +
+					'else {\n' +
+					'  var source = fragmentSource;\n' +
+					'}\n' +
+					'$1\n'
 				)
 			);
 		}
@@ -260,13 +253,12 @@ var ViewSourceInTabOverlay = {
 			eval('window.drawSelection = '+
 				window.drawSelection.toSource().replace(
 					'{',
-					<![CDATA[$&
-							try {
-								window.document.getElementById('appcontent').removeEventListener('load', drawSelection, true);
-							}
-							catch(e) {
-							}
-					]]>.toString()
+					'{\n' +
+					'    try {\n' +
+					'      window.document.getElementById("appcontent").removeEventListener("load", drawSelection, true);\n' +
+					'    }\n' +
+					'    catch(e) {\n' +
+					'    }\n'
 				).replace(
 					/(getBrowser\(\)|gBrowser)\.contentDocument\.title/,
 					'document.title'
@@ -278,45 +270,41 @@ var ViewSourceInTabOverlay = {
 			eval('window.viewSource = '+
 				window.viewSource.toSource().replace(
 					/(webNavigation\.sessionHistory = Components\.classes\[[^\]]+\]\.createInstance\([^\)]*\);)/,
-					<![CDATA[
-						try {
-							$1
-						}
-						catch(e) {
-							//Components.utils.reportError(e);
-						}
-					]]>.toString()
+					'try {\n' +
+					'  $1\n' +
+					'}\n' +
+					'catch(e) {\n' +
+					'  //Components.utils.reportError(e);\n' +
+					'}\n'
 				).replace(
 					/(getBrowser\(\)|gBrowser)(\.webNavigation)?\.sessionHistory\.QueryInterface\(Ci\.nsISHistoryInternal\)\.addEntry\(shEntry, true\);/,
-					<![CDATA[
-						shEntry = (function(aChild) {
-							var history = ViewSourceInTabOverlay.tab.linkedBrowser
-											.webNavigation
-											.sessionHistory;
+					'shEntry = (function(aChild) {\n' +
+					'  var history = ViewSourceInTabOverlay.tab.linkedBrowser\n' +
+					'          .webNavigation\n' +
+					'          .sessionHistory;\n' +
 
-							var entry = Cc['@mozilla.org/browser/session-history-entry;1']
-											.createInstance(Ci.nsISHEntry)
-											.QueryInterface(Ci.nsISHContainer);
-							entry.setURI(makeURI(location.href, null, null));
-							entry.setTitle(location.href);
-							entry.loadType = Ci.nsIDocShellLoadInfo.loadHistory;
+					'  var entry = Cc["@mozilla.org/browser/session-history-entry;1"]\n' +
+					'          .createInstance(Ci.nsISHEntry)\n' +
+					'          .QueryInterface(Ci.nsISHContainer);\n' +
+					'  entry.setURI(makeURI(location.href, null, null));\n' +
+					'  entry.setTitle(location.href);\n' +
+					'  entry.loadType = Ci.nsIDocShellLoadInfo.loadHistory;\n' +
 
-							aChild.setIsSubFrame(true);
-							entry.AddChild(aChild, 0);
+					'  aChild.setIsSubFrame(true);\n' +
+					'  entry.AddChild(aChild, 0);\n' +
 
-							// destroy current history because the existing entry doesn't work correctly.
-							history.PurgeHistory(history.index+1);
+					'  // destroy current history because the existing entry doesn"t work correctly.\n' +
+					'  history.PurgeHistory(history.index+1);\n' +
 
-							return entry;
-						})(shEntry);
+					'  return entry;\n' +
+					'})(shEntry);\n' +
 
-						// we have to add the entry to the parent browser's history.
-						ViewSourceInTabOverlay.tab.linkedBrowser
-							.webNavigation
-							.sessionHistory
-							.QueryInterface(Ci.nsISHistoryInternal)
-							.addEntry(shEntry, true);
-					]]>.toString()
+					'// we have to add the entry to the parent browser"s history.\n' +
+					'ViewSourceInTabOverlay.tab.linkedBrowser\n' +
+					'  .webNavigation\n' +
+					'  .sessionHistory\n' +
+					'  .QueryInterface(Ci.nsISHistoryInternal)\n' +
+					'  .addEntry(shEntry, true);\n'
 				).replace(
 					/(catch \(ex\) \{\})/g,
 					'catch(ex){alert(ex);}'
