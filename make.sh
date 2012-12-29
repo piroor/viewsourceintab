@@ -1,6 +1,6 @@
 #!/bin/sh
 
 cp buildscript/makexpi.sh ./
-./makexpi.sh viewsourceintab version=0
+./makexpi.sh -n viewsourceintab -o
 rm makexpi.sh
 

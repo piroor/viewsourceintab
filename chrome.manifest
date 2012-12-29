@@ -1,13 +1,13 @@
-content	viewsourceintab	jar:chrome/viewsourceintab.jar!/content/viewsourceintab/
+content	viewsourceintab	content/viewsourceintab/
 
 overlay	chrome://browser/content/browser.xul	chrome://viewsourceintab/content/viewsourceintab.xul
 
-locale	viewsourceintab	en-US	jar:chrome/viewsourceintab.jar!/locale/en-US/viewsourceintab/
-locale	viewsourceintab	ja	jar:chrome/viewsourceintab.jar!/locale/ja/viewsourceintab/
-locale	viewsourceintab	it-IT	jar:chrome/viewsourceintab.jar!/locale/it-IT/viewsourceintab/
-locale	viewsourceintab	hu-HU	jar:chrome/viewsourceintab.jar!/locale/hu-HU/viewsourceintab/
-locale	viewsourceintab	ru-RU	jar:chrome/viewsourceintab.jar!/locale/ru-RU/viewsourceintab/
-locale	viewsourceintab	es-ES	jar:chrome/viewsourceintab.jar!/locale/es-ES/viewsourceintab/
+locale	viewsourceintab	en-US	locale/en-US/viewsourceintab/
+locale	viewsourceintab	ja	locale/ja/viewsourceintab/
+locale	viewsourceintab	it-IT	locale/it-IT/viewsourceintab/
+locale	viewsourceintab	hu-HU	locale/hu-HU/viewsourceintab/
+locale	viewsourceintab	ru-RU	locale/ru-RU/viewsourceintab/
+locale	viewsourceintab	es-ES	locale/es-ES/viewsourceintab/
 
 resource viewsourceintab-modules modules/
 
