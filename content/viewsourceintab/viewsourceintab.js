@@ -49,7 +49,7 @@ var ViewSourceInTab = {
 			this._overrideShouldLoadInTab === null ||
 			this._overrideShouldLoadInTab === void(0)
 			) ?
-			this.getPref('extensions.viewsourceintab.enabled') :
+			this.prefs.getPref('extensions.viewsourceintab.enabled') :
 			this._overrideShouldLoadInTab ;
 	},
 	set shouldLoadInTab(aValue)
@@ -196,7 +196,7 @@ var ViewSourceInTab = {
  
 	convertEncodingForPlatformFilePath : function(aPath) 
 	{
-		var encoding = this.getPref('extensions.viewsourceintab.path.encoding');
+		var encoding = this.prefs.getPref('extensions.viewsourceintab.path.encoding');
 		if (encoding) {
 			try {
 				var UCONV = Components
@@ -214,7 +214,7 @@ var ViewSourceInTab = {
 	getViewSourceTabURI : function() 
 	{
 		var uri = this.targetInfo.uri || this.targetInfo.frame.location.href;
-		var withUI = this.getPref('extensions.viewsourceintab.useViewSourceUI');
+		var withUI = this.prefs.getPref('extensions.viewsourceintab.useViewSourceUI');
 		var prefix = withUI ? 'view-source-tab:' : 'view-source:' ;
 		return prefix + uri + this.createQuery(this.targetInfo);
 	},
@@ -320,7 +320,7 @@ var ViewSourceInTab = {
 				'    ViewSourceInTab.getViewSourceTabURI(),\n' +
 				'    null, null, null, false\n' +
 				'  );\n' +
-				'  if (!ViewSourceInTab.getPref("extensions.viewsourceintab.useViewSourceUI"))\n' +
+				'  if (!ViewSourceInTab.prefs.getPref("extensions.viewsourceintab.useViewSourceUI"))\n' +
 				'    ViewSourceInTab.targetInfo.clear();\n' +
 				'}\n' +
 				'else {\n' +
@@ -455,11 +455,11 @@ var ViewSourceInTab = {
 	{
 		var inTabCommand = (aEvent.button == 1 || (navigator.platform.toLowerCase().indexOf('mac') == -1 ? aEvent.ctrlKey : aEvent.metaKey ));
 		if (!inTabCommand) return;
-		if (this.getPref('extensions.viewsourceintab.enabled')) {
+		if (this.prefs.getPref('extensions.viewsourceintab.enabled')) {
 			inTabCommand = !inTabCommand;
 		}
 
-		var useExternal = this.getPref('view_source.editor.external');
+		var useExternal = this.prefs.getPref('view_source.editor.external');
 		if (useExternal) {
 			this.setPref('view_source.editor.external', false);
 		}
@@ -484,7 +484,7 @@ var ViewSourceInTab = {
 		}
 
 		if (useExternal) {
-			this.setPref('view_source.editor.external', true);
+			this.prefs.setPref('view_source.editor.external', true);
 		}
 		this.shouldLoadInTab = null;
 
@@ -503,6 +503,6 @@ var ViewSourceInTab = {
 	var namespace = {};
 	Components.utils.import('resource://viewsourceintab-modules/prefs.js', namespace);
 	Components.utils.import('resource://viewsourceintab-modules/namespace.jsm', namespace);
-	ViewSourceInTab.__proto__ = namespace.prefs;
+	ViewSourceInTab.prfs = namespace.prefs;
 })();
  	

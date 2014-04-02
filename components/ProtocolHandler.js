@@ -15,7 +15,7 @@ License.
 The Original Code is the Source Viewer Tab.
 
 The Initial Developer of the Original Code is YUKI "Piro" Hiroshi.
-Portions created by the Initial Developer are Copyright (C) 2008-2010
+Portions created by the Initial Developer are Copyright (C) 2008-2014
 the Initial Developer. All Rights Reserved.
 
 Contributor(s): YUKI "Piro" Hiroshi <piro.outsider.reflex@gmail.com>
@@ -42,6 +42,7 @@ const IOService = Cc['@mozilla.org/network/io-service;1']
 		.getService(Ci.nsIIOService);
 
 Components.utils.import('resource://gre/modules/XPCOMUtils.jsm');
+Components.utils.import('resource://viewsourceintab-modules/inherit.jsm');
 
 
 function ViewSourceTabProtocolBase()
@@ -124,7 +125,7 @@ ViewSourceTabProtocol.prototype = {
 	viewerURI : 'chrome://viewsourceintab/content/viewer.xul'
 };
 
-ViewSourceTabProtocol.prototype.__proto__ = ViewSourceTabProtocolBase.prototype;
+ViewSourceTabProtocol.prototype = inherit(ViewSourceTabProtocolBase.prototype);
 
 
 function ViewPartialSourceTabProtocol()
@@ -144,7 +145,7 @@ ViewPartialSourceTabProtocol.prototype = {
 	viewerURI : 'chrome://viewsourceintab/content/partialViewer.xul'
 };
 
-ViewPartialSourceTabProtocol.prototype.__proto__ = ViewSourceTabProtocolBase.prototype;
+ViewPartialSourceTabProtocol.prototype = inherit(ViewSourceTabProtocolBase.prototype);
 
 
 

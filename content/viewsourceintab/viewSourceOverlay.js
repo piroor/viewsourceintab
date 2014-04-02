@@ -1,4 +1,7 @@
-var ViewSourceInTabOverlay = {
+(function() {
+let { inherit } = Components.utils.import('resource://viewsourceintab-modules/prefs.js', {});
+
+var ViewSourceInTabOverlay = inherit(ViewSourceInTab, {
 
 	get browserWindow()
 	{
@@ -505,8 +508,7 @@ var ViewSourceInTabOverlay = {
 		}
 	}
 
-};
-ViewSourceInTabOverlay.__proto__ = ViewSourceInTab;
+});
 
 
 
@@ -515,3 +517,5 @@ if (ViewSourceInTabOverlay.service && !window.arguments) {
 	delete gFindBar;
 	ViewSourceInTabOverlay.init();
 }
+
+})();
