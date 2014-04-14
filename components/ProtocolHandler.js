@@ -111,33 +111,27 @@ ViewSourceTabProtocolBase.prototype = {
 function ViewSourceTabProtocol()
 {
 }
-
-ViewSourceTabProtocol.prototype = {
+ViewSourceTabProtocol.prototype = inherit(ViewSourceTabProtocolBase.prototype, {
 	classDescription : 'ViewSourceTabProtocol',
 	classID : Components.ID('{9cd42e30-3b70-11dd-ae16-0800200c9a66}'),
 
 	/* implementation */
 	scheme  : 'view-source-tab',
 	viewerURI : 'chrome://viewsourceintab/content/viewer.xul'
-};
-
-ViewSourceTabProtocol.prototype = inherit(ViewSourceTabProtocolBase.prototype);
+});
 
 
 function ViewPartialSourceTabProtocol()
 {
 }
-
-ViewPartialSourceTabProtocol.prototype = {
+ViewPartialSourceTabProtocol.prototype = inherit(ViewSourceTabProtocolBase.prototype, {
 	classDescription : 'ViewPartialSourceTabProtocol',
 	classID : Components.ID('{3ef379f0-3b71-11dd-ae16-0800200c9a66}'),
 
 	/* implementation */
 	scheme  : 'view-partial-source-tab',
 	viewerURI : 'chrome://viewsourceintab/content/partialViewer.xul'
-};
-
-ViewPartialSourceTabProtocol.prototype = inherit(ViewSourceTabProtocolBase.prototype);
+});
 
 
 
