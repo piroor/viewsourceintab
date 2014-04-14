@@ -1,5 +1,5 @@
 (function() {
-let { inherit } = Components.utils.import('resource://viewsourceintab-modules/prefs.js', {});
+let { inherit } = Components.utils.import('resource://viewsourceintab-modules/inherit.jsm', {});
 
 var ViewSourceInTabOverlay = inherit(ViewSourceInTab, {
 
