@@ -503,6 +503,6 @@ var ViewSourceInTab = {
 	var namespace = {};
 	Components.utils.import('resource://viewsourceintab-modules/prefs.js', namespace);
 	Components.utils.import('resource://viewsourceintab-modules/namespace.jsm', namespace);
-	ViewSourceInTab.prfs = namespace.prefs;
+	ViewSourceInTab.prefs = namespace.prefs;
 })();
  	
