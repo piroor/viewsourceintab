@@ -1,7 +1,7 @@
 (function() {
 let { inherit } = Components.utils.import('resource://viewsourceintab-modules/inherit.jsm', {});
 
-var ViewSourceInTabOverlay = inherit(ViewSourceInTab, {
+var ViewSourceInTabOverlay = window.ViewSourceInTabOverlay = inherit(ViewSourceInTab, {
 
 	get browserWindow()
 	{
