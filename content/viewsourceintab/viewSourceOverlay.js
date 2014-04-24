@@ -138,6 +138,13 @@ var ViewSourceInTabOverlay = window.ViewSourceInTabOverlay = inherit(ViewSourceI
 		else
 			toolbar.setAttribute('collapsed', true);
 
+		// In-content window cannot load "view-source:" URIs, so
+		// we have to tell the engine that the inline frame is
+		// fake "top level" window.
+		// See: https://bugzilla.mozilla.org/show_bug.cgi?id=995917
+		if (getBrowser().docShell.setIsBrowserInsideApp && Components.interfaces.nsIScriptSecurityManager)
+			getBrowser().docShell.setIsBrowserInsideApp(Components.interfaces.nsIScriptSecurityManager.NO_APP_ID);
+
 		return true;
 	},
 	_initialized : false,
