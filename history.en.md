@@ -1,8 +1,8 @@
 # History
 
  - master/HEAD
-   * Modified: "jar" archive is no longer included.
-   * Fixed: Make codes E4X-free, to work lately versions of Firefox.
+   * Works on Nightly 31.0a1.
+   * Drop support for Firefox 23 and older versions.
  - 0.3.2010070401
    * Drops support for Firefox 2.0.0.x.
    * Works on Minefield 4.0b2pre.
