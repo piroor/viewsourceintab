@@ -414,6 +414,10 @@ var ViewSourceInTabOverlay = window.ViewSourceInTabOverlay = inherit(ViewSourceI
 			case 'unload':
 				this.onUnload();
 				return;
+
+			case 'click':
+			case 'keypress':
+				return this.onHandleLink(aEvent);
 		}
 	},
 
@@ -431,11 +435,61 @@ var ViewSourceInTabOverlay = window.ViewSourceInTabOverlay = inherit(ViewSourceI
 
 	onContentLoad : function()
 	{
-		var uri = getBrowser().currentURI.spec.replace('view-source:', '');
+		var b = getBrowser();
+		var uri = b.currentURI.spec.replace('view-source:', '');
 		this.setTabValue(this.kVIEWSOURCE_URI, uri);
-		if (this.isSelection) return;
+
+		if (this.isSelection)
+			return;
+
 		var root = document.documentElement;
 		document.title = root.getAttribute('titlepreface') + uri;
+
+		b.contentWindow.addEventListener('click', this, true);
+		b.contentWindow.addEventListener('keypress', this, true);
+	},
+
+	// We have to re-dispatch events on links on this chrome document,
+	// to load linked URL into the tab itself, instead of the iframe.
+	onHandleLink : function(aEvent)
+	{
+		var target = aEvent.originalTarget;
+		while (target && !target.href)
+		{
+			target = target.parentNode;
+		}
+		if (!target || !target.href)
+			return true;
+
+		aEvent.stopPropagation();
+		aEvent.stopImmediatePropagation();
+		aEvent.preventDefault();
+
+		if (this.lastLink) {
+			this.lastLink.parentNode.removeChild(this.lastLink);
+		}
+
+		this.lastLink = target.cloneNode(true);
+		this.lastLink.href = this.lastLink.href.replace(/^view-source:/, 'view-source-tab:');
+		document.getElementById('last-link-container').appendChild(this.lastLink);
+
+		if (aEvent.type == 'click') {
+			let event = document.createEvent('MouseEvents');
+			event.initMouseEvent(aEvent.type, aEvent.bubbles, aEvent.cancelable, aEvent.view,
+				aEvent.detail, aEvent.screenX, aEvent.screenY, aEvent.clientX, aEvent.clientY,
+				aEvent.ctrlKey, aEvent.altKey, aEvent.shiftKey, aEvent.metaKey,
+				aEvent.button, null);
+			this.lastLink.dispatchEvent(event);
+		}
+		else {
+			let event = document.createEvent('KeyEvents');
+			event.initKeyEvent(aEvent.type, aEvent.bubbles, aEvent.cancelable, aEvent.view,
+				aEvent.ctrlKey, aEvent.altKey, aEvent.shiftKey, aEvent.metaKey,
+				aEvent.keyCode, aEvent.charCode);
+			this.lastLink.dispatchEvent(event);
+		}
+
+		return false;
 	}
 
 });

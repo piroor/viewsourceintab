@@ -47,5 +47,6 @@
 <toolbox id="viewSource-toolbox"/>
 <vbox id="appcontent"/>
 <statusbar id="status-bar"/>
+<box collapsed="true" id="last-link-container"/>
 
 </window>
