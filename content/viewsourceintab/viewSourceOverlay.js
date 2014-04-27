@@ -107,24 +107,13 @@ var ViewSourceInTabOverlay = window.ViewSourceInTabOverlay = inherit(ViewSourceI
 		});
 
 		var toolbox = document.getElementsByTagName('toolbox')[0];
-		toolbox.setAttribute('orient', 'horizontal');
-		var toolbar = toolbox.appendChild(document.createElement('toolbar'));
-		toolbar.setAttribute('flex', 1);
-		toolbar.setAttribute('orient', 'horizontal');
-		toolbar.setAttribute('align', 'center');
-
-		toolbar.insertBefore(toolbox.firstChild, toolbar.firstChild);
-		toolbar.firstChild.style.background = 'transparent';
-		toolbar.firstChild.style.border = '0 none';
-		toolbar.firstChild.style.MozAppearance = 'none';
-
 		if (Components
 				.classes['@mozilla.org/preferences;1']
 				.getService(Components.interfaces.nsIPrefBranch)
 				.getBoolPref('extensions.viewsourceintab.useViewSourceUI'))
-			toolbar.removeAttribute('collapsed');
+			toolbox.removeAttribute('collapsed');
 		else
-			toolbar.setAttribute('collapsed', true);
+			toolbox.setAttribute('collapsed', true);
 
 		// In-content window cannot load "view-source:" URIs, so
 		// we have to tell the engine that the inline frame is
