@@ -300,6 +300,9 @@ var ViewSourceInTabOverlay = window.ViewSourceInTabOverlay = inherit(ViewSourceI
 				)
 			);
 		}
+
+		// disable back/forward command on this window itself
+		window.UpdateBackForwardCommands = function() {};
 	},
 
 	losslessDecodeURI : function(aURI)
@@ -435,6 +438,15 @@ var ViewSourceInTabOverlay = window.ViewSourceInTabOverlay = inherit(ViewSourceI
 
 	onContentLoad : function()
 	{
+		if (!gSelectionListener.attached) {
+			try {
+				onLoadContent();
+			}
+			catch(e) {
+				Components.utils.reportError(e);
+			}
+		}
+
 		var b = getBrowser();
 		var uri = b.currentURI.spec.replace('view-source:', '');
 		this.setTabValue(this.kVIEWSOURCE_URI, uri);

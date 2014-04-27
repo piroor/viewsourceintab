@@ -38,6 +38,7 @@
 <command id="cmd_textZoomReset"/>
 <command id="Browser:Back"/>
 <command id="Browser:Forward"/>
+<command id="cmd_goToLine"/>
 
 <keyset id="editMenuKeys"/>
 <keyset id="viewSourceKeys"/>
@@ -46,7 +47,9 @@
 
 <toolbox id="viewSource-toolbox"/>
 <vbox id="appcontent"/>
-<statusbar id="status-bar"/>
+<statusbar id="status-bar">
+  <statusbarpanel id="statusbar-line-col" flex="1"/>
+</statusbar>
 <box collapsed="true" id="last-link-container"/>
 
 </window>
