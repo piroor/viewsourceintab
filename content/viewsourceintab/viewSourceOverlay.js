@@ -112,12 +112,6 @@ var ViewSourceInTabOverlay = window.ViewSourceInTabOverlay = inherit(ViewSourceI
 		toolbar.setAttribute('flex', 1);
 		toolbar.setAttribute('orient', 'horizontal');
 		toolbar.setAttribute('align', 'center');
-		var textbox = toolbar.appendChild(document.createElement('textbox'));
-		textbox.setAttribute('flex', 1);
-		textbox.setAttribute('readonly', true);
-		textbox.setAttribute('onfocus', 'if (this.readableValue != this.originalValue) this.value = this.originalValue');
-		textbox.setAttribute('onblur', 'if (this.readableValue != this.originalValue) this.value = this.readableValue');
-		this.locationBar = textbox;
 
 		toolbar.insertBefore(toolbox.firstChild, toolbar.firstChild);
 		toolbar.firstChild.style.background = 'transparent';
@@ -127,8 +121,6 @@ var ViewSourceInTabOverlay = window.ViewSourceInTabOverlay = inherit(ViewSourceI
 		var status = document.getElementById('status-bar');
 		if (status)
 			status.setAttribute('hidden', true);
-
-		this.updateLocationBar(window.arguments[0]);
 
 		if (Components
 				.classes['@mozilla.org/preferences;1']
@@ -335,15 +327,6 @@ var ViewSourceInTabOverlay = window.ViewSourceInTabOverlay = inherit(ViewSourceI
 		}
 	},
 
-	updateLocationBar : function(aValue)
-	{
-		this.locationBar.originalValue = aValue;
-		var readableURI = this.losslessDecodeURI(aValue);
-		this.locationBar.readableValue =
-			this.locationBar.value = readableURI;
-	},
-	locationBar : null,
-
 	losslessDecodeURI : function(aURI)
 	{
 		var browser = Components.classes['@mozilla.org/appshell/window-mediator;1']
@@ -476,7 +459,6 @@ var ViewSourceInTabOverlay = window.ViewSourceInTabOverlay = inherit(ViewSourceI
 		var uri = getBrowser().currentURI.spec.replace('view-source:', '');
 		this.setTabValue(this.kVIEWSOURCE_URI, uri);
 		if (this.isSelection) return;
-		this.updateLocationBar(uri);
 		var root = document.documentElement;
 		document.title = root.getAttribute('titlepreface') + uri + root.getAttribute('titlemenuseparator') + root.getAttribute('titlemodifier');
 
