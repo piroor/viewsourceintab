@@ -445,40 +445,6 @@ var ViewSourceInTabOverlay = window.ViewSourceInTabOverlay = inherit(ViewSourceI
 		if (this.isSelection) return;
 		var root = document.documentElement;
 		document.title = root.getAttribute('titlepreface') + uri + root.getAttribute('titlemenuseparator') + root.getAttribute('titlemodifier');
-
-		// See: Bug 502644 -  Links in "view source" for IDN pages refer wrong URIs
-		//      https://bugzilla.mozilla.org/show_bug.cgi?id=502644
-		var doc = getBrowser().contentDocument;
-		var basesAndLinks = doc.evaluate(
-				'/descendant::*[translate(text(), "base", "BASE")="BASE"] | /descendant::*[translate(local-name(), "a", "A")="A"]',
-				doc,
-				null,
-				XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
-				null
-			);
-		const IOService = Components.classes['@mozilla.org/network/io-service;1']
-				.getService(Components.interfaces.nsIIOService);
-		var base = IOService.newURI(uri, null, null);
-		for (let i = 0, maxi = basesAndLinks.snapshotLength; i < maxi; i++)
-		{
-			let link = basesAndLinks.snapshotItem(i);
-			if (link.localName.toLowerCase() != 'a' && i < maxi-1) {
-				let baseLink = basesAndLinks.snapshotItem(i+1);
-				if (/^[^:]+:/.test(baseLink.textContent)) {
-					base = IOService.newURI(baseLink.textContent, null, null);
-				}
-				i++;
-				continue;
-			}
-			if (!link.href)
-				continue;
-			if (/^[^:]+:/.test(link.textContent)) {
-				uri = link.textContent;
-			}
-			else {
-				uri = IOService.newURI(link.textContent, null, base).asciiSpec;
-			}
-		}
 	}
 
 });
