@@ -58,6 +58,17 @@ var ViewSourceInTab = {
 		return aValue;
 	},
  
+	isInBrowserWindow : function()
+	{
+		var stack = Components.stack;
+		while (stack) {
+			if (stack.filename && stack.filename.indexOf('chrome://browser/content') == 0)
+				return true;
+			stack = stack.caller;
+		}
+		return false;
+	},
+ 
 /* Utilities */ 
 	
 	get browser() 
@@ -210,11 +221,13 @@ var ViewSourceInTab = {
 	
 	init : function() 
 	{
-		if (!('gBrowser' in window)) return;
+		if (!('gBrowser' in window))
+			return;
 
 		window.removeEventListener('load', this, false);
 
-		if (this.overrideExtensionsOnInitBefore) this.overrideExtensionsOnInitBefore();
+		if (this.overrideExtensionsOnInitBefore)
+			this.overrideExtensionsOnInitBefore();
 
 		window.addEventListener('unload', this, false);
 
@@ -298,7 +311,7 @@ var ViewSourceInTab = {
 		eval('gViewSourceUtils.openInInternalViewer = '+
 			gViewSourceUtils.openInInternalViewer.toSource().replace(
 				/(openDialog\([^\)]+\))/,
-				'if (ViewSourceInTab.shouldLoadInTab) {\n' +
+				'if (ViewSourceInTab.shouldLoadInTab && ViewSourceInTab.isInBrowserWindow()) {\n' +
 				'  if ("TreeStyleTabService" in window)\n' +
 				'    TreeStyleTabService.readyToOpenChildTab(ViewSourceInTab.targetInfo.frame);\n' +
 				'  var b = ViewSourceInTab.getTabBrowserFromFrame(ViewSourceInTab.targetInfo.frame);\n' +
