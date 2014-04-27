@@ -118,10 +118,6 @@ var ViewSourceInTabOverlay = window.ViewSourceInTabOverlay = inherit(ViewSourceI
 		toolbar.firstChild.style.border = '0 none';
 		toolbar.firstChild.style.MozAppearance = 'none';
 
-		var status = document.getElementById('status-bar');
-		if (status)
-			status.setAttribute('hidden', true);
-
 		if (Components
 				.classes['@mozilla.org/preferences;1']
 				.getService(Components.interfaces.nsIPrefBranch)
@@ -310,18 +306,6 @@ var ViewSourceInTabOverlay = window.ViewSourceInTabOverlay = inherit(ViewSourceI
 				).replace(
 					/(catch \(ex\) \{\})/g,
 					'catch(ex){alert(ex);}'
-				)
-			);
-		}
-
-		if ('updateStatusBar' in window) {
-			eval('window.updateStatusBar = '+
-				window.updateStatusBar.toSource().replace(
-					'document.getElementById("statusbar-line-col")',
-					'ViewSourceInTabOverlay.service.statusBarPanel'
-				).replace(
-					/(\}\)?)$/,
-					'ViewSourceInTabOverlay.service.statusTextModified = true; $1'
 				)
 			);
 		}

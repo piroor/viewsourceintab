@@ -65,19 +65,6 @@ var ViewSourceInTab = {
 		return 'SplitBrowser' in window ? SplitBrowser.activeBrowser : gBrowser ;
 	},
  
-	get statusBarPanel() { 
-		return document.getElementById('statusbar-display');
-	},
- 
-	get statusText() { 
-		return this.statusBarPanel.label;
-	},
-	set statusText(aValue) {
-		this.statusBarPanel.label = aValue;
-		return aValue;
-	},
-	statusTextModified : false,
- 
 	getTabFromEvent : function(aEvent) 
 	{
 		var target = aEvent.originalTarget || aEvent.target;
@@ -230,7 +217,6 @@ var ViewSourceInTab = {
 		if (this.overrideExtensionsOnInitBefore) this.overrideExtensionsOnInitBefore();
 
 		window.addEventListener('unload', this, false);
-		document.getElementById('appcontent').addEventListener('select', this, false);
 
 		var func;
 
@@ -404,7 +390,6 @@ var ViewSourceInTab = {
 	destroy : function() 
 	{
 		window.removeEventListener('unload', this, false);
-		document.getElementById('appcontent').removeEventListener('select', this, false);
 
 		this.viewSourceItems.forEach(function(aItem) {
 			if (aItem) aItem.removeEventListener('click', this, false);
@@ -426,22 +411,6 @@ var ViewSourceInTab = {
 
 			case 'unload':
 				this.destroy();
-				return;
-
-			case 'select':
-				var tab = aEvent.originalTarget;
-				if (tab.localName != 'tabs') return;
-				tab = tab.selectedItem;
-				var b = tab.linkedBrowser;
-				if (this.viewerURIPattern.test(b.currentURI.spec)) {
-					b.contentWindow.setTimeout('updateStatusBar()', 0);
-				}
-				else {
-					if (this.statusTextModified) {
-						this.statusText = '';
-						this.statusTextModified = false;
-					}
-				}
 				return;
 
 			case 'click':
