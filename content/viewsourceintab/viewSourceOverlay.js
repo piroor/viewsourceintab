@@ -470,6 +470,8 @@ var ViewSourceInTabOverlay = window.ViewSourceInTabOverlay = inherit(ViewSourceI
 				i++;
 				continue;
 			}
+			if (!link.href)
+				continue;
 			if (/^[^:]+:/.test(link.textContent)) {
 				uri = link.textContent;
 			}
