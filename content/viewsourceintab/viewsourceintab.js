@@ -178,8 +178,7 @@ var ViewSourceInTab = {
 	// This is obsolete for lately Firefox and no need to be updated. See: https://github.com/piroor/treestyletab/issues/508#issuecomment-17526429
 	checkCachedSessionDataExpiration : function(aTab) 
 	{
-		var data = aTab.linkedBrowser.__SS_data || // Firefox 3.6-
-					aTab.linkedBrowser.parentNode.__SS_data; // -Firefox 3.5
+		var data = aTab.linkedBrowser.__SS_data;
 		if (data &&
 			data._tabStillLoading &&
 			aTab.getAttribute('busy') != 'true' &&
@@ -233,37 +232,6 @@ var ViewSourceInTab = {
 
 		var func;
 
-		// Firefox 3.6 or older
-		func = 'viewPartialSource __ctxextensions__viewPartialSource'.split(' ');
-		func.forEach(function(aItem) {
-			if (!(aItem in nsContextMenu.prototype)) return;
-			eval('nsContextMenu.prototype.'+aItem+' = '+
-				nsContextMenu.prototype[aItem].toSource().replace(
-					'window.openDialog(',
-					'if (ViewSourceInTab.shouldLoadInTab) {\n' +
-					'  ViewSourceInTab.targetInfo.clear();\n' +
-					'  ViewSourceInTab.targetInfo.frame     = focusedWindow;\n' +
-					'  ViewSourceInTab.targetInfo.uri       = docUrl;\n' +
-					'  ViewSourceInTab.targetInfo.charset   = docCharset;\n' +
-					'  ViewSourceInTab.targetInfo.reference = reference;\n' +
-					'  ViewSourceInTab.targetInfo.context   = arguments[0];\n' +
-					'  if ("TreeStyleTabService" in window)\n' +
-					'    TreeStyleTabService.readyToOpenChildTab(focusedWindow);\n' +
-					'  var b = ViewSourceInTab.getTabBrowserFromFrame(focusedWindow);\n' +
-					'  var uri = focusedWindow.location.href;\n' +
-					'  if (uri.indexOf("#") > -1) uri = uri.substring(0, uri.indexOf("#"));\n' +
-					'  b.loadOneTab(\n' +
-					'    "view-partial-source-tab:"+\n' +
-					'      uri+\n' +
-					'      ViewSourceInTab.createQuery(ViewSourceInTab.targetInfo),\n' +
-					'    null, null, null, false);\n' +
-					'}\n' +
-					'else\n' +
-					'  window.openDialog('
-				)
-			);
-		});
-
 		eval('nsContextMenu.prototype.viewFrameSource = '+
 			nsContextMenu.prototype.viewFrameSource.toSource().replace(
 				'{',
@@ -289,16 +257,7 @@ var ViewSourceInTab = {
 			);
 		});
 
-		if ('ViewSourceOfURL' in window) { // Firefox 3.0.x
-			eval('window.ViewSourceOfURL = '+
-				window.ViewSourceOfURL.toSource().replace(
-					/((gViewSourceUtils|utils)\.openInExternalEditor\()/,
-					'ViewSourceInTab.targetInfo.clear();\n' +
-					'$1'
-				)
-			);
-		}
-		if ('viewSource' in gViewSourceUtils) { // Firefox 3.5 or later
+		if ('viewSource' in gViewSourceUtils) {
 			eval('gViewSourceUtils.viewSource = '+
 				gViewSourceUtils.viewSource.toSource().replace(
 					'this.openInExternalEditor(',
@@ -336,24 +295,22 @@ var ViewSourceInTab = {
 			)
 		);
 
-		if (this.Comparator.compare(this.XULAppInfo.version, '3.7a4pre') >= 0) {
-			eval('gViewSourceUtils.openInExternalEditor = '+
-				gViewSourceUtils.openInExternalEditor.toSource().replace(
-					'path = uri.QueryInterface(Components.interfaces.nsIFileURL).file.path;',
-					'$& path = ViewSourceInTab.convertEncodingForPlatformFilePath(path);'
-				)
-			);
+		eval('gViewSourceUtils.openInExternalEditor = '+
+			gViewSourceUtils.openInExternalEditor.toSource().replace(
+				'path = uri.QueryInterface(Components.interfaces.nsIFileURL).file.path;',
+				'$& path = ViewSourceInTab.convertEncodingForPlatformFilePath(path);'
+			)
+		);
 
-			eval('gViewSourceUtils.viewSourceProgressListener.onStateChange = '+
-				gViewSourceUtils.viewSourceProgressListener.onStateChange.toSource().replace(
-					'prefs.getCharPref("view_source.editor.args")',
-					'decodeURIComponent(escape($&))'
-				).replace(
-					/(this\.file\.path)/g,
-					'ViewSourceInTab.convertEncodingForPlatformFilePath($1)'
-				)
-			);
-		}
+		eval('gViewSourceUtils.viewSourceProgressListener.onStateChange = '+
+			gViewSourceUtils.viewSourceProgressListener.onStateChange.toSource().replace(
+				'prefs.getCharPref("view_source.editor.args")',
+				'decodeURIComponent(escape($&))'
+			).replace(
+				/(this\.file\.path)/g,
+				'ViewSourceInTab.convertEncodingForPlatformFilePath($1)'
+			)
+		);
 
 		func = 'handleLinkClick __splitbrowser__handleLinkClick __ctxextensions__handleLinkClick __treestyletab__highlander__origHandleLinkClick'.split(' ');
 		func.some(function(aFunc) {
