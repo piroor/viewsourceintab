@@ -478,8 +478,6 @@ var ViewSourceInTabOverlay = window.ViewSourceInTabOverlay = inherit(ViewSourceI
 			else {
 				uri = IOService.newURI(link.textContent, null, base).asciiSpec;
 			}
-			link.href = 'view-source-tab:'+uri;
-			link.target = '_parent';
 		}
 	}
 
