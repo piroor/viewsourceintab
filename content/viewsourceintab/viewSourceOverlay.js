@@ -438,7 +438,7 @@ var ViewSourceInTabOverlay = window.ViewSourceInTabOverlay = inherit(ViewSourceI
 
 	onContentLoad : function()
 	{
-		if (!gSelectionListener.attached) {
+		if (gSelectionListener && !gSelectionListener.attached) {
 			try {
 				onLoadContent();
 			}
@@ -451,11 +451,10 @@ var ViewSourceInTabOverlay = window.ViewSourceInTabOverlay = inherit(ViewSourceI
 		var uri = b.currentURI.spec.replace('view-source:', '');
 		this.setTabValue(this.kVIEWSOURCE_URI, uri);
 
-		if (this.isSelection)
-			return;
-
-		var root = document.documentElement;
-		document.title = root.getAttribute('titlepreface') + uri;
+		if (!this.isSelection) {
+			let root = document.documentElement;
+			document.title = root.getAttribute('titlepreface') + uri;
+		}
 
 		b.contentWindow.addEventListener('click', this, true);
 		b.contentWindow.addEventListener('keypress', this, true);
