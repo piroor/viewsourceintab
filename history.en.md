@@ -1,6 +1,7 @@
 # History
 
  - master/HEAD
+ - 0.3.2014042801
    * Works on Nightly 31.0a1.
    * Drop support for Firefox 23 and older versions.
  - 0.3.2010070401
