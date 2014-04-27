@@ -115,12 +115,14 @@ var ViewSourceInTabOverlay = window.ViewSourceInTabOverlay = inherit(ViewSourceI
 		else
 			toolbox.setAttribute('collapsed', true);
 
+		var b = getBrowser();
+
 		// In-content window cannot load "view-source:" URIs, so
 		// we have to tell the engine that the inline frame is
 		// fake "top level" window.
 		// See: https://bugzilla.mozilla.org/show_bug.cgi?id=995917
-		if (getBrowser().docShell.setIsBrowserInsideApp && Components.interfaces.nsIScriptSecurityManager)
-			getBrowser().docShell.setIsBrowserInsideApp(Components.interfaces.nsIScriptSecurityManager.NO_APP_ID);
+		if (b.docShell.setIsBrowserInsideApp && Components.interfaces.nsIScriptSecurityManager)
+			b.docShell.setIsBrowserInsideApp(Components.interfaces.nsIScriptSecurityManager.NO_APP_ID);
 
 		return true;
 	},
@@ -433,7 +435,7 @@ var ViewSourceInTabOverlay = window.ViewSourceInTabOverlay = inherit(ViewSourceI
 		this.setTabValue(this.kVIEWSOURCE_URI, uri);
 		if (this.isSelection) return;
 		var root = document.documentElement;
-		document.title = root.getAttribute('titlepreface') + uri + root.getAttribute('titlemenuseparator') + root.getAttribute('titlemodifier');
+		document.title = root.getAttribute('titlepreface') + uri;
 	}
 
 });
